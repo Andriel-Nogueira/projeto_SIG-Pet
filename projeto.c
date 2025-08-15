@@ -15,3 +15,59 @@
 ///                        Projeto Sistema de Atendimento de Pet Shop                          ///
 ///              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista         ///
 //////////////////////////////////////////////////////////////////////////////////////////////////
+///                                         Semana 1                                           ///
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Funções Principais
+void m_principal(void);
+
+int main(void) {
+    m_principal();
+    return 0;
+}
+
+void m_principal(void) {
+    char op;
+    system("clear || cls");
+    printf("\n");
+    printf("//////////////////////////////////////////////////////////////////////////////////////////////////\n");
+    printf("//    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------. ///\n");
+    printf("//  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -\\ //\n");
+    printf("// /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-./ //\n");
+    printf("// \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\- \\ /////\n");
+    printf("//  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ \\ //\n");
+    printf("//  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- | //\n");
+    printf("// /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, | //\n");
+    printf("// \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/ //\n");
+    printf("//  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--` //\n");
+    printf("//////////////////////////////////////////////////////////////////////////////////////////////////\n");
+    printf("///                       Universidade Federal do Rio Grande do Norte                          ///\n");
+    printf("///                          Centro de Ensino Superior do Seridó                               ///\n");
+    printf("///                            Disciplina DCT1106 -- Programação                               ///\n");
+    printf("///                        Projeto Sistema de Atendimento de Pet Shop                          ///\n");
+    printf("///              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista         ///\n");
+    printf("//////////////////////////////////////////////////////////////////////////////////////////////////\n");
+    printf("///                                         Semana 1                                           ///\n");
+    printf("//////////////////////////////////////////////////////////////////////////////////////////////////\n");
+    printf("///                                                                                            ///\n");
+    printf("///          1 - Módulo Clientes                                                               ///\n");
+    printf("///          2 - Módulo Serviços                                                               ///\n");
+    printf("///          3 - Módulo Produtos                                                               ///\n");
+    printf("///          4 - Módulo Vendas                                                                 ///\n");
+    printf("///          5 - Módulo Estoque                                                                ///\n");
+    printf("///          6 - Módulo Relatórios                                                             ///\n");
+    printf("///          0 - Sair                                                                          ///\n");
+    printf("///                                                                                            ///\n");
+    printf("///          Escolha uma opção: ");
+    scanf(" %c", &op);
+    getchar();
+    printf("///                                                                                            ///\n");
+    printf("//////////////////////////////////////////////////////////////////////////////////////////////////\n"); 
+    printf("\n");
+    printf("///                           Pressione <Enter> para continuar...                              ///\n");
+    getchar();
+
+}
