@@ -13,5 +13,5 @@
 ///                          Centro de Ensino Superior do Seridó                               ///
 ///                            Disciplina DCT1106 -- Programação                               ///
 ///                        Projeto Sistema de Atendimento de Pet Shop                          ///
-///              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista         ///
+///              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batistaa         ///
 //////////////////////////////////////////////////////////////////////////////////////////////////
