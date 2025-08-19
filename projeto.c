@@ -2,8 +2,8 @@
 //    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------. ///
 //  ,-.'-  _\  /==/_ /   _.='.'-,  \                    .-`.' ,`.    ,-.--` , \ /==/,  -   , -\ //
 // /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \  |==|-  _.-` \==\.-.  - ,-./ //
-// \==\  \    |==|  |  /==/ -   .-'   /==/,  -   , -\ |==| _ .=. |  |==|   `.-.  `--`\==\- \ /////
-//  \==\ -\   |==|- |  |==|_   /_,-.  \==\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \==\_ \ ////
+// \==\  \    |==|  |  /==/ -   .-'   /==/,  -   , -\ |==| _ .=. |  |==|   `.-.  `--`\==\- | /////
+//  \==\ -\   |==|- |  |==|_   /_,-.  \==\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \==\_ | ////
 //  _\==\ ,\  |==| ,|  |==|  , \_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- | ////
 // /==/\/ _ | |==|- |  \==\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, | ////
 // \==\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/ ////
@@ -23,7 +23,9 @@
 
 // Funções Principais
 void m_principal(void);
-void m_sobre(void);
+void t_sobre(void);
+void t_equipe(void);
+void t_final(void);
 
 //Programa Principal
 int main(void) {
@@ -45,11 +47,10 @@ int main(void) {
             m_principal();
             break;
         case 2:
-            m_sobre();
+            t_sobre();
             break;
         case 0:
-            printf("Obrigado por usar o SIG-Pet!\n");
-            printf("Pressione <Enter> para sair...\n");
+            t_final();
             break;
         default:
             printf("Opção inválida. Tente novamente.\n");
@@ -101,7 +102,7 @@ void m_principal(void) {
 }
 
 
-void m_sobre(void) {
+void t_sobre(void) {
     char op;
     system("clear || cls");
     printf("\n");
@@ -135,4 +136,72 @@ void m_sobre(void) {
     printf("\n");
     scanf(                        "Pressione <Enter> para voltar ao menu principal...\n");
     getchar();
+}
+
+void t_equipe(void) {
+    char op;
+    system("clear || cls");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
+    printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
+    printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
+    printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
+    printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                         Semana 1                                             ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                                                                              ║\n");
+    printf("║          Equipe de Desenvolvimento:                                                          ║\n");
+    printf("║          - Andriel Nogueira                                                                  ║\n");
+    printf("║            Email: andriel.pereiraufrn@gmail.com                                              ║\n");
+    printf("║            GitHub: @Andriel-Nogueira                                                         ║\n");
+    printf("║          - Carlos Henrique de Oliveira Batista                                               ║\n");
+    printf("║            Email: carlos.oliveira.714@ufrn.com.br                                            ║\n");
+    printf("║            GitHub: @Carlos-Henrique-de-Oliveira-Batista                                      ║\n");
+    printf("║          - Repositório da Equipe: https://github.com/Andriel-Nogueira/projeto_SIG-Pet.git    ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+}
+
+void t_final(void) {
+    system("clear || cls");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
+    printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
+    printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
+    printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
+    printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                         Semana 1                                             ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                                                                              ║\n");
+    printf("║          Obrigado por utilizar o Sistema SIG-Pet!                                            ║\n");
+    printf("║          Esperamos ter proporcionado uma ótima experiência!                                  ║\n");
+    printf("║          Volte Sempre!                                                                       ║\n");
+    printf("║            __    __                                                ||      _,,,---,,_        ║\n");
+    printf("║          o-''))_____\\                                        ZzZzz /,`.-'`'    -.  ;-;;,_    ║\n");
+    printf("║          z--__/ * * * )                                           |,4-  ) )-,_. ,/ (  `'-'   ║\n");
+    printf("║          c_c__/-c____/                                           '---''(_/--'  `-'/_)        ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 }
