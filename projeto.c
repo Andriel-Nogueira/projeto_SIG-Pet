@@ -23,6 +23,7 @@
 
 // Funções Principais
 void m_principal(void);
+void m_clientes(void);
 void t_sobre(void);
 void t_equipe(void);
 void t_final(void);
@@ -101,9 +102,46 @@ void m_principal(void) {
 
 }
 
+void m_clientes(void) {
+    char op;
+    system("clear || cls");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
+    printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
+    printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
+    printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
+    printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                      Menu Clientes                                           ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                                                                              ║\n");
+    printf("║          1 - Cadastrar novo cliente                                                          ║\n");
+    printf("║          2 - Buscar cliente pelo CPF                                                         ║\n");
+    printf("║          3 - Atualizar cadastro                                                              ║\n");
+    printf("║          4 - Listar todos os clientes                                                        ║\n");
+    printf("║          5 - Excluir cliente                                                                 ║\n");
+    printf("║          0 - Voltar ao menu principal                                                        ║\n");
+    printf("║                                                                                              ║\n");
+    printf("║          Escolha uma opção:                                                                  ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
 
 void t_sobre(void) {
-    char op;
     system("clear || cls");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -139,7 +177,6 @@ void t_sobre(void) {
 }
 
 void t_equipe(void) {
-    char op;
     system("clear || cls");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
