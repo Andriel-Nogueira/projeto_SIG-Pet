@@ -28,6 +28,7 @@ void t_cadastrar_cliente(void);
 void buscar_cliente(void);
 void atualizar_cliente(void);
 void listar_clientes(void);
+void excluir_cliente(void);
 void t_sobre(void);
 void t_equipe(void);
 void t_final(void);
@@ -264,6 +265,37 @@ void listar_clientes(void) {
     printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
     printf("║                                                                                              ║\n");
     printf("║      Lista de Clientes e seus respectivos Pets:                                              ║\n");
+    printf("║                                                                                              ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
+void excluir_cliente(void) {
+    system("clear || cls");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
+    printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
+    printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
+    printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
+    printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                    Excluir Cliente                                           ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                                                                              ║\n");
+    printf("║      Informe o CPF do cliente que deseja excluir:                                            ║\n");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
