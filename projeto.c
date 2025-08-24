@@ -22,7 +22,7 @@
 #include <stdlib.h>
 
 // Funções Principais
-void m_principal(void);
+int m_principal(void);
 void m_clientes(void);
 void t_cadastrar_cliente(void);
 void buscar_cliente(void);
@@ -36,24 +36,30 @@ void t_final(void);
 //Programa Principal
 int main(void) {
     int op; 
-    system("clear || cls");
+    system("clear");
     do {
+        system("clear");
+        printf("\n");
     printf("╔═════════════════════════════════════╗\n");
     printf("║           Sistema SIG-Pet           ║\n");
     printf("║═════════════════════════════════════║\n");
     printf("║ 1 - Menu Principal                  ║\n");
     printf("║ 2 - Sobre o sistema                 ║\n");
+    printf("║ 3 - Equipe de desenvolvimento       ║\n");
     printf("║ 0 - Sair                            ║\n");
     printf("╚═════════════════════════════════════╝\n");
     printf("\n");
     printf("Escolha a opção desejada:\n");
-    scanf("%d", &op);
+    scanf(" %d", &op);
     switch(op){
         case 1:
             m_principal();
             break;
         case 2:
             t_sobre();
+            break;
+        case 3:
+            t_equipe();
             break;
         case 0:
             t_final();
@@ -67,9 +73,12 @@ int main(void) {
     return 0;
 }
 
-void m_principal(void) {
-    char op;
-    system("clear || cls");
+int m_principal(void) {
+    int op;
+    system("clear");
+    do {
+        system("clear");
+        printf("\n");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -102,13 +111,28 @@ void m_principal(void) {
     printf("║          Escolha uma opção:                                                                  ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    scanf(" %c", &op);
+    scanf(" %d", &op);
+    switch(op){
+        case 1:
+            m_clientes();
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
+    } while(op != 0);
     getchar();
 
+    return 0;
 }
 
 void m_clientes(void) {
-    system("clear || cls");
+    int op;
+    system("clear");
+    do {
+        system("clear");
+        printf("\n");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -140,12 +164,35 @@ void m_clientes(void) {
     printf("║          Escolha uma opção:                                                                  ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    scanf(" %d", &op);
+    switch(op){
+        case 1:
+            t_cadastrar_cliente();
+            break;
+        case 2:
+            buscar_cliente();
+            break;
+        case 3:
+            atualizar_cliente();
+            break;
+        case 4:
+            listar_clientes();
+            break;
+        case 5:
+            excluir_cliente();
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+            
+        }
+    } while(op != 0);
     getchar();
 }
 
 void t_cadastrar_cliente(void) {
-    system("clear || cls");
+    system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -177,10 +224,11 @@ void t_cadastrar_cliente(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    getchar();
 }
 
 void buscar_cliente(void) {
-    system("clear || cls");
+    system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -208,10 +256,11 @@ void buscar_cliente(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    getchar();
 }
 
 void atualizar_cliente(void) {
-    system("clear || cls");
+    system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -239,10 +288,11 @@ void atualizar_cliente(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    getchar();
 }
 
 void listar_clientes(void) {
-    system("clear || cls");
+    system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -270,10 +320,11 @@ void listar_clientes(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    getchar();
 }
 
 void excluir_cliente(void) {
-    system("clear || cls");
+    system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -301,10 +352,11 @@ void excluir_cliente(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    getchar();
 }
 
 void t_sobre(void) {
-    system("clear || cls");
+    system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -334,12 +386,13 @@ void t_sobre(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    scanf(                        "Pressione <Enter> para voltar ao menu principal...\n");
+    printf(                        "Pressione <Enter> para voltar ao menu principal...\n");
+    getchar();
     getchar();
 }
 
 void t_equipe(void) {
-    system("clear || cls");
+    system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -370,10 +423,14 @@ void t_equipe(void) {
     printf("║            GitHub: @Carlos-Henrique-de-Oliveira-Batista                                      ║\n");
     printf("║          - Repositório da Equipe: https://github.com/Andriel-Nogueira/projeto_SIG-Pet.git    ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf(                        "Pressione <Enter> para voltar ao menu principal...\n");
+    getchar();
+    getchar();
 }
 
 void t_final(void) {
-    system("clear || cls");
+    system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
