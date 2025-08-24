@@ -26,6 +26,7 @@ void m_principal(void);
 void m_clientes(void);
 void t_cadastrar_cliente(void);
 void buscar_cliente(void);
+void atualizar_cliente(void);
 void t_sobre(void);
 void t_equipe(void);
 void t_final(void);
@@ -129,7 +130,7 @@ void m_clientes(void) {
     printf("║                                                                                              ║\n");
     printf("║          1 - Cadastrar novo cliente                                                          ║\n");
     printf("║          2 - Buscar cliente pelo CPF                                                         ║\n");
-    printf("║          3 - Atualizar cadastro                                                              ║\n");
+    printf("║          3 - Atualizar clientes                                                              ║\n");
     printf("║          4 - Listar todos os clientes                                                        ║\n");
     printf("║          5 - Excluir cliente                                                                 ║\n");
     printf("║          0 - Voltar ao menu principal                                                        ║\n");
@@ -200,6 +201,37 @@ void buscar_cliente(void) {
     printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
     printf("║                                                                                              ║\n");
     printf("║      Informe o CPF do cliente:                                                               ║\n");
+    printf("║                                                                                              ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
+void atualizar_cliente(void) {
+    system("clear || cls");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
+    printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
+    printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
+    printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
+    printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                Atualizar Dados do Cliente                                    ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                                                                              ║\n");
+    printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
