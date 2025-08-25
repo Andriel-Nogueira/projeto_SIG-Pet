@@ -23,14 +23,18 @@
 
 // Funções Principais
 void m_principal(void);
+void t_sobre(void);
+void t_equipe(void);
+
 void m_clientes(void);
 void t_cadastrar_cliente(void);
 void buscar_cliente(void);
 void atualizar_cliente(void);
 void listar_clientes(void);
 void excluir_cliente(void);
-void t_sobre(void);
-void t_equipe(void);
+
+void m_servicos(void);
+
 void t_final(void);
 
 //Programa Principal
@@ -104,8 +108,7 @@ void m_principal(void) {
     printf("║          2 - Módulo Serviços                                                                 ║\n");
     printf("║          3 - Módulo Produtos                                                                 ║\n");
     printf("║          4 - Módulo Vendas                                                                   ║\n");
-    printf("║          5 - Módulo Estoque                                                                  ║\n");
-    printf("║          6 - Módulo Relatórios                                                               ║\n");
+    printf("║          5 - Módulo Relatórios                                                               ║\n");
     printf("║          0 - Sair                                                                            ║\n");
     printf("║                                                                                              ║\n");
     printf("║          Escolha uma opção:                                                                  ║\n");
@@ -115,6 +118,9 @@ void m_principal(void) {
     switch(op){
         case 1:
             m_clientes();
+            break;
+        case 2:
+            m_servicos();
             break;
         case 0:
             break;
@@ -350,6 +356,44 @@ void excluir_cliente(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    getchar();
+}
+
+void m_servicos(void) {
+    int op;
+    system("clear");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
+    printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
+    printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
+    printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
+    printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                    Menu Serviços                                             ║\n");
+    printf("║══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+    printf("║                                                                                              ║\n");
+    printf("║          1 - Cadastrar novo serviço                                                          ║\n");
+    printf("║          2 - Buscar serviço pelo código                                                      ║\n");
+    printf("║          3 - Atualizar serviço                                                               ║\n");
+    printf("║          4 - Listar serviços                                                                 ║\n");
+    printf("║          5 - Excluir serviço                                                                 ║\n");
+    printf("║          0 - Voltar ao menu principal                                                        ║\n");
+    printf("║                                                                                              ║\n");
+    printf("║          Escolha uma opção:                                                                  ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    scanf(" %d", &op);
     getchar();
 }
 
