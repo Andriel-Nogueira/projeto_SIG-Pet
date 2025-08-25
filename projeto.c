@@ -55,6 +55,7 @@ int main(void) {
     printf("\n");
     printf("Escolha a opção desejada:\n");
     scanf(" %d", &op);
+    getchar();
     switch(op){
         case 1:
             m_principal();
@@ -72,7 +73,7 @@ int main(void) {
             printf("Opção inválida. Tente novamente.\n");
         }   
     } while(op != 0);
-    getchar();
+    
     
     return 0;
 }
@@ -115,6 +116,7 @@ void m_principal(void) {
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
     scanf(" %d", &op);
+    getchar();
     switch(op){
         case 1:
             m_clientes();
@@ -128,7 +130,7 @@ void m_principal(void) {
             printf("Opção inválida. Tente novamente.\n");
         }
     } while(op != 0);
-    getchar();
+    
 }
 
 void m_clientes(void) {
@@ -169,6 +171,7 @@ void m_clientes(void) {
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
     scanf(" %d", &op);
+    getchar();
     switch(op){
         case 1:
             t_cadastrar_cliente();
@@ -192,7 +195,7 @@ void m_clientes(void) {
             
         }
     } while(op != 0);
-    getchar();
+    
 }
 
 void t_cadastrar_cliente(void) {
@@ -228,7 +231,7 @@ void t_cadastrar_cliente(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
-    getchar();
+    
 }
 
 void buscar_cliente(void) {
@@ -260,7 +263,7 @@ void buscar_cliente(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
-    getchar();
+    
 }
 
 void atualizar_cliente(void) {
@@ -292,7 +295,7 @@ void atualizar_cliente(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
-    getchar();
+    
 }
 
 void listar_clientes(void) {
@@ -324,7 +327,7 @@ void listar_clientes(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
-    getchar();
+    
 }
 
 void excluir_cliente(void) {
@@ -356,7 +359,7 @@ void excluir_cliente(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
-    getchar();
+    
 }
 
 void m_servicos(void) {
@@ -430,7 +433,7 @@ void t_sobre(void) {
     printf("\n");
     printf(                        "Pressione <Enter> para voltar ao menu principal...\n");
     getchar();
-    getchar();
+    
 }
 
 void t_equipe(void) {
@@ -468,7 +471,7 @@ void t_equipe(void) {
     printf("\n");
     printf(                        "Pressione <Enter> para voltar ao menu principal...\n");
     getchar();
-    getchar();
+    
 }
 
 void t_final(void) {
