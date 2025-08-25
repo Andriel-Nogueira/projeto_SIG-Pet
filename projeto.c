@@ -22,7 +22,7 @@
 #include <stdlib.h>
 
 // Funções Principais
-int m_principal(void);
+void m_principal(void);
 void m_clientes(void);
 void t_cadastrar_cliente(void);
 void buscar_cliente(void);
@@ -73,7 +73,7 @@ int main(void) {
     return 0;
 }
 
-int m_principal(void) {
+void m_principal(void) {
     int op;
     system("clear");
     do {
@@ -123,8 +123,6 @@ int m_principal(void) {
         }
     } while(op != 0);
     getchar();
-
-    return 0;
 }
 
 void m_clientes(void) {
