@@ -370,6 +370,9 @@ void excluir_cliente(void) {
 void m_servicos(void) {
     int op;
     system("clear");
+    do {
+        system("clear");
+        printf("\n");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -403,8 +406,29 @@ void m_servicos(void) {
     printf("\n");
     scanf(" %d", &op);
     getchar();
+    switch(op){
+        case 1:
+            t_cadastrar_servico();
+            break;
+        case 2:
+            buscar_servico();
+            break;
+        case 3:
+            atualizar_servico();
+            break;
+        case 4:
+            listar_servicos();
+            break;
+        case 5:
+            excluir_servico();
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
+    } while(op != 0);
 }
-
 void t_cadastrar_servico(void) {
     system("clear");
     printf("\n");
