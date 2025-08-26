@@ -38,6 +38,7 @@ void t_cadastrar_servico(void);
 void buscar_servico(void);
 void atualizar_servico(void);
 void listar_servicos(void);
+void excluir_servico(void);
 
 void t_final(void);
 
@@ -50,7 +51,7 @@ int main(void) {
         printf("\n");
     printf("╔═════════════════════════════════════╗\n");
     printf("║           Sistema SIG-Pet           ║\n");
-    printf("╠══════════════════════════════════════╣\n");
+    printf("╠═════════════════════════════════════╣\n");
     printf("║ 1 - Menu Principal                  ║\n");
     printf("║ 2 - Sobre o sistema                 ║\n");
     printf("║ 3 - Equipe de desenvolvimento       ║\n");
@@ -99,15 +100,15 @@ void m_principal(void) {
     printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
-    printf("╠═══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
     printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
     printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
     printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
     printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
-    printf("╠═══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                         Semana 1                                             ║\n");
-    printf("╠═══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║          1 - Módulo Clientes                                                                 ║\n");
     printf("║          2 - Módulo Serviços                                                                 ║\n");
@@ -154,15 +155,15 @@ void m_clientes(void) {
     printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
-    printf("╠═══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
     printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
     printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
     printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
     printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
-    printf("╠═══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                      Menu Clientes                                           ║\n");
-    printf("╠═══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║          1 - Cadastrar novo cliente                                                          ║\n");
     printf("║          2 - Buscar cliente pelo CPF                                                         ║\n");
@@ -215,7 +216,7 @@ void t_cadastrar_cliente(void) {
     printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
-    printf("╠═══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
     printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
     printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
@@ -523,13 +524,44 @@ void listar_servicos(void) {
     printf("║                                   Listar Serviços                                            ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
-    printf("║      Lista de Serviços Disponíveis:                                                          ║\n");
+    printf("║      Lista de Serviços Agendados:                                                            ║\n");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
+
+void excluir_servico(void) {
+    system("clear");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                       Universidade Federal do Rio Grande do Norte                            ║\n");
+    printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
+    printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
+    printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
+    printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                   Excluir Serviço                                            ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                                                                              ║\n");
+    printf("║      Informe o ID do Serviço que deseja excluir:                                             ║\n");
+    printf("║                                                                                              ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+} 
 
 void t_sobre(void) {
     system("clear");
