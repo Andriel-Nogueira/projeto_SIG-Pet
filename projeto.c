@@ -40,6 +40,9 @@ void atualizar_servico(void);
 void listar_servicos(void);
 void excluir_servico(void);
 
+void m_agendamento(void);
+void t_agendar(void);
+
 void t_final(void);
 
 //Programa Principal
@@ -106,9 +109,10 @@ void m_principal(void) {
     printf("║                                                                                              ║\n");
     printf("║          1 - Módulo Clientes                                                                 ║\n");
     printf("║          2 - Módulo Serviços                                                                 ║\n");
-    printf("║          3 - Módulo Produtos                                                                 ║\n");
-    printf("║          4 - Módulo Vendas                                                                   ║\n");
-    printf("║          5 - Módulo Relatórios                                                               ║\n");
+    printf("║          3 - Módulo Agendamentos                                                             ║\n");
+    printf("║          4 - Módulo Produtos                                                                 ║\n");
+    printf("║          5 - Módulo Vendas                                                                   ║\n");
+    printf("║          6 - Módulo Relatórios                                                               ║\n");
     printf("║          0 - Sair                                                                            ║\n");
     printf("║                                                                                              ║\n");
     printf("║          Escolha uma opção:                                                                  ║\n");
@@ -122,6 +126,9 @@ void m_principal(void) {
             break;
         case 2:
             m_servicos();
+            break;
+        case 3:
+            m_agendamento();
             break;
         case 0:
             break;
@@ -476,7 +483,7 @@ void listar_servicos(void) {
     printf("║                                   Listar Serviços                                            ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
-    printf("║      Lista de Serviços Agendados:                                                            ║\n");
+    printf("║      Lista de Serviços Disponíveis:                                                          ║\n");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
@@ -508,6 +515,92 @@ void excluir_servico(void) {
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 } 
+
+void m_agendamento(void) {
+    int op;
+    system("clear");
+    do {
+        system("clear");
+        printf("\n");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                   Menu Agendamento                                           ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                                                                              ║\n");
+    printf("║          1 - Agendar novo serviço                                                            ║\n");
+    printf("║          2 - Buscar agendamento pelo código                                                  ║\n");
+    printf("║          3 - Atualizar agendamento                                                           ║\n");
+    printf("║          4 - Listar agendamentos                                                             ║\n");
+    printf("║          5 - Excluir agendamento                                                             ║\n");
+    printf("║          0 - Voltar ao menu principal                                                        ║\n");
+    printf("║                                                                                              ║\n");
+    printf("║          Escolha uma opção:                                                                  ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    scanf(" %d", &op);
+    getchar();
+    switch(op){
+        case 1:
+            t_agendar();
+            break;
+        case 2:
+            //buscar_agendamento(); EM DESENVOLVIMENTO
+            break;
+        case 3:
+            //atualizar_agendamento(); EM DESENVOLVIMENTO
+            break;
+        case 4:
+            //listar_agendamentos(); EM DESENVOLVIMENTO
+            break;
+        case 5:
+            //excluir_agendamento(); EM DESENVOLVIMENTO
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
+    } while(op != 0);
+}
+
+void t_agendar(void) {
+    system("clear");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                    Agendar Serviço                                           ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                                                                              ║\n");
+    printf("║      Nome do Cliente:                                                                        ║\n");
+    printf("║      Nome do Pet:                                                                            ║\n");
+    printf("║      Serviço:                                                                                ║\n");
+    printf("║      Data e Hora:                                                                            ║\n");
+    printf("║      ID do Agendamento:                                                                      ║\n");
+    printf("║                                                                                              ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
 
 void t_sobre(void) {
     system("clear");
