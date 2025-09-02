@@ -47,6 +47,8 @@ void atualizar_agend(void);
 void listar_agend(void);
 void excluir_agend(void);
 
+void m_produtos(void);
+
 void t_final(void);
 
 //Programa Principal
@@ -133,6 +135,9 @@ void m_principal(void) {
             break;
         case 3:
             m_agendamento();
+            break;
+        case 4:
+            m_produtos();
             break;
         case 0:
             break;
@@ -704,6 +709,63 @@ void excluir_agend(void) {
     printf("\n");
     printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+}
+
+void m_produtos(void) {
+    int op;
+    system("clear");
+    do {
+        system("clear");
+        printf("\n");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                   Menu Produtos                                              ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════║/n");
+    printf("║                                                                                              ║\n");
+    printf("║          1 - Adicionar novo produto                                                          ║\n");
+    printf("║          2 - Buscar produto pelo código                                                      ║\n");
+    printf("║          3 - Atualizar produto                                                               ║\n");
+    printf("║          4 - Listar produtos                                                                 ║\n");
+    printf("║          5 - Excluir produto                                                                 ║\n");
+    printf("║          0 - Voltar ao menu principal                                                        ║\n");
+    printf("║                                                                                              ║\n");
+    printf("║          Escolha uma opção:                                                                  ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    scanf(" %d", &op);
+    getchar();
+    switch(op){
+        case 1:
+            //adicionar_produto(); EM DESENVOLVIMENTO
+            break;
+        case 2:
+            //buscar_produto(); EM DESENVOLVIMENTO
+            break;
+        case 3:
+            //atualizar_produto(); EM DESENVOLVIMENTO
+            break;
+        case 4:
+            //listar_produtos(); EM DESENVOLVIMENTO
+            break;
+        case 5:
+            //excluir_produto(); EM DESENVOLVIMENTO
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
+    } while(op != 0);
 }
 
 void t_sobre(void) {
