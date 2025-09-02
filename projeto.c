@@ -49,6 +49,7 @@ void excluir_agend(void);
 
 void m_produtos(void);
 void adicionar_produto(void);
+void buscar_produto(void);
 
 void t_final(void);
 
@@ -747,19 +748,19 @@ void m_produtos(void) {
     getchar();
     switch(op){
         case 1:
-            //adicionar_produto(); EM DESENVOLVIMENTO
+            adicionar_produto();
             break;
         case 2:
-            //buscar_produto(); EM DESENVOLVIMENTO
+            buscar_produto();
             break;
         case 3:
-            //atualizar_produto(); EM DESENVOLVIMENTO
+            //atualizar_produto();
             break;
         case 4:
-            //listar_produtos(); EM DESENVOLVIMENTO
+            //listar_produtos();
             break;
         case 5:
-            //excluir_produto(); EM DESENVOLVIMENTO
+            //excluir_produto();
             break;
         case 0:
             break;
@@ -791,6 +792,31 @@ void adicionar_produto(void) {
     printf("║      Preço:                                                                                  ║\n");
     printf("║      Quantidade em Estoque:                                                                  ║\n");
     printf("║      Código do Produto:                                                                      ║\n");
+    printf("║                                                                                              ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
+void buscar_produto(void) {
+    system("clear");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                             Buscar Produto pelo Código                                       ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                                                                              ║\n");
+    printf("║      Informe o Código do Produto:                                                            ║\n");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
