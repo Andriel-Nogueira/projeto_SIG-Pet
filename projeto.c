@@ -27,22 +27,23 @@ void t_sobre(void);
 void t_equipe(void);
 
 void m_clientes(void);
-void t_cadastrar_cliente(void);
+void cadastrar_cliente(void);
 void buscar_cliente(void);
 void atualizar_cliente(void);
 void listar_clientes(void);
 void excluir_cliente(void);
 
 void m_servicos(void);
-void t_cadastrar_servico(void);
+void cadastrar_servico(void);
 void buscar_servico(void);
 void atualizar_servico(void);
 void listar_servicos(void);
 void excluir_servico(void);
 
 void m_agendamento(void);
-void t_agendar(void);
-void t_buscar_agend(void);
+void agendar(void);
+void buscar_agend(void);
+void atualizar_agend(void);
 
 void t_final(void);
 
@@ -175,7 +176,7 @@ void m_clientes(void) {
     getchar();
     switch(op){
         case 1:
-            t_cadastrar_cliente();
+            cadastrar_cliente();
             break;
         case 2:
             buscar_cliente();
@@ -199,7 +200,7 @@ void m_clientes(void) {
     
 }
 
-void t_cadastrar_cliente(void) {
+void cadastrar_cliente(void) {
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -368,7 +369,7 @@ void m_servicos(void) {
     getchar();
     switch(op){
         case 1:
-            t_cadastrar_servico();
+            cadastrar_servico();
             break;
         case 2:
             buscar_servico();
@@ -389,7 +390,7 @@ void m_servicos(void) {
         }
     } while(op != 0);
 }
-void t_cadastrar_servico(void) {
+void cadastrar_servico(void) {
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -552,13 +553,13 @@ void m_agendamento(void) {
     getchar();
     switch(op){
         case 1:
-            t_agendar();
+            agendar();
             break;
         case 2:
-            t_buscar_agend();
+            buscar_agend();
             break;
         case 3:
-            //atualizar_agendamento(); EM DESENVOLVIMENTO
+            atualizar_agend();
             break;
         case 4:
             //listar_agendamentos(); EM DESENVOLVIMENTO
@@ -574,7 +575,7 @@ void m_agendamento(void) {
     } while(op != 0);
 }
 
-void t_agendar(void) {
+void agendar(void) {
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -603,7 +604,7 @@ void t_agendar(void) {
     getchar();
 }
 
-void t_buscar_agend(void) {
+void buscar_agend(void) {
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -621,6 +622,31 @@ void t_buscar_agend(void) {
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║      Informe o ID do Agendamento:                                                            ║\n");
+    printf("║                                                                                              ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
+void atualizar_agend(void) {
+    system("clear");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                 Atualizar Agendamento                                        ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                                                                                              ║\n");
+    printf("║      Informe o ID do Agendamento que deseja atualizar:                                       ║\n");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
