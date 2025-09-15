@@ -2,40 +2,43 @@
 #include <stdlib.h>
 #include "produtos.h"
 
-void m_produtos(void) {
+void m_produtos(void)
+{
     int op;
     system("clear");
-    do {
+    do
+    {
         system("clear");
         printf("\n");
-    printf("\n");
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
-    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
-    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
-    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
-    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
-    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
-    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
-    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
-    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                   Menu Produtos                                              ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════║/n");
-    printf("║                                                                                              ║\n");
-    printf("║          1 - Adicionar novo produto                                                          ║\n");
-    printf("║          2 - Buscar produto pelo código                                                      ║\n");
-    printf("║          3 - Atualizar produto                                                               ║\n");
-    printf("║          4 - Listar produtos                                                                 ║\n");
-    printf("║          5 - Excluir produto                                                                 ║\n");
-    printf("║          0 - Voltar ao menu principal                                                        ║\n");
-    printf("║                                                                                              ║\n");
-    printf("║          Escolha uma opção:                                                                  ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    printf("\n");
-    scanf(" %d", &op);
-    getchar();
-    switch(op){
+        printf("\n");
+        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+        printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+        printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+        printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+        printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+        printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+        printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+        printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+        printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+        printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║                                   Menu Produtos                                              ║\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          1 - Adicionar novo produto                                                          ║\n");
+        printf("║          2 - Buscar produto pelo código                                                      ║\n");
+        printf("║          3 - Atualizar produto                                                               ║\n");
+        printf("║          4 - Listar produtos                                                                 ║\n");
+        printf("║          5 - Excluir produto                                                                 ║\n");
+        printf("║          0 - Voltar ao menu principal                                                        ║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          Escolha uma opção:                                                                  ║\n");
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+        printf("\n");
+        scanf(" %d", &op);
+        getchar();
+        switch (op)
+        {
         case 1:
             adicionar_produto();
             break;
@@ -56,10 +59,11 @@ void m_produtos(void) {
         default:
             printf("Opção inválida. Tente novamente.\n");
         }
-    } while(op != 0);
+    } while (op != 0);
 }
 
-void adicionar_produto(void) {
+void adicionar_produto(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -84,11 +88,12 @@ void adicionar_produto(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
-void buscar_produto(void) {
+void buscar_produto(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -109,11 +114,12 @@ void buscar_produto(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
-void atualizar_produto(void) {
+void atualizar_produto(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -134,11 +140,12 @@ void atualizar_produto(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
-void listar_produtos(void) {
+void listar_produtos(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -159,11 +166,12 @@ void listar_produtos(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
-void excluir_produto(void) {
+void excluir_produto(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -184,6 +192,6 @@ void excluir_produto(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }

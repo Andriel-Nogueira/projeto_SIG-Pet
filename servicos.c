@@ -2,40 +2,43 @@
 #include <stdlib.h>
 #include "servicos.h"
 
-void m_servicos(void) {
+void m_servicos(void)
+{
     int op;
     system("clear");
-    do {
+    do
+    {
         system("clear");
         printf("\n");
-    printf("\n");
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
-    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
-    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
-    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
-    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
-    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
-    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
-    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
-    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                    Menu Serviços                                             ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║          1 - Cadastrar novo serviço                                                          ║\n");
-    printf("║          2 - Buscar serviço pelo código                                                      ║\n");
-    printf("║          3 - Atualizar serviço                                                               ║\n");
-    printf("║          4 - Listar serviços                                                                 ║\n");
-    printf("║          5 - Excluir serviço                                                                 ║\n");
-    printf("║          0 - Voltar ao menu principal                                                        ║\n");
-    printf("║                                                                                              ║\n");
-    printf("║          Escolha uma opção:                                                                  ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    printf("\n");
-    scanf(" %d", &op);
-    getchar();
-    switch(op){
+        printf("\n");
+        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+        printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+        printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+        printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+        printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+        printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+        printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+        printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+        printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+        printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║                                    Menu Serviços                                             ║\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║                                                                                              ║\n");
+        printf("║          1 - Cadastrar novo serviço                                                          ║\n");
+        printf("║          2 - Buscar serviço pelo código                                                      ║\n");
+        printf("║          3 - Atualizar serviço                                                               ║\n");
+        printf("║          4 - Listar serviços                                                                 ║\n");
+        printf("║          5 - Excluir serviço                                                                 ║\n");
+        printf("║          0 - Voltar ao menu principal                                                        ║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          Escolha uma opção:                                                                  ║\n");
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+        printf("\n");
+        scanf(" %d", &op);
+        getchar();
+        switch (op)
+        {
         case 1:
             cadastrar_servico();
             break;
@@ -56,9 +59,10 @@ void m_servicos(void) {
         default:
             printf("Opção inválida. Tente novamente.\n");
         }
-    } while(op != 0);
+    } while (op != 0);
 }
-void cadastrar_servico(void) {
+void cadastrar_servico(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -82,11 +86,12 @@ void cadastrar_servico(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
-void buscar_servico(void) {
+void buscar_servico(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -107,11 +112,12 @@ void buscar_servico(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
-void atualizar_servico(void) {
+void atualizar_servico(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -132,11 +138,12 @@ void atualizar_servico(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
-void listar_servicos(void) {
+void listar_servicos(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -157,11 +164,12 @@ void listar_servicos(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
-void excluir_servico(void) {
+void excluir_servico(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -182,6 +190,6 @@ void excluir_servico(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                     "Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
-} 
+}
