@@ -32,26 +32,29 @@ void t_equipe(void);
 
 void t_final(void);
 
-//Programa Principal
-int main(void) {
-    int op; 
+// Programa Principal
+int main(void)
+{
+    int op;
     system("clear");
-    do {
+    do
+    {
         system("clear");
         printf("\n");
-    printf("╔═════════════════════════════════════╗\n");
-    printf("║           Sistema SIG-Pet           ║\n");
-    printf("╠═════════════════════════════════════╣\n");
-    printf("║ 1 - Menu Principal                  ║\n");
-    printf("║ 2 - Sobre o sistema                 ║\n");
-    printf("║ 3 - Equipe de desenvolvimento       ║\n");
-    printf("║ 0 - Sair                            ║\n");
-    printf("╚═════════════════════════════════════╝\n");
-    printf("\n");
-    printf("Escolha a opção desejada:\n");
-    scanf(" %d", &op);
-    getchar();
-    switch(op){
+        printf("╔═════════════════════════════════════╗\n");
+        printf("║           Sistema SIG-Pet           ║\n");
+        printf("╠═════════════════════════════════════╣\n");
+        printf("║ 1 - Menu Principal                  ║\n");
+        printf("║ 2 - Sobre o sistema                 ║\n");
+        printf("║ 3 - Equipe de desenvolvimento       ║\n");
+        printf("║ 0 - Sair                            ║\n");
+        printf("╚═════════════════════════════════════╝\n");
+        printf("\n");
+        printf("Escolha a opção desejada:\n");
+        scanf(" %d", &op);
+        getchar();
+        switch (op)
+        {
         case 1:
             m_principal();
             break;
@@ -66,49 +69,51 @@ int main(void) {
             break;
         default:
             printf("Opção inválida. Tente novamente.\n");
-        }   
-    } while(op != 0);
-    
-    
+        }
+    } while (op != 0);
+
     return 0;
 }
 
-void m_principal(void) {
+void m_principal(void)
+{
     int op;
     system("clear");
 
-    do {
+    do
+    {
         system("clear");
         printf("\n");
-    printf("\n");
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
-    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
-    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
-    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
-    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
-    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
-    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
-    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
-    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                         Semana 1                                             ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║          1 - Módulo Clientes                                                                 ║\n");
-    printf("║          2 - Módulo Serviços                                                                 ║\n");
-    printf("║          3 - Módulo Agendamentos                                                             ║\n");
-    printf("║          4 - Módulo Produtos                                                                 ║\n");
-    printf("║          5 - Módulo Vendas                                                                   ║\n");
-    printf("║          6 - Módulo Relatórios                                                               ║\n");
-    printf("║          0 - Sair                                                                            ║\n");
-    printf("║                                                                                              ║\n");
-    printf("║          Escolha uma opção:                                                                  ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    printf("\n");
-    scanf(" %d", &op);
-    getchar();
-    switch(op){
+        printf("\n");
+        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+        printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+        printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+        printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+        printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+        printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+        printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+        printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+        printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+        printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║                                         Semana 1                                             ║\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║                                                                                              ║\n");
+        printf("║          1 - Módulo Clientes                                                                 ║\n");
+        printf("║          2 - Módulo Serviços                                                                 ║\n");
+        printf("║          3 - Módulo Agendamentos                                                             ║\n");
+        printf("║          4 - Módulo Produtos                                                                 ║\n");
+        printf("║          5 - Módulo Vendas                                                                   ║\n");
+        printf("║          6 - Módulo Relatórios                                                               ║\n");
+        printf("║          0 - Sair                                                                            ║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          Escolha uma opção:                                                                  ║\n");
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+        printf("\n");
+        scanf(" %d", &op);
+        getchar();
+        switch (op)
+        {
         case 1:
             m_clientes();
             break;
@@ -126,11 +131,11 @@ void m_principal(void) {
         default:
             printf("Opção inválida. Tente novamente.\n");
         }
-    } while(op != 0);
-    
+    } while (op != 0);
 }
 
-void t_sobre(void) {
+void t_sobre(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -161,12 +166,12 @@ void t_sobre(void) {
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                        "Pressione <Enter> para voltar ao menu principal...\n");
+    printf("Pressione <Enter> para voltar ao menu principal...\n");
     getchar();
-    
 }
 
-void t_equipe(void) {
+void t_equipe(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -193,12 +198,12 @@ void t_equipe(void) {
     printf("║          - Repositório da Equipe: https://github.com/Andriel-Nogueira/projeto_SIG-Pet.git    ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf(                        "Pressione <Enter> para voltar ao menu principal...\n");
+    printf("Pressione <Enter> para voltar ao menu principal...\n");
     getchar();
-    
 }
 
-void t_final(void) {
+void t_final(void)
+{
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
