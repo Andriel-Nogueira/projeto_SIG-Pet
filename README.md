@@ -5,23 +5,23 @@ Permite cadastrar clientes, produtos, serviços e gerenciar agendamentos de form
 
 ---
 
-## ✨ Funcionalidades
+##  Funcionalidades
 
-- 🐶 Cadastro e gerenciamento de **clientes** e **pets**
-- 🛒 Cadastro e listagem de **produtos**
-- 💉 Cadastro e listagem de **serviços**
-- 📅 Controle de **agendamentos**
-- 🖥️ Interface simples e rápida via terminal
+-  Cadastro e gerenciamento de **clientes** e **pets**
+-  Cadastro e listagem de **produtos**
+-  Cadastro e listagem de **serviços**
+-  Controle de **agendamentos**
+-  Interface simples e rápida via terminal
 
 ---
 
-## 🛠 Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 - **C** (arquivos `.c` e `.h`)
 - **Makefile** para compilação automatizada
 
 ---
-## ✅ Pré-requisitos
+##  Pré-requisitos
 
 Antes de começar, você precisa ter instalado no seu computador:
 
@@ -31,7 +31,7 @@ Antes de começar, você precisa ter instalado no seu computador:
 
 ---
 
-## ⚙️ Como Compilar e Executar
+##  Como Compilar e Executar
 
 Clone o repositório:
 
