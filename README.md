@@ -1,6 +1,6 @@
 # 🐾 SIG-Pet
 
-Sistema Integrado de Gestão para **Petshops/Veterinárias**.  
+Sistema Integrado de Gestão para **Petshops**.  
 Permite cadastrar clientes, produtos, serviços e gerenciar agendamentos de forma simples via terminal.  
 
 ---
