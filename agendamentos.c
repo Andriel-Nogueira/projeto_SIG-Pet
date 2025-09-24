@@ -26,8 +26,8 @@ void m_agendamento(void)
         printf("║                                   Menu Agendamento                                           ║\n");
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
         printf("║                                                                                              ║\n");
-        printf("║          1 - Agendar novo serviço                                                            ║\n");
-        printf("║          2 - Buscar agendamento pelo código                                                  ║\n");
+        printf("║          1 - Agendar serviço                                                                 ║\n");
+        printf("║          2 - Buscar agendamento pelo cliente                                                 ║\n");
         printf("║          3 - Atualizar agendamento                                                           ║\n");
         printf("║          4 - Listar agendamentos                                                             ║\n");
         printf("║          5 - Excluir agendamento                                                             ║\n");
@@ -65,6 +65,13 @@ void m_agendamento(void)
 
 void agendar(void)
 {
+    
+    char cpf[15];
+    char data[11];
+    char hora[6];
+    char nome_pet[30];
+    FILE *arq_agendamentos;
+
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -80,14 +87,24 @@ void agendar(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                    Agendar Serviço                                           ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Nome do Cliente:                                                                        ║\n");
-    printf("║      Nome do Pet:                                                                            ║\n");
-    printf("║      Serviço:                                                                                ║\n");
-    printf("║      Data e Hora:                                                                            ║\n");
-    printf("║      ID do Agendamento:                                                                      ║\n");
-    printf("║                                                                                              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf, 15, "Insira seu CPF:");
+    input(nome_pet, 30, "Digite o nome do Pet");
+    input(data, 11, "Insira a data desejada: xx/xx");
+    input(hora, 6, "Insira o horário desejado: xx:xx");
+    printf("Agendamento feito com sucesso");
+    printf("Nome do pet: %s.\nCPF: %s.\nData: %s.\nHorário: %s.", nome_pet, cpf, data, hora);
+   
+    arq_agendamentos = fopen("agendamentos.csv","at");
+    if (arq_agendamentos == NULL){
+        printf("ERRO AO ABRIR ARQUIVO");
+        return;
+    }
+    fprintf(arq_agendamentos, "%s;", nome_pet);
+    fprintf(arq_agendamentos, "%s;", cpf);
+    fprintf(arq_agendamentos, "%s;", data);
+    fprintf(arq_agendamentos, "%s;", hora);
+    fclose(arq_agendamentos);
+
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -108,10 +125,10 @@ void buscar_agend(void)
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                             Buscar Agendamento pelo ID                                        ║\n");
+    printf("║                            Buscar Agendamento pelo CPF                                       ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
-    printf("║      Informe o ID do Agendamento:                                                            ║\n");
+    printf("║      Informe o CPF do cliente:                                                               ║\n");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
