@@ -67,6 +67,10 @@ void cadastrar_cliente(void)
 {
     system("clear");
     printf("\n");
+    char cpf[15];
+    char nome[50];
+    char data_nascimento[12];
+    FILE  *arq_cliente;
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -79,15 +83,25 @@ void cadastrar_cliente(void)
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                   Cadastrar Cliente                                          ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Nome Completo:                                                                          ║\n");
-    printf("║      CPF:                                                                                    ║\n");
-    printf("║      Pets (Nome/Raça):                                                                       ║\n");
-    printf("║      Telefone:                                                                               ║\n");
-    printf("║      Endereço:                                                                               ║\n");
-    printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf, 15, "Insira seu cpf");
+    input(nome, 50, "Digite o seu nome: ");
+    input(data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
+    printf("Cliente cadastrado com sucesso!\n");
+    printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.", nome, cpf, data_nascimento);
+    
+                ///SALVAR DADOS ///
+    arq_cliente = fopen("clientes.csv","at");
+    if (arq_cliente == NULL){
+        printf("ERRO AO ABRIR ARQUIVO");
+        return;
+    }
+    fprintf(arq_cliente, "%s;", cpf);
+    fprintf(arq_cliente, "%s;", nome);
+    fprintf(arq_cliente, "%s\n", data_nascimento);
+    fclose(arq_cliente);
+                ///              ///
+
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -190,7 +204,7 @@ void excluir_cliente(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║      Informe o CPF do cliente que deseja excluir:                                            ║\n");
-    printf("║                                                                                              ║\n");
+    printf("║                                  c                                                            ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
