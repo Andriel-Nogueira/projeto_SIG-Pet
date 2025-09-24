@@ -24,6 +24,7 @@
 #include "servicos.h"
 #include "agendamentos.h"
 #include "produtos.h"
+#include "utilitarios.h"
 
 // Funções Principais
 void m_principal(void);

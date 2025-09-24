@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "agendamentos.h"
+#include "utilitarios.h"
 
 void m_agendamento(void)
 {

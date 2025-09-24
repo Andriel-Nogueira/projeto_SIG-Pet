@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "produtos.h"
+#include "utilitarios.h"
 
 void m_produtos(void)
 {
