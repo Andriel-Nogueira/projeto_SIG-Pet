@@ -15,7 +15,7 @@
 ///                        Projeto Sistema de Atendimento de Pet Shop                          ///
 ///              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista         ///
 //////////////////////////////////////////////////////////////////////////////////////////////////
-///                                         Semana 1                                           ///
+///                                         Versão 0.1.0                                          ///
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
@@ -96,7 +96,7 @@ void m_principal(void)
         printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
         printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-        printf("║                                         Semana 1                                             ║\n");
+        printf("║                                         Versão 0.1.0                                         ║\n");
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
         printf("║                                                                                              ║\n");
         printf("║          1 - Módulo Clientes                                                                 ║\n");
@@ -155,7 +155,7 @@ void t_sobre(void)
     printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
     printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                         Semana 1                                             ║\n");
+    printf("║                                         Versão 0.1.0                                         ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║          Este é um sistema de atendimento para Pet Shop, desenvolvido como parte de uma      ║\n");
@@ -185,16 +185,13 @@ void t_equipe(void)
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                         Semana 1                                             ║\n");
+    printf("║                                         Versão 0.1.0                                         ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║          Equipe de Desenvolvimento:                                                          ║\n");
     printf("║          - Andriel Nogueira                                                                  ║\n");
     printf("║            Email: andriel.pereiraufrn@gmail.com                                              ║\n");
     printf("║            GitHub: @Andriel-Nogueira                                                         ║\n");
-    printf("║          - Carlos Henrique de Oliveira Batista                                               ║\n");
-    printf("║            Email: carlos.oliveira.714@ufrn.com.br                                            ║\n");
-    printf("║            GitHub: @Carlos-Henrique-de-Oliveira-Batista                                      ║\n");
     printf("║          - Repositório da Equipe: https://github.com/Andriel-Nogueira/projeto_SIG-Pet.git    ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
@@ -217,7 +214,7 @@ void t_final(void)
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                         Semana 1                                             ║\n");
+    printf("║                                         Versão 0.1.0                                         ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║          Obrigado por utilizar o Sistema SIG-Pet!                                            ║\n");

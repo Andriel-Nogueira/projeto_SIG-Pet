@@ -82,7 +82,7 @@ void cadastrar_cliente(void)
     printf("║                                                                                              ║\n");
     printf("║      Nome Completo:                                                                          ║\n");
     printf("║      CPF:                                                                                    ║\n");
-    printf("║      Pet (Nome/Raça):                                                                        ║\n");
+    printf("║      Pets (Nome/Raça):                                                                       ║\n");
     printf("║      Telefone:                                                                               ║\n");
     printf("║      Endereço:                                                                               ║\n");
     printf("║                                                                                              ║\n");
