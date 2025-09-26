@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "agendamentos.h"
 #include "utilitarios.h"
 
@@ -90,7 +91,7 @@ void agendar(void)
     input(cpf, 15, "Insira seu CPF:");
     input(nome_pet, 30, "Digite o nome do Pet");
     input(data, 11, "Insira a data desejada: xx/xx");
-    input(hora, 6, "Insira o horário desejado: xx:xx");
+    input(hora, 6, "Insira o horário desejado: xx:xx\n");
     printf("Agendamento feito com sucesso");
     printf("Nome do pet: %s.\nCPF: %s.\nData: %s.\nHorário: %s.", nome_pet, cpf, data, hora);
    
@@ -102,7 +103,7 @@ void agendar(void)
     fprintf(arq_agendamentos, "%s;", nome_pet);
     fprintf(arq_agendamentos, "%s;", cpf);
     fprintf(arq_agendamentos, "%s;", data);
-    fprintf(arq_agendamentos, "%s;", hora);
+    fprintf(arq_agendamentos, "%s\n", hora);
     fclose(arq_agendamentos);
 
     printf("\n");
@@ -112,6 +113,11 @@ void agendar(void)
 
 void buscar_agend(void)
 {
+    char cpf[15];
+    char linha[200];
+    char nome_pet[30], data[20], hora[10], cpf_lido[20];
+    FILE *arq_agendamentos;
+
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -127,12 +133,34 @@ void buscar_agend(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                            Buscar Agendamento pelo CPF                                       ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Informe o CPF do cliente:                                                               ║\n");
-    printf("║                                                                                              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    printf("\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    
+    input(cpf, 15, "Informe o CPF do cliente a buscar:");
+
+    arq_agendamentos = fopen("agendamentos.csv","r");
+    if (arq_agendamentos == NULL){
+        printf("Nenhum agendamento cadastrado.\n");
+        printf("Pressione <Enter> para voltar...\n");
+        getchar();
+        return;
+    }
+
+    int found = 0;
+    while (fgets(linha, sizeof(linha), arq_agendamentos)){
+        // formato: nome_pet;cpf;data;hora\n
+    if (sscanf(linha, "%29[^;];%19[^;];%19[^;];%9[^\\n]", nome_pet, cpf_lido, data, hora) >= 3){
+            if (strcmp(cpf, cpf_lido) == 0){
+                printf("Agendamento encontrado:\n");
+                printf("Nome do pet: %s\nCPF: %s\nData: %s\nHora: %s\n", nome_pet, cpf_lido, data, hora);
+                found = 1;
+            }
+        }
+    }
+
+    fclose(arq_agendamentos);
+
+    if (!found) printf("Nenhum agendamento encontrado para o CPF informado.\n");
+
+    printf("\nPressione <Enter> para voltar ao menu principal...\n");
     getchar();
 }
 
