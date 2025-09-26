@@ -67,11 +67,12 @@ void m_agendamento(void)
 void agendar(void)
 {
     
+    FILE *arq_agendamentos;
     char cpf[15];
     char data[11];
     char hora[6];
     char nome_pet[30];
-    FILE *arq_agendamentos;
+    char telefone[20];
 
     system("clear");
     printf("\n");
@@ -88,23 +89,29 @@ void agendar(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                    Agendar Serviço                                           ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
     input(cpf, 15, "Insira seu CPF:");
+    input(telefone, 20, "Insira seu telefone para contato:");
     input(nome_pet, 30, "Digite o nome do Pet");
     input(data, 11, "Insira a data desejada: xx/xx");
     input(hora, 6, "Insira o horário desejado: xx:xx\n");
-    printf("Agendamento feito com sucesso");
-    printf("Nome do pet: %s.\nCPF: %s.\nData: %s.\nHorário: %s.", nome_pet, cpf, data, hora);
-   
+    
     arq_agendamentos = fopen("agendamentos.csv","at");
     if (arq_agendamentos == NULL){
         printf("ERRO AO ABRIR ARQUIVO");
         return;
     }
+
     fprintf(arq_agendamentos, "%s;", nome_pet);
     fprintf(arq_agendamentos, "%s;", cpf);
     fprintf(arq_agendamentos, "%s;", data);
-    fprintf(arq_agendamentos, "%s\n", hora);
+    fprintf(arq_agendamentos, "%s;", hora);
+    fprintf(arq_agendamentos, "%s\n", telefone);
     fclose(arq_agendamentos);
+
+    printf("\nAgendamento feito com sucesso\n");
+    printf("Nome do pet: %s.\nTelefone: %s.\nCPF: %s.\nData: %s.\nHorário: %s.", nome_pet, telefone, cpf, data, hora);
+   
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
@@ -113,10 +120,13 @@ void agendar(void)
 
 void buscar_agend(void)
 {
-    char cpf[15];
-    char linha[200];
-    char nome_pet[30], data[20], hora[10], cpf_lido[20];
     FILE *arq_agendamentos;
+    char cpf[15];
+    char cpf_lido[20];
+    char nome_pet[30];
+    char data[20]; 
+    char hora[10]; 
+    char telefone[20];
 
     system("clear");
     printf("\n");
@@ -134,33 +144,51 @@ void buscar_agend(void)
     printf("║                            Buscar Agendamento pelo CPF                                       ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     
-    input(cpf, 15, "Informe o CPF do cliente a buscar:");
+    input(cpf_lido, 15, "Informe o CPF do cliente que fez o agendamento:");
 
-    arq_agendamentos = fopen("agendamentos.csv","r");
-    if (arq_agendamentos == NULL){
+    arq_agendamentos = fopen("agendamentos.csv", "r");
+    if (arq_agendamentos == NULL)
+    {
         printf("Nenhum agendamento cadastrado.\n");
-        printf("Pressione <Enter> para voltar...\n");
         getchar();
         return;
     }
 
-    int found = 0;
-    while (fgets(linha, sizeof(linha), arq_agendamentos)){
-        // formato: nome_pet;cpf;data;hora\n
-    if (sscanf(linha, "%29[^;];%19[^;];%19[^;];%9[^\\n]", nome_pet, cpf_lido, data, hora) >= 3){
-            if (strcmp(cpf, cpf_lido) == 0){
-                printf("Agendamento encontrado:\n");
-                printf("Nome do pet: %s\nCPF: %s\nData: %s\nHora: %s\n", nome_pet, cpf_lido, data, hora);
-                found = 1;
-            }
+    while (!feof(arq_agendamentos))
+    {
+        fscanf(arq_agendamentos, "%[^;]", nome_pet);
+        fgetc(arq_agendamentos);
+        fscanf(arq_agendamentos, "%[^;]", cpf);
+        fgetc(arq_agendamentos);
+        fscanf(arq_agendamentos, "%[^;]", data);
+        fgetc(arq_agendamentos);
+        fscanf(arq_agendamentos, "%[^;]", telefone);
+        fgetc(arq_agendamentos);
+        fscanf(arq_agendamentos, "%[^\n]", hora);
+        fgetc(arq_agendamentos);
+        printf("DEBUG: Lido CPF %s\n", cpf);
+
+        if (strcmp(cpf, cpf_lido) == 0)
+        {
+            printf("\nAgendamento por CPF %s encontrado!:\n", cpf);
+            printf("CPF: %s\n", cpf);
+            printf("Nome do pet: %s\n", nome_pet);
+            printf("Telefone: %s\n", telefone);
+            printf("Data: %s\n", data);
+            printf("Horário: %s\n", hora);
+            printf("Pressione enter para continuar...");
+            getchar();
+            fclose(arq_agendamentos);
+
+            return;
         }
+   
     }
-
     fclose(arq_agendamentos);
+    printf("Nenhum agendamento encontrado para o CPF %s.\n", cpf);
 
-    if (!found) printf("Nenhum agendamento encontrado para o CPF informado.\n");
-
-    printf("\nPressione <Enter> para voltar ao menu principal...\n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
     getchar();
 }
 
