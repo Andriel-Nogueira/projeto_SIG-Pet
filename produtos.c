@@ -174,6 +174,12 @@ void listar_produtos(void)
 {
     system("clear");
     printf("\n");
+    FILE *arq_produtos;
+    char id [10];
+    char nome[50];
+    char preco[10];
+    char quantidade[10];
+    arq_produtos = fopen("produtos.csv", "rt");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -187,10 +193,30 @@ void listar_produtos(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                   Listar Produtos                                            ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Lista de Produtos:                                                                      ║\n");
-    printf("║                                                                                              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    
+    while (!feof(arq_produtos))
+    {
+        fscanf(arq_produtos, "%[^;]", id);
+        fgetc(arq_produtos);
+        fscanf(arq_produtos, "%[^;]", nome);
+        fgetc(arq_produtos);
+        fscanf(arq_produtos, "%[^;]", preco);
+        fgetc(arq_produtos);
+        fscanf(arq_produtos, "%[^\n]", quantidade);
+        fgetc(arq_produtos);
+
+
+        printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
+        
+        printf("id: %s\t║ Nome: %s\t║ Preço: %s\t║ Quantidade em estoque: %s\n", id, nome, preco, quantidade);
+
+        printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
+    }
+    fclose(arq_produtos);
+
+    printf("\n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
