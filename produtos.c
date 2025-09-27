@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "produtos.h"
 #include "utilitarios.h"
 
@@ -121,6 +122,12 @@ void adicionar_produto(void)
 void buscar_produto(void)
 {
     system("clear");
+    char id[10];
+    char id_lido[10];
+    char nome[50];
+    char preco[10];
+    char quantidade[10];
+    FILE *arq_produtos;
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -134,12 +141,45 @@ void buscar_produto(void)
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                             Buscar Produto pelo Código                                       ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Informe o Código do Produto:                                                            ║\n");
-    printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    printf("\n");
+    input(id_lido, 15, "Digite o id do produto que deseja buscar: ");
+    arq_produtos = fopen("produtos.csv", "rt");
+    if (arq_produtos == NULL)
+    {
+        printf("Nenhum produto cadastrado.\n");
+        getchar();
+        return;
+    }
+
+    while (!feof(arq_produtos))
+    {
+        fscanf(arq_produtos, "%[^;]", id);
+        fgetc(arq_produtos);
+        fscanf(arq_produtos, "%[^;]", nome);
+        fgetc(arq_produtos);
+        fscanf(arq_produtos, "%[^;]", preco);
+        fgetc(arq_produtos);
+        fscanf(arq_produtos, "%[^\n]", quantidade);
+        fgetc(arq_produtos);
+
+        if (strcmp(id, id_lido) == 0)
+        {
+            printf("\nproduto encontrado.");
+            printf("Id: %s\n", id);
+            printf("Nome: %s\n", nome);
+            printf("Data de nascimento: %s\n", preco);
+            printf("Quantidade: %s\n", quantidade);
+            printf("Pressione enter para continuar...");
+            getchar();
+            fclose(arq_produtos);
+
+            return;
+        }
+   
+    }
+    fclose(arq_produtos);
+    printf("Nenhum ID encontrado para o ID %s.\n", id);
+
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }

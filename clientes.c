@@ -171,7 +171,7 @@ void buscar_cliente(void)
    
     }
     fclose(arq_clientes);
-    printf("Nenhum agendamento encontrado para o CPF %s.\n", cpf);
+    printf("Nenhum CLiente encontrado com o CPF %s.\n", cpf);
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
