@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "utilitarios.h"
 #include "servicos.h"
 
 void m_servicos(void)
@@ -63,6 +65,12 @@ void m_servicos(void)
 }
 void cadastrar_servico(void)
 {
+    char nome[50];
+    char desc[256];
+    char preco_s[32];
+    char id[20];
+    FILE *arq_servicos;
+
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -78,13 +86,29 @@ void cadastrar_servico(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                   Cadastrar Serviço                                          ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Nome do Serviço:                                                                        ║\n");
-    printf("║      Descrição:                                                                              ║\n");
-    printf("║      Preço:                                                                                  ║\n");
-    printf("║      ID do Serviço:                                                                          ║\n");
-    printf("║                                                                                              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    input(nome, 50, "Nome do Serviço: ");
+    input(desc, 256, "Descrição: ");
+    input(preco_s, 32, "Preço (use . como separador): ");
+    input(id, 20, "ID do Serviço: ");
+
+    arq_servicos = fopen("servicos.csv", "at");
+    if (arq_servicos == NULL) {
+        printf("ERRO AO ABRIR ARQUIVO DE SERVIÇOS\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    fprintf(arq_servicos, "%s;", nome);
+    fprintf(arq_servicos, "%s;", desc);
+    fprintf(arq_servicos, "%s;", preco_s);
+    fprintf(arq_servicos, "%s\n", id);
+    fclose(arq_servicos);
+
+    printf("\nCadastro de serviço realizado com sucesso !\n");
+    printf("Nome: %s.\nDescrição: %s.\nPreço: %s.\nID: %s.\n", nome, desc, preco_s, id);
+
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();

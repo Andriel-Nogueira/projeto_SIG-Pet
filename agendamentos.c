@@ -67,12 +67,12 @@ void m_agendamento(void)
 void agendar(void)
 {
     
-    FILE *arq_agendamentos;
     char cpf[15];
     char data[11];
     char hora[6];
     char nome_pet[30];
     char telefone[20];
+    FILE *arq_agendamentos;
 
     system("clear");
     printf("\n");
@@ -120,13 +120,13 @@ void agendar(void)
 
 void buscar_agend(void)
 {
-    FILE *arq_agendamentos;
     char cpf[15];
     char cpf_lido[20];
     char nome_pet[30];
     char data[20]; 
     char hora[10]; 
     char telefone[20];
+    FILE *arq_agendamentos;
 
     system("clear");
     printf("\n");
@@ -224,12 +224,12 @@ void atualizar_agend(void)
 
 void listar_agend(void)
 {
-    FILE *arq_agendamentos;
     char cpf[15] = "";
     char nome_pet[30] = "";
     char data[11] = ""; 
     char hora[6] = ""; 
     char telefone[20] = "";
+    FILE *arq_agendamentos;
 
     system("clear");
     printf("\n");
