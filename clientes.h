@@ -7,5 +7,6 @@ void buscar_cliente(void);
 void atualizar_cliente(void);
 void listar_clientes(void);
 void excluir_cliente(void);
+void cadastrar_pet(void);
 
 #endif
