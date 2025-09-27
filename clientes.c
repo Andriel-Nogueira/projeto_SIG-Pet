@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "clientes.h"
 #include "utilitarios.h"
 
@@ -70,6 +71,7 @@ void cadastrar_cliente(void)
     char cpf[15];
     char nome[50];
     char data_nascimento[12];
+    char telefone[20];
     FILE  *arq_cliente;
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -87,8 +89,9 @@ void cadastrar_cliente(void)
     input(cpf, 15, "Insira seu cpf");
     input(nome, 50, "Digite o seu nome: ");
     input(data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
+    input(telefone, 20, "Digite seu telefone: ");
     printf("Cliente cadastrado com sucesso!\n");
-    printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.", nome, cpf, data_nascimento);
+    printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.\nTelefone: %s.\n", nome, cpf, data_nascimento, telefone);
     
                 ///SALVAR DADOS ///
     arq_cliente = fopen("clientes.csv","at");
@@ -98,7 +101,8 @@ void cadastrar_cliente(void)
     }
     fprintf(arq_cliente, "%s;", cpf);
     fprintf(arq_cliente, "%s;", nome);
-    fprintf(arq_cliente, "%s\n", data_nascimento);
+    fprintf(arq_cliente, "%s;", data_nascimento);
+    fprintf(arq_cliente, "%s\n", telefone);
     fclose(arq_cliente);
                 ///              ///
 
@@ -111,6 +115,12 @@ void buscar_cliente(void)
 {
     system("clear");
     printf("\n");
+    char cpf_lido[15];
+    char cpf[15];
+    char nome[50];
+    char data_nascimento[12];
+    char telefone[20];
+    FILE *arq_clientes;
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -123,12 +133,46 @@ void buscar_cliente(void)
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                 Buscar Cliente pelo CPF                                      ║\n");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Informe o CPF do cliente:                                                               ║\n");
-    printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    printf("\n");
+    
+    input(cpf_lido, 15, "Digite o CPF do cliente que deseja buscar: ");
+    arq_clientes = fopen("clientes.csv", "r");
+    if (arq_clientes == NULL)
+    {
+        printf("Nenhum agendamento cadastrado.\n");
+        getchar();
+        return;
+    }
+
+    while (!feof(arq_clientes))
+    {
+        fscanf(arq_clientes, "%[^;]", cpf);
+        fgetc(arq_clientes);
+        fscanf(arq_clientes, "%[^;]", nome);
+        fgetc(arq_clientes);
+        fscanf(arq_clientes, "%[^;]", data_nascimento);
+        fgetc(arq_clientes);
+        fscanf(arq_clientes, "%[^\n]", telefone);
+        fgetc(arq_clientes);
+
+        if (strcmp(cpf, cpf_lido) == 0)
+        {
+            printf("\nCliente encontrado.");
+            printf("CPF: %s\n", cpf);
+            printf("Nome: %s\n", nome);
+            printf("Data de nascimento: %s\n", data_nascimento);
+            printf("Telefone: %s\n", telefone);
+            printf("Pressione enter para continuar...");
+            getchar();
+            fclose(arq_clientes);
+
+            return;
+        }
+   
+    }
+    fclose(arq_clientes);
+    printf("Nenhum agendamento encontrado para o CPF %s.\n", cpf);
+
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
@@ -137,6 +181,12 @@ void atualizar_cliente(void)
 {
     system("clear");
     printf("\n");
+ //   char cpf[15];
+ //   char nome[50];
+ //   char data_nascimento[12];
+ //   char telefone[20];
+ //   FILE *arq_clientes;
+    char cpf_lido[15];
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -154,6 +204,7 @@ void atualizar_cliente(void)
     printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_lido, 15, "Digite o CPF do cliente que deseja atualizar: ");
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -163,6 +214,12 @@ void listar_clientes(void)
 {
     system("clear");
     printf("\n");
+    FILE *arq_clientes;
+    char cpf[15] = "";
+    char nome[50] = "";
+    char data_nascimento[12] = "";
+    char telefone[20] = "";
+
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -174,12 +231,31 @@ void listar_clientes(void)
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                   Listar Clientes e Pets                                     ║\n");
+    printf("║                                       Listar de Clientes                                     ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Lista de Clientes e seus respectivos Pets:                                              ║\n");
-    printf("║                                                                                              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    arq_clientes = fopen("clientes.csv", "rt");
+
+    while (!feof(arq_clientes))
+    {
+        fscanf(arq_clientes, "%[^;]", cpf);
+        fgetc(arq_clientes);
+        fscanf(arq_clientes, "%[^;]", nome);
+        fgetc(arq_clientes);
+        fscanf(arq_clientes, "%[^;]", data_nascimento);
+        fgetc(arq_clientes);
+        fscanf(arq_clientes, "%[^\n]", telefone);
+        fgetc(arq_clientes);
+
+
+
+        printf("CPF: %s\n", cpf);
+        printf("Nome: %s\n", nome);
+        printf("Data de Nascimento: %s\n", data_nascimento);
+        printf("Telefone: %s\n", telefone);
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    }
+    fclose(arq_clientes);
+
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -204,7 +280,7 @@ void excluir_cliente(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║      Informe o CPF do cliente que deseja excluir:                                            ║\n");
-    printf("║                                  c                                                            ║\n");
+    printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
