@@ -93,7 +93,8 @@ void cadastrar_servico(void)
     input(id, 20, "ID do Serviço: ");
 
     arq_servicos = fopen("servicos.csv", "at");
-    if (arq_servicos == NULL) {
+    if (arq_servicos == NULL) 
+    {
         printf("ERRO AO ABRIR ARQUIVO DE SERVIÇOS\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
@@ -149,14 +150,16 @@ void buscar_servico(void)
     input(id_lido, 20, "Informe o ID do serviço que deseja buscar:");
 
     arq_servicos = fopen("servicos.csv", "rt");
-    if (arq_servicos == NULL) {
+    if (arq_servicos == NULL) 
+    {
         printf("ERRO AO ABRIR ARQUIVO DE SERVIÇOS\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
         return;
     }
 
-    while (!feof(arq_servicos)) {
+    while (!feof(arq_servicos)) 
+    {
         fscanf(arq_servicos, "%[^;]", nome);
         fgetc(arq_servicos);
         fscanf(arq_servicos, "%[^;]", desc);
@@ -166,7 +169,8 @@ void buscar_servico(void)
         fscanf(arq_servicos, "%[^\n]", id);
         fgetc(arq_servicos);
 
-        if (strcmp(id, id_lido) == 0) {
+        if (strcmp(id, id_lido) == 0) 
+        {
             printf("\nServiço encontrado:\n");
             printf("Nome: %s\n", nome);
             printf("Descrição: %s\n", desc);
@@ -191,6 +195,12 @@ void atualizar_servico(void)
 {
     system("clear");
     printf("\n");
+    //EM DESENVOLVIMENTO!!
+    //char nome[50];
+    //char desc[256];
+    //char preco_s[32];
+    char id[20];
+    //FILE *arq_servicos;
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -204,10 +214,7 @@ void atualizar_servico(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                 Atualizar Serviço                                            ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Informe o ID do Serviço que deseja atualizar:                                           ║\n");
-    printf("║                                                                                              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(id, 20, "Informe o ID do serviço que deseja atualizar:");
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -215,6 +222,12 @@ void atualizar_servico(void)
 
 void listar_servicos(void)
 {
+    char nome[50] = "";
+    char desc[256] = "";
+    char preco_s[32] = "";
+    char id[20] = "";
+    FILE *arq_servicos;
+
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -230,10 +243,29 @@ void listar_servicos(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                   Listar Serviços                                            ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Lista de Serviços Disponíveis:                                                          ║\n");
-    printf("║                                                                                              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    arq_servicos = fopen("servicos.csv", "rt");
+
+    while (!feof(arq_servicos)) 
+    {
+        fscanf(arq_servicos, "%[^;]", nome);
+        fgetc(arq_servicos);
+        fscanf(arq_servicos, "%[^;]", desc);
+        fgetc(arq_servicos);
+        fscanf(arq_servicos, "%[^;]", preco_s);
+        fgetc(arq_servicos);
+        fscanf(arq_servicos, "%[^\n]", id);
+        fgetc(arq_servicos);
+
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║                                                                                              ║\n");
+        printf("║ Nome: %s\t║ Preço: %s\t║ ID: %s                                       ║\n", nome, preco_s, id);
+        printf("║ Descrição: %s   ║\n", desc);
+        printf("║                                                                                              ║\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    }
+    fclose(arq_servicos);
+
+
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -241,6 +273,7 @@ void listar_servicos(void)
 
 void excluir_servico(void)
 {
+    //EM DESENVOLVIMENTO!!
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");

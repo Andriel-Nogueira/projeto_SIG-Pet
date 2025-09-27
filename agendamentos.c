@@ -166,7 +166,6 @@ void buscar_agend(void)
         fgetc(arq_agendamentos);
         fscanf(arq_agendamentos, "%[^\n]", telefone);
         fgetc(arq_agendamentos);
-        printf("DEBUG: Lido CPF %s\n", cpf);
 
         if (strcmp(cpf, cpf_lido) == 0)
         {
