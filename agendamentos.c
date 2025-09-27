@@ -67,12 +67,12 @@ void m_agendamento(void)
 void agendar(void)
 {
     
-    FILE *arq_agendamentos;
     char cpf[15];
     char data[11];
     char hora[6];
     char nome_pet[30];
     char telefone[20];
+    FILE *arq_agendamentos;
 
     system("clear");
     printf("\n");
@@ -91,10 +91,10 @@ void agendar(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     input(cpf, 15, "Insira seu CPF:");
-    input(telefone, 20, "Insira seu telefone para contato:");
     input(nome_pet, 30, "Digite o nome do Pet");
     input(data, 11, "Insira a data desejada: xx/xx");
     input(hora, 6, "Insira o horário desejado: xx:xx\n");
+    input(telefone, 20, "Insira seu telefone para contato:");
     
     arq_agendamentos = fopen("agendamentos.csv","at");
     if (arq_agendamentos == NULL){
@@ -102,15 +102,15 @@ void agendar(void)
         return;
     }
 
-    fprintf(arq_agendamentos, "%s;", nome_pet);
     fprintf(arq_agendamentos, "%s;", cpf);
+    fprintf(arq_agendamentos, "%s;", nome_pet);
     fprintf(arq_agendamentos, "%s;", data);
     fprintf(arq_agendamentos, "%s;", hora);
     fprintf(arq_agendamentos, "%s\n", telefone);
     fclose(arq_agendamentos);
 
     printf("\nAgendamento feito com sucesso\n");
-    printf("Nome do pet: %s.\nTelefone: %s.\nCPF: %s.\nData: %s.\nHorário: %s.", nome_pet, telefone, cpf, data, hora);
+    printf("CPF: %s.\nNome do pet: %s.\nData: %s.\nHorário: %s.\nTelefone: %s.", cpf, nome_pet, data, hora, telefone);
    
 
     printf("\n");
@@ -120,13 +120,13 @@ void agendar(void)
 
 void buscar_agend(void)
 {
-    FILE *arq_agendamentos;
     char cpf[15];
     char cpf_lido[20];
     char nome_pet[30];
     char data[20]; 
     char hora[10]; 
     char telefone[20];
+    FILE *arq_agendamentos;
 
     system("clear");
     printf("\n");
@@ -146,7 +146,7 @@ void buscar_agend(void)
     
     input(cpf_lido, 15, "Informe o CPF do cliente que fez o agendamento:");
 
-    arq_agendamentos = fopen("agendamentos.csv", "r");
+    arq_agendamentos = fopen("agendamentos.csv", "rt");
     if (arq_agendamentos == NULL)
     {
         printf("Nenhum agendamento cadastrado.\n");
@@ -156,26 +156,25 @@ void buscar_agend(void)
 
     while (!feof(arq_agendamentos))
     {
-        fscanf(arq_agendamentos, "%[^;]", nome_pet);
-        fgetc(arq_agendamentos);
         fscanf(arq_agendamentos, "%[^;]", cpf);
+        fgetc(arq_agendamentos);
+        fscanf(arq_agendamentos, "%[^;]", nome_pet);
         fgetc(arq_agendamentos);
         fscanf(arq_agendamentos, "%[^;]", data);
         fgetc(arq_agendamentos);
-        fscanf(arq_agendamentos, "%[^;]", telefone);
+        fscanf(arq_agendamentos, "%[^;]", hora);
         fgetc(arq_agendamentos);
-        fscanf(arq_agendamentos, "%[^\n]", hora);
+        fscanf(arq_agendamentos, "%[^\n]", telefone);
         fgetc(arq_agendamentos);
-        printf("DEBUG: Lido CPF %s\n", cpf);
 
         if (strcmp(cpf, cpf_lido) == 0)
         {
             printf("\nAgendamento por CPF %s encontrado!:\n", cpf);
             printf("CPF: %s\n", cpf);
             printf("Nome do pet: %s\n", nome_pet);
-            printf("Telefone: %s\n", telefone);
             printf("Data: %s\n", data);
             printf("Horário: %s\n", hora);
+            printf("Telefone: %s\n", telefone);
             printf("Pressione enter para continuar...");
             getchar();
             fclose(arq_agendamentos);
@@ -196,6 +195,13 @@ void atualizar_agend(void)
 {
     system("clear");
     printf("\n");
+    // EM DESENVOLVIMENTO!!
+    // char cpf[15];
+    // char nome[50];
+    // char data_nascimento[12];
+    // char telefone[20];
+    // FILE *arq_clientes;
+    char cpf_lido[15];
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -209,10 +215,7 @@ void atualizar_agend(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                 Atualizar Agendamento                                        ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Informe o ID do Agendamento que deseja atualizar:                                       ║\n");
-    printf("║                                                                                              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_lido, 15, "Informe o CPF do cliente que fez o agendamento:");
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -220,6 +223,13 @@ void atualizar_agend(void)
 
 void listar_agend(void)
 {
+    char cpf[15] = "";
+    char nome_pet[30] = "";
+    char data[11] = ""; 
+    char hora[6] = ""; 
+    char telefone[20] = "";
+    FILE *arq_agendamentos;
+
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -235,10 +245,30 @@ void listar_agend(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                 Listar Agendamentos                                          ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Lista de Agendamentos:                                                                  ║\n");
-    printf("║                                                                                              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    arq_agendamentos = fopen("agendamentos.csv", "rt");
+
+    while (!feof(arq_agendamentos))
+    {
+        fscanf(arq_agendamentos, "%[^;]", cpf);
+        fgetc(arq_agendamentos);
+        fscanf(arq_agendamentos, "%[^;]", nome_pet);
+        fgetc(arq_agendamentos);
+        fscanf(arq_agendamentos, "%[^;]", data);
+        fgetc(arq_agendamentos);
+        fscanf(arq_agendamentos, "%[^;]", hora);
+        fgetc(arq_agendamentos);
+        fscanf(arq_agendamentos, "%[^\n]", telefone);
+        fgetc(arq_agendamentos);
+
+
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║                                                                                              ║\n");
+        printf("║ CPF: %s\t║ Nome do Pet: %s\t║ Data: %s\t║ Hora: %s\t║ Telefone: %s  ║\n", cpf , nome_pet, data, hora, telefone);
+        printf("║                                                                                              ║\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    }
+    fclose(arq_agendamentos);
+
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -246,6 +276,7 @@ void listar_agend(void)
 
 void excluir_agend(void)
 {
+// EM DESENVOLVIMENTO!!
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
