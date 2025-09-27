@@ -4,6 +4,9 @@
 #include "clientes.h"
 #include "utilitarios.h"
 
+void cadastrar_pet(void);
+
+
 void m_clientes(void)
 {
     int op;
@@ -30,8 +33,9 @@ void m_clientes(void)
         printf("║          1 - Cadastrar novo cliente                                                          ║\n");
         printf("║          2 - Buscar cliente pelo CPF                                                         ║\n");
         printf("║          3 - Atualizar clientes                                                              ║\n");
-        printf("║          4 - Listar clientes e pets                                                          ║\n");
+        printf("║          4 - Listar clientes                                                                 ║\n");
         printf("║          5 - Excluir cliente                                                                 ║\n");
+        printf("║          6 - Cadastrar PET                                                                   ║\n");
         printf("║          0 - Voltar ao menu principal                                                        ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -56,6 +60,9 @@ void m_clientes(void)
         case 5:
             excluir_cliente();
             break;
+        // case 6:
+        //     cadastrar_pet();
+        //     break;
         case 0:
             break;
         default:
@@ -72,7 +79,7 @@ void cadastrar_cliente(void)
     char nome[50];
     char data_nascimento[12];
     char telefone[20];
-    FILE  *arq_cliente;
+    FILE  *arq_clientes;
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -94,16 +101,16 @@ void cadastrar_cliente(void)
     printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.\nTelefone: %s.\n", nome, cpf, data_nascimento, telefone);
     
                 ///SALVAR DADOS ///
-    arq_cliente = fopen("clientes.csv","at");
-    if (arq_cliente == NULL){
+    arq_clientes = fopen("clientes.csv","at");
+    if (arq_clientes == NULL){
         printf("ERRO AO ABRIR ARQUIVO");
         return;
     }
-    fprintf(arq_cliente, "%s;", cpf);
-    fprintf(arq_cliente, "%s;", nome);
-    fprintf(arq_cliente, "%s;", data_nascimento);
-    fprintf(arq_cliente, "%s\n", telefone);
-    fclose(arq_cliente);
+    fprintf(arq_clientes, "%s;", cpf);
+    fprintf(arq_clientes, "%s;", nome);
+    fprintf(arq_clientes, "%s;", data_nascimento);
+    fprintf(arq_clientes, "%s\n", telefone);
+    fclose(arq_clientes);
                 ///              ///
 
     printf("\n");
@@ -139,7 +146,7 @@ void buscar_cliente(void)
     arq_clientes = fopen("clientes.csv", "rt");
     if (arq_clientes == NULL)
     {
-        printf("Nenhum agendamento cadastrado.\n");
+        printf("Nenhum cliente cadastrado.\n");
         getchar();
         return;
     }
@@ -171,7 +178,6 @@ void buscar_cliente(void)
    
     }
     fclose(arq_clientes);
-    printf("Nenhum CLiente encontrado com o CPF %s.\n", cpf);
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -285,3 +291,78 @@ void excluir_cliente(void)
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
+
+// void cadastrar_pet(void)
+// {
+//     system("clear");
+//     printf("\n");
+//     char cpf[15];
+//     char cpf_lido[15];
+//     char nome[50];
+//     char raca [3];
+//     FILE  *arq_clientes;
+//     FILE *arq_pets;
+//     int encontrado = 0;
+//     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+//     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+//     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+//     printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+//     printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+//     printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+//     printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+//     printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+//     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+//     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+//     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+//     printf("║                                   Cadastrar Pet                                              ║\n");
+//     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+
+//     input(cpf_lido, 15, "Digite o CPF do dono do pet: ");
+//     arq_clientes = fopen("clientes.csv", "rt");
+    
+//     if (arq_clientes == NULL)
+//     {
+//         printf("Nenhum cliente cadastrado.\n");
+//         getchar();
+//         return;
+//     }
+
+//     while (!feof(arq_clientes) )
+//     {
+//         fscanf(arq_clientes, "%[^;]", cpf);
+//         fgetc(arq_clientes);
+
+//         if (strcmp(cpf, cpf_lido) == 0)
+//         {
+//             printf("\nCliente encontrado.\n");
+//             encontrado = 1;
+//         }
+//     }
+//     fclose(arq_clientes);
+
+
+//     if (encontrado == 1) {
+//         input(nome, 50, "Digite o nome do pet: ");
+//         input(raca, 3, "Informe sobre o seu PET: \n1 -\t Gato\n2 -\tCachorro\n3 -\t Outro");
+//         printf("Pet cadastrado com sucesso!\n");
+//         printf("CPF do cliente: %s.\nNome: %s.\nEspécie: %s.\n", cpf, nome, raca);
+//         getchar();
+//                     ///SALVAR DADOS ///
+//         arq_pets = fopen("pets.csv", "at");
+//         fprintf(arq_pets, "%s;", cpf);
+//         fprintf(arq_pets, "%s;", nome);
+//         fprintf(arq_pets, "%s\n;", raca);
+//         fclose(arq_pets);
+//                     ///              ///
+
+//     }
+//     else {
+//         printf("é necessario cadastrar o cliente");
+//     }
+
+//     printf("\n");
+//     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+//     getchar();
+// }
+
