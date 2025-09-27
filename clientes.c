@@ -136,7 +136,7 @@ void buscar_cliente(void)
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     
     input(cpf_lido, 15, "Digite o CPF do cliente que deseja buscar: ");
-    arq_clientes = fopen("clientes.csv", "r");
+    arq_clientes = fopen("clientes.csv", "rt");
     if (arq_clientes == NULL)
     {
         printf("Nenhum agendamento cadastrado.\n");
