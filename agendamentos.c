@@ -146,7 +146,7 @@ void buscar_agend(void)
     
     input(cpf_lido, 15, "Informe o CPF do cliente que fez o agendamento:");
 
-    arq_agendamentos = fopen("agendamentos.csv", "r");
+    arq_agendamentos = fopen("agendamentos.csv", "rt");
     if (arq_agendamentos == NULL)
     {
         printf("Nenhum agendamento cadastrado.\n");

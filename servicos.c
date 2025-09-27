@@ -116,6 +116,13 @@ void cadastrar_servico(void)
 
 void buscar_servico(void)
 {
+    char nome[50];
+    char desc[256];
+    char preco_s[32];
+    char id[20];
+    char id_lido[20];
+    FILE *arq_servicos;
+
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -129,14 +136,54 @@ void buscar_servico(void)
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                               Buscar Serviço pelo ID                                         ║\n");
+    printf("║                                   Buscar Serviço pelo ID                                     ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                                                                              ║\n");
-    printf("║      Informe o ID do Serviço:                                                                ║\n");
-    printf("║                                                                                              ║\n");
+    printf("║                            Serviços pré-cadastrados no sistema:                              ║\n");
+    printf("║         ID-1: Banho                                                                          ║\n");
+    printf("║         ID-2: Tosa                                                                           ║\n");
+    printf("║         ID-3: Cuidados complementares                                                        ║\n");
+    printf("║         ID-4: Banho Premium                                                                  ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    printf("\n");
+    
+
+    input(id_lido, 20, "Informe o ID do serviço que deseja buscar:");
+
+    arq_servicos = fopen("servicos.csv", "rt");
+    if (arq_servicos == NULL) {
+        printf("ERRO AO ABRIR ARQUIVO DE SERVIÇOS\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    while (!feof(arq_servicos)) {
+        fscanf(arq_servicos, "%[^;]", nome);
+        fgetc(arq_servicos);
+        fscanf(arq_servicos, "%[^;]", desc);
+        fgetc(arq_servicos);
+        fscanf(arq_servicos, "%[^;]", preco_s);
+        fgetc(arq_servicos);
+        fscanf(arq_servicos, "%[^\n]", id);
+        fgetc(arq_servicos);
+
+        if (strcmp(id, id_lido) == 0) {
+            printf("\nServiço encontrado:\n");
+            printf("Nome: %s\n", nome);
+            printf("Descrição: %s\n", desc);
+            printf("Preço: %s\n", preco_s);
+            printf("ID: %s\n", id);
+            fclose(arq_servicos);
+            printf("\n");
+            printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+            getchar();
+            return;
+        }
+    }
+    fclose(arq_servicos);
+    printf("\nServiço com ID %s não encontrado.\n", id_lido);
+    
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
     getchar();
 }
 
