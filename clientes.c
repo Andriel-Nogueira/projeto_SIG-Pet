@@ -247,12 +247,11 @@ void listar_clientes(void)
         fgetc(arq_clientes);
 
 
+        printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
+        
+        printf("CPF: %s\t║ Nome: %s\t║ Data de nascimento: %s\t║ Telefone: %s\n", cpf, nome, data_nascimento, telefone);
 
-        printf("CPF: %s\n", cpf);
-        printf("Nome: %s\n", nome);
-        printf("Data de Nascimento: %s\n", data_nascimento);
-        printf("Telefone: %s\n", telefone);
-        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+        printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
     }
     fclose(arq_clientes);
 
