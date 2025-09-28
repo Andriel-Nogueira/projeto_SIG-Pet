@@ -15,16 +15,17 @@
 ///                        Projeto Sistema de Atendimento de Pet Shop                          ///
 ///              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista         ///
 //////////////////////////////////////////////////////////////////////////////////////////////////
-///                                         Versão 0.1.0                                          ///
+///                                         Versão 0.2.0                                          ///
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "clientes.h"
-#include "servicos.h"
-#include "agendamentos.h"
-#include "produtos.h"
-#include "utilitarios.h"
+
+#include "clientes/clientes.h"
+#include "servicos/servicos.h"
+#include "agendamentos/agendamentos.h"
+#include "produtos/produtos.h"
+#include "utilitarios/utilitarios.h"
 
 // Funções Principais
 void m_principal(void);
@@ -32,6 +33,11 @@ void t_sobre(void);
 void t_equipe(void);
 
 void t_final(void);
+
+// Versão atual
+
+char versao[10] = "0.2.0";
+
 
 // Programa Principal
 int main(void)
@@ -97,7 +103,7 @@ void m_principal(void)
         printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
         printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-        printf("║                                         Versão 0.1.0                                         ║\n");
+        printf("║                                         Versão %s                                         ║\n", versao);
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
         printf("║                                                                                              ║\n");
         printf("║          1 - Módulo Clientes                                                                 ║\n");
@@ -156,7 +162,7 @@ void t_sobre(void)
     printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
     printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                         Versão 0.1.0                                         ║\n");
+    printf("║                                         Versão %s                                         ║\n", versao);
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║          Este é um sistema de atendimento para Pet Shop, desenvolvido como parte de uma      ║\n");
@@ -186,7 +192,7 @@ void t_equipe(void)
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                         Versão 0.1.0                                         ║\n");
+    printf("║                                         Versão %s                                        ║\n", versao);
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║          Equipe de Desenvolvimento:                                                          ║\n");
@@ -215,7 +221,7 @@ void t_final(void)
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                         Versão 0.1.0                                         ║\n");
+    printf("║                                         Versão %s                                        ║\n", versao);
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║          Obrigado por utilizar o Sistema SIG-Pet!                                            ║\n");

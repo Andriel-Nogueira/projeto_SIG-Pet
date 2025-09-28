@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "produtos.h"
-#include "utilitarios.h"
+#include "../utilitarios/utilitarios.h"
 
 int gerarid(void);
 
@@ -102,7 +102,7 @@ void adicionar_produto(void)
     printf("Quantidade em estoque: %s\n", quantidade);
     
                 ///SALVAR DADOS ///
-    arq_produtos = fopen("produtos.csv","at");
+    arq_produtos = fopen("produtos/produtos.csv","at");
     if (arq_produtos == NULL){
         printf("ERRO AO ABRIR ARQUIVO");
         return;
@@ -143,7 +143,7 @@ void buscar_produto(void)
     printf("║                             Buscar Produto pelo Código                                       ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(id_lido, 15, "Digite o id do produto que deseja buscar: ");
-    arq_produtos = fopen("produtos.csv", "rt");
+    arq_produtos = fopen("produtos/produtos.csv", "rt");
     if (arq_produtos == NULL)
     {
         printf("Nenhum produto cadastrado.\n");
@@ -207,6 +207,7 @@ void atualizar_produto(void)
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("EM DESENVOLVIMENTO!\nPressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
@@ -219,7 +220,7 @@ void listar_produtos(void)
     char nome[50];
     char preco[10];
     char quantidade[10];
-    arq_produtos = fopen("produtos.csv", "rt");
+    arq_produtos = fopen("produtos/produtos.csv", "rt");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -234,6 +235,13 @@ void listar_produtos(void)
     printf("║                                   Listar Produtos                                            ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     
+    if (arq_produtos == NULL)
+    {
+        printf("Nenhum produto cadastrado ou erro ao abrir o arquivo.\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
     while (!feof(arq_produtos))
     {
         fscanf(arq_produtos, "%[^;]", id);
@@ -293,7 +301,7 @@ int gerarid(void)
     int id = 0;
     char linha[255];
     FILE *arq_produtos;
-    arq_produtos = fopen("produtos.csv", "rt");
+    arq_produtos = fopen("produtos/produtos.csv", "rt");
     if (arq_produtos == NULL)
     {
         printf("Não foi possivel localizar o arquivo de produtos.\n");

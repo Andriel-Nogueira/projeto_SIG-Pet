@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "utilitarios.h"
+#include "../utilitarios/utilitarios.h"
 #include "servicos.h"
 
 void m_servicos(void)
@@ -92,7 +92,7 @@ void cadastrar_servico(void)
     input(preco_s, 32, "Preço (use . como separador): ");
     input(id, 20, "ID do Serviço: ");
 
-    arq_servicos = fopen("servicos.csv", "at");
+    arq_servicos = fopen("servicos/servicos.csv", "at");
     if (arq_servicos == NULL) 
     {
         printf("ERRO AO ABRIR ARQUIVO DE SERVIÇOS\n");
@@ -149,7 +149,7 @@ void buscar_servico(void)
 
     input(id_lido, 20, "Informe o ID do serviço que deseja buscar:");
 
-    arq_servicos = fopen("servicos.csv", "rt");
+    arq_servicos = fopen("servicos/servicos.csv", "rt");
     if (arq_servicos == NULL) 
     {
         printf("ERRO AO ABRIR ARQUIVO DE SERVIÇOS\n");
@@ -215,7 +215,7 @@ void atualizar_servico(void)
     printf("║                                 Atualizar Serviço                                            ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     input(id, 20, "Informe o ID do serviço que deseja atualizar:");
-    printf("\n");
+    printf("\nEM DESENVOLVIMENTO!\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
@@ -243,8 +243,14 @@ void listar_servicos(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                   Listar Serviços                                            ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    arq_servicos = fopen("servicos.csv", "rt");
-
+    arq_servicos = fopen("servicos/servicos.csv", "rt");
+    if (arq_servicos == NULL)
+    {
+        printf("Nenhum serviço cadastrado ou erro ao abrir o arquivo.\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
     while (!feof(arq_servicos)) 
     {
         fscanf(arq_servicos, "%[^;]", nome);
