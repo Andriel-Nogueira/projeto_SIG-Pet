@@ -50,6 +50,7 @@ Rode o programa:
 ---
 ## 🧑‍💻 Desenvolvido por:
 -[Andriel P. Nogueira](https://github.com/Andriel-Nogueira)
+-[Jefferson Willame Sena de Medeiros](https://github.com/JefWill)
 
 
 
