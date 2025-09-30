@@ -193,15 +193,17 @@ void buscar_agend(void)
 
 void atualizar_agend(void)
 {
+    char cpf[15];
+    char cpf_lido[15];
+    char data[11];
+    char hora[6];
+    char nome_pet[30];
+    char telefone[20];
+    FILE *arq_agendamentos;
+    FILE *arq_agendamentos_temp;
+
     system("clear");
     printf("\n");
-    // EM DESENVOLVIMENTO!!
-    // char cpf[15];
-    // char nome[50];
-    // char data_nascimento[12];
-    // char telefone[20];
-    // FILE *arq_clientes;
-    char cpf_lido[15];
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -215,11 +217,65 @@ void atualizar_agend(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                 Atualizar Agendamento                                        ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    input(cpf_lido, 15, "Informe o CPF do cliente que fez o agendamento:");
-    printf("\nEM DESENVOLVIMENTO!\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Digite o cpf referente ao agendamento que deseja atualizar: ");
+    scanf("%s", cpf_lido);
     getchar();
+    printf("\n");
+
+    arq_agendamentos = fopen("agendamentos/agendamentos.csv", "rt");
+    arq_agendamentos_temp = fopen("agendamentos/agendamentos_temp.csv", "wt");
+    if(arq_agendamentos == NULL)
+    {   
+        printf("Nenhum agendamento cadastrado !\n");
+        getchar();
+        return;
+    }    
+
+    while (fscanf(arq_agendamentos, "%[^;];%[^;];%[^;];%[^;];%[^\n]\n", cpf, data, hora, nome_pet, telefone) == 5)
+    {
+
+        if (strcmp(cpf, cpf_lido) != 0)
+        {   
+            fprintf(arq_agendamentos_temp, "%s;%s;%s;%s;%s\n", cpf, data, hora, nome_pet, telefone);
+        }
+        else
+        {
+            printf("\n");
+            printf("Digite o CPF: ");
+            scanf("%s", cpf);
+            getchar();
+            printf("\n");
+            printf(" Data do Agendamento: ");
+            scanf("%s", data);
+            getchar();
+            printf("\n");
+            printf("Horário do Agendamento: ");
+            scanf("%s", hora);
+            getchar();
+            printf("\n");
+            printf("Nome do Pet: ");
+            scanf("%s", nome_pet);
+            getchar();
+            printf("\n");
+            printf("Telefone de contato: ");
+            scanf("%s", telefone);
+            getchar();
+            printf("\n");
+
+            fprintf(arq_agendamentos_temp, "%s;%s;%s;%s;%s\n", cpf, data, hora, nome_pet, telefone);
+        }
+    }
+
+    fclose(arq_agendamentos);
+    fclose(arq_agendamentos_temp);
+
+    remove("agendamentos.csv");
+    rename("agendamentos_temp.csv", "agendamentos.csv");
+
+    printf("Dados do agendamento alterados com sucesso!\n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
 }
+
 
 void listar_agend(void)
 {
