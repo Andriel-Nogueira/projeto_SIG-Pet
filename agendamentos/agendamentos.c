@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "agendamentos.h"
 #include "../utilitarios/utilitarios.h"
 
@@ -66,7 +67,7 @@ void m_agendamento(void)
 
 void agendar(void)
 {
-    
+
     char cpf[15];
     char data[11];
     char hora[6];
@@ -95,9 +96,10 @@ void agendar(void)
     input(data, 11, "Insira a data desejada: xx/xx");
     input(hora, 6, "Insira o horário desejado: xx:xx\n");
     input(telefone, 20, "Insira seu telefone para contato:");
-    
-    arq_agendamentos = fopen("agendamentos/agendamentos.csv","at");
-    if (arq_agendamentos == NULL){
+
+    arq_agendamentos = fopen("agendamentos/agendamentos.csv", "at");
+    if (arq_agendamentos == NULL)
+    {
         printf("ERRO AO ABRIR ARQUIVO");
         return;
     }
@@ -111,7 +113,6 @@ void agendar(void)
 
     printf("\nAgendamento feito com sucesso\n");
     printf("CPF: %s.\nNome do pet: %s.\nData: %s.\nHorário: %s.\nTelefone: %s.", cpf, nome_pet, data, hora, telefone);
-   
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
@@ -123,8 +124,8 @@ void buscar_agend(void)
     char cpf[15];
     char cpf_lido[20];
     char nome_pet[30];
-    char data[20]; 
-    char hora[10]; 
+    char data[20];
+    char hora[10];
     char telefone[20];
     FILE *arq_agendamentos;
 
@@ -143,7 +144,7 @@ void buscar_agend(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                            Buscar Agendamento pelo CPF                                       ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    
+
     input(cpf_lido, 15, "Informe o CPF do cliente que fez o agendamento:");
 
     arq_agendamentos = fopen("agendamentos/agendamentos.csv", "rt");
@@ -181,7 +182,6 @@ void buscar_agend(void)
 
             return;
         }
-   
     }
     fclose(arq_agendamentos);
     printf("Nenhum agendamento encontrado para o CPF %s.\n", cpf);
@@ -218,47 +218,54 @@ void atualizar_agend(void)
     printf("║                                 Atualizar Agendamento                                        ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("Digite o cpf referente ao agendamento que deseja atualizar: ");
-    scanf("%s", cpf_lido);
+    scanf("%15s", cpf_lido);
     getchar();
     printf("\n");
 
     arq_agendamentos = fopen("agendamentos/agendamentos.csv", "rt");
     arq_agendamentos_temp = fopen("agendamentos/agendamentos_temp.csv", "wt");
-    if(arq_agendamentos == NULL)
-    {   
+    if (arq_agendamentos_temp == NULL)
+    {
+    printf("Erro ao criar arquivo temporário!\n");
+    fclose(arq_agendamentos);
+    getchar();
+    return;
+    }
+
+    if (arq_agendamentos == NULL)
+    {
         printf("Nenhum agendamento cadastrado !\n");
         getchar();
         return;
-    }    
+    }
 
     while (fscanf(arq_agendamentos, "%[^;];%[^;];%[^;];%[^;];%[^\n]\n", cpf, data, hora, nome_pet, telefone) == 5)
     {
-
         if (strcmp(cpf, cpf_lido) != 0)
-        {   
+        {
             fprintf(arq_agendamentos_temp, "%s;%s;%s;%s;%s\n", cpf, data, hora, nome_pet, telefone);
         }
         else
         {
             printf("\n");
             printf("Digite o CPF: ");
-            scanf("%s", cpf);
+            scanf("%15s", cpf);
             getchar();
             printf("\n");
             printf(" Data do Agendamento: ");
-            scanf("%s", data);
+            scanf("%11s", data);
             getchar();
             printf("\n");
             printf("Horário do Agendamento: ");
-            scanf("%s", hora);
+            scanf("%6s", hora);
             getchar();
             printf("\n");
             printf("Nome do Pet: ");
-            scanf("%s", nome_pet);
+            scanf("%30s", nome_pet);
             getchar();
             printf("\n");
             printf("Telefone de contato: ");
-            scanf("%s", telefone);
+            scanf("%20s", telefone);
             getchar();
             printf("\n");
 
@@ -269,20 +276,19 @@ void atualizar_agend(void)
     fclose(arq_agendamentos);
     fclose(arq_agendamentos_temp);
 
-    remove("agendamentos.csv");
-    rename("agendamentos_temp.csv", "agendamentos.csv");
+    remove("agendamentos/agendamentos.csv");
+    rename("agendamentos/agendamentos_temp.csv", "agendamentos/agendamentos.csv");
 
     printf("Dados do agendamento alterados com sucesso!\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
 }
 
-
 void listar_agend(void)
 {
     char cpf[15] = "";
     char nome_pet[30] = "";
-    char data[11] = ""; 
-    char hora[6] = ""; 
+    char data[11] = "";
+    char hora[6] = "";
     char telefone[20] = "";
     FILE *arq_agendamentos;
 
@@ -322,10 +328,9 @@ void listar_agend(void)
         fscanf(arq_agendamentos, "%[^\n]", telefone);
         fgetc(arq_agendamentos);
 
-
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
         printf("║                                                                                              ║\n");
-        printf("║ CPF: %s\t║ Nome do Pet: %s\t║ Data: %s\t║ Hora: %s\t║ Telefone: %s  ║\n", cpf , nome_pet, data, hora, telefone);
+        printf("║ CPF: %s\t║ Nome do Pet: %s\t║ Data: %s\t║ Hora: %s\t║ Telefone: %s  ║\n", cpf, nome_pet, data, hora, telefone);
         printf("║                                                                                              ║\n");
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     }
@@ -338,7 +343,7 @@ void listar_agend(void)
 
 void excluir_agend(void)
 {
-// EM DESENVOLVIMENTO!!
+    // EM DESENVOLVIMENTO!!
     system("clear");
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
