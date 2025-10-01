@@ -160,7 +160,7 @@ void t_sobre(void)
     printf("║                          Centro de Ensino Superior do Seridó                                 ║\n");
     printf("║                            Disciplina DCT1106 -- Programação                                 ║\n");
     printf("║                        Projeto Sistema de Atendimento de Pet Shop                            ║\n");
-    printf("║              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista           ║\n");
+    printf("║                        Developed by @Andriel-Nogueira & @JeffWill                            ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                         Versão %s                                         ║\n", versao);
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
@@ -192,13 +192,16 @@ void t_equipe(void)
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-    printf("║                                         Versão %s                                        ║\n", versao);
+    printf("║                                         Versão %s                                         ║\n", versao);
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
     printf("║          Equipe de Desenvolvimento:                                                          ║\n");
     printf("║          - Andriel Nogueira                                                                  ║\n");
     printf("║            Email: andriel.pereiraufrn@gmail.com                                              ║\n");
     printf("║            GitHub: @Andriel-Nogueira                                                         ║\n");
+    printf("║          - Jefferson Willame                                                                  ║\n");
+    printf("║            Email: jeffersonwillamern@gmail.com                                               ║\n");
+    printf("║            GitHub: @JeffWill                                                                 ║\n");
     printf("║          - Repositório da Equipe: https://github.com/Andriel-Nogueira/projeto_SIG-Pet.git    ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
