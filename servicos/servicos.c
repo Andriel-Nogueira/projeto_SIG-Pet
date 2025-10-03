@@ -68,8 +68,7 @@ void cadastrar_servico(void)
     char nome[50];
     char desc[256];
     char preco_s[32];
-    char id[20];
-    FILE *arq_servicos;
+    char id_gerado[20];
 
     system("clear");
     printf("\n");
@@ -87,28 +86,17 @@ void cadastrar_servico(void)
     printf("║                                   Cadastrar Serviço                                          ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
+    // Gera o ID automaticamente
+    strcpy(id_gerado, gerar_id("servicos/servicos.csv"));
+
     input(nome, 50, "Nome do Serviço: ");
     input(desc, 256, "Descrição: ");
     input(preco_s, 32, "Preço (use . como separador): ");
-    input(id, 20, "ID do Serviço: ");
-
-    arq_servicos = fopen("servicos/servicos.csv", "at");
-    if (arq_servicos == NULL) 
-    {
-        printf("ERRO AO ABRIR ARQUIVO DE SERVIÇOS\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        return;
-    }
-
-    fprintf(arq_servicos, "%s;", nome);
-    fprintf(arq_servicos, "%s;", desc);
-    fprintf(arq_servicos, "%s;", preco_s);
-    fprintf(arq_servicos, "%s\n", id);
-    fclose(arq_servicos);
+    
+    salvar("servicos/servicos.csv", 4, id_gerado, nome, desc, preco_s);
 
     printf("\nCadastro de serviço realizado com sucesso !\n");
-    printf("Nome: %s.\nDescrição: %s.\nPreço: %s.\nID: %s.\n", nome, desc, preco_s, id);
+    printf("ID: %s\nNome: %s\nDescrição: %s\nPreço: %s\n", id_gerado, nome, desc, preco_s);
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
