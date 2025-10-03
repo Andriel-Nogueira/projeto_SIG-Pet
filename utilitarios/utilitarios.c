@@ -81,3 +81,36 @@ char* gerar_id(const char* caminho_arquivo)
     
     return id_str;
 }
+
+void exibir_titulo(const char* titulo) //CRÉDITOS: ajuda da I.A Google Gemini, adpatada pelo dev Jefferson 
+{
+    const int LARGURA_TOTAL = 94;
+    int tam_titulo = strlen(titulo);
+    int espacos_laterais, espacos_esquerda, espacos_direita;
+
+    // Calcula o espaçamento para centralizar o título
+    espacos_laterais = LARGURA_TOTAL - tam_titulo;
+    espacos_esquerda = espacos_laterais / 2;
+    // Garante que a soma dos espaços seja a correta, mesmo para títulos de tamanho ímpar
+    espacos_direita = espacos_laterais - espacos_esquerda;
+
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║%*s%s%*s║\n", espacos_esquerda, "", titulo, espacos_direita, "");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+}
+
+void exibir_logo(void) 
+{
+    system("clear");
+    printf("\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
+    printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
+    printf("║ /==/_ ,_.' |==|, |   /==.'-     /   ,--.--------.   /==/, -   \\  |==|-  _.-` \\==\\.-.  - ,-.  ║\n");
+    printf("║ \\==\\  \\    |==|  |  /==/ -   .-'   /==/,  -   , -\\ |==| _ .=. |  |==|   `.-.  `--`\\==\\-  |   ║\n");
+    printf("║  \\==\\ -\\   |==|- |  |==|_   /_,-.  \\==\\.-.  - ,-./ |==| , '=',| /==/_ ,    /       \\==\\_ |   ║\n");
+    printf("║  _\\==\\ ,\\  |==| ,|  |==|  , \\_.' )  `--`--------`  |==|-  '..'  |==|    .-'        |==|- |   ║\n");
+    printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
+    printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
+    printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+}
