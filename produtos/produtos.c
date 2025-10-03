@@ -4,8 +4,6 @@
 #include "produtos.h"
 #include "../utilitarios/utilitarios.h"
 
-int gerarid(void);
-
 void m_produtos(void)
 {
     int op;
@@ -70,11 +68,10 @@ void adicionar_produto(void)
 {
     system("clear");
     printf("\n");
-    int id = 0;
     char nome[50];
     char preco[10];
-    char quantidade[10];
-    FILE *arq_produtos;
+    char quantidade[10];    
+    char id_gerado[20];
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -89,30 +86,21 @@ void adicionar_produto(void)
     printf("║                                  Adicionar Produto                                           ║\n");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║                                                                                              ║\n");
-    input(nome, 50, "Nome do Produto: \n");
-    input(preco, 50, "Preço do Produto: \n");
-    input(quantidade, 50, "Quantidade em Estoque: \n");
+    input(nome, 50, "Nome do Produto: ");
+    input(preco, 50, "Preço do Produto: ");
+    input(quantidade, 50, "Quantidade em Estoque: ");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    id = gerarid();
-    printf("Produto cadastrado com sucesso!\n");
-    printf("Código: %d\n", id);
+    strcpy(id_gerado, gerar_id_generico("produtos/produtos.csv"));
+
+    printf("\nProduto cadastrado com sucesso!\n");
+    printf("Código: %s\n", id_gerado);
     printf("Nome: %s\n", nome);
     printf("Preço: %s\n", preco);
     printf("Quantidade em estoque: %s\n", quantidade);
     
-                ///SALVAR DADOS ///
-    arq_produtos = fopen("produtos/produtos.csv","at");
-    if (arq_produtos == NULL){
-        printf("ERRO AO ABRIR ARQUIVO");
-        return;
-    }
-    fprintf(arq_produtos, "%d;", id);
-    fprintf(arq_produtos, "%s;", nome);
-    fprintf(arq_produtos, "%s;", preco);
-    fprintf(arq_produtos, "%s\n", quantidade);
-    fclose(arq_produtos);
-                ///              ///
+    salvar("produtos/produtos.csv", 4, id_gerado, nome, preco, quantidade);
+
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
@@ -143,42 +131,33 @@ void buscar_produto(void)
     printf("║                             Buscar Produto pelo Código                                       ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(id_lido, 15, "Digite o id do produto que deseja buscar: ");
+
     arq_produtos = fopen("produtos/produtos.csv", "rt");
     if (arq_produtos == NULL)
     {
         printf("Nenhum produto cadastrado.\n");
+        printf("Pressione <Enter> para voltar...");
         getchar();
         return;
     }
 
-    while (!feof(arq_produtos))
+    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", id, nome, preco, quantidade) == 4)
     {
-        fscanf(arq_produtos, "%[^;]", id);
-        fgetc(arq_produtos);
-        fscanf(arq_produtos, "%[^;]", nome);
-        fgetc(arq_produtos);
-        fscanf(arq_produtos, "%[^;]", preco);
-        fgetc(arq_produtos);
-        fscanf(arq_produtos, "%[^\n]", quantidade);
-        fgetc(arq_produtos);
-
         if (strcmp(id, id_lido) == 0)
         {
-            printf("\nproduto encontrado.");
-            printf("Id: %s\n", id);
+            printf("\nProduto encontrado:\n");
+            printf("ID: %s\n", id);
             printf("Nome: %s\n", nome);
-            printf("Data de nascimento: %s\n", preco);
+            printf("Preço: %s\n", preco);
             printf("Quantidade: %s\n", quantidade);
-            printf("Pressione enter para continuar...");
-            getchar();
             fclose(arq_produtos);
-
+            printf("\nPressione <Enter> para continuar...");
+            getchar();
             return;
         }
-   
     }
     fclose(arq_produtos);
-    printf("Nenhum ID encontrado para o ID %s.\n", id);
+    printf("\nNenhum produto encontrado para o ID %s.\n", id_lido);
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -242,19 +221,8 @@ void listar_produtos(void)
         getchar();
         return;
     }
-    while (!feof(arq_produtos))
+    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", id, nome, preco, quantidade) == 4)
     {
-        fscanf(arq_produtos, "%[^;]", id);
-        fgetc(arq_produtos);
-        fscanf(arq_produtos, "%[^;]", nome);
-        fgetc(arq_produtos);
-        fscanf(arq_produtos, "%[^;]", preco);
-        fgetc(arq_produtos);
-        fscanf(arq_produtos, "%[^\n]", quantidade);
-        fgetc(arq_produtos);
-
-
-        printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
         
         printf("id: %s\t║ Nome: %s\t║ Preço: %s\t║ Quantidade em estoque: %s\n", id, nome, preco, quantidade);
 
@@ -262,9 +230,6 @@ void listar_produtos(void)
     }
     fclose(arq_produtos);
 
-    printf("\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -294,30 +259,4 @@ void excluir_produto(void)
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
-}
-
-int gerarid(void)
-{
-    int id = 0;
-    char linha[255];
-    FILE *arq_produtos;
-    arq_produtos = fopen("produtos/produtos.csv", "rt");
-    if (arq_produtos == NULL)
-    {
-        printf("Não foi possivel localizar o arquivo de produtos.\n");
-        getchar();
-        return 1;
-    }
-
-    while (fgets(linha, sizeof(linha), arq_produtos) != NULL)
-    {
-        id++;  
-    }
-
-
-    fclose(arq_produtos);
-
-    
-    return id + 1;
-
 }
