@@ -120,12 +120,49 @@ void buscar_produto(void)
 void atualizar_produto(void)
 {
     Produtos prod;
+    FILE * arq_produtos;
+    FILE * arq_produtos_temp;
     exibir_logo();
     exibir_titulo("Atualizar Produto");
     printf("║      Informe o Código do Produto que deseja atualizar:                                       ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(prod.id_lido, 20, "Digite o id do produto que deseja atualizar: ");
-    printf("EM DESENVOLVIMENTO!\nPressione <Enter> para voltar ao menu principal...                         \n");
+    arq_produtos = fopen("produtos/produtos.csv", "rt");
+    arq_produtos_temp = fopen("produtos/produtos_temp.csv", "wt");
+    int encontrado = 0;
+    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4)
+    {
+        if (strcmp(prod.id_lido, prod.id) == 0) // se encontrar, vai pedir os novos dados
+        {
+            encontrado = 1;
+
+            printf("\nProduto encontrado:\n");
+            printf("ID: %s\n", prod.id);
+            printf("Nome: %s\n", prod.nome);
+            printf("Preço do produto: %s\n", prod.preco);
+            printf("Quantidade em estoque: %s\n", prod.quantidade);
+            printf("\n");
+            printf("Digite os novos dados do produto:\n");
+            input(prod.nome, 50, "Nome do Produto: ");
+            input(prod.preco, 10, "Preço do Produto: ");
+            input(prod.quantidade, 10, "Quantidade em Estoque: ");
+
+            fprintf(arq_produtos_temp, "%s;%s;%s;%s\n", prod.id, prod.nome, prod.preco, prod.quantidade);
+            printf("Produto atualizado com sucesso!\n");
+            
+        }
+        else {
+            fprintf(arq_produtos_temp, "%s;%s;%s;%s\n", prod.id, prod.nome, prod.preco, prod.quantidade);
+        }
+    }
+    remove("produtos/produtos.csv");
+    rename("produtos/produtos_temp.csv", "produtos/produtos.csv");
+    fclose(arq_produtos);
+    fclose(arq_produtos_temp);
+    if (encontrado != 1)
+    {
+        printf("Nenhum produto encontrado para o ID %s.\n", prod.id_lido);
+    }
     getchar();
 }
 
