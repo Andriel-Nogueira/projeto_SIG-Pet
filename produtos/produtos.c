@@ -4,6 +4,8 @@
 #include "produtos.h"
 #include "../utilitarios/utilitarios.h"
 
+typedef struct produtos Produtos;
+
 void m_produtos(void)
 {
     int op;
@@ -53,26 +55,22 @@ void m_produtos(void)
 
 void adicionar_produto(void)
 {
-    char nome[50];
-    char preco[10];
-    char quantidade[10];    
-    char id_gerado[20];
+    Produtos prod;
 
     exibir_logo();
     exibir_titulo("Adicionar Produto");
-    input(nome, 50, "Nome do Produto: ");
-    input(preco, 50, "Preço do Produto: ");
-    input(quantidade, 50, "Quantidade em Estoque: ");
-    strcpy(id_gerado, gerar_id("produtos/produtos.csv"));
+    input(prod.nome, 50, "Nome do Produto: ");
+    input(prod.preco, 10, "Preço do Produto: ");
+    input(prod.quantidade, 10, "Quantidade em Estoque: ");
+    strcpy(prod.id, gerar_id("produtos/produtos.csv"));
 
     printf("\nProduto cadastrado com sucesso!\n");
-    printf("Código: %s\n", id_gerado);
-    printf("Nome: %s\n", nome);
-    printf("Preço: %s\n", preco);
-    printf("Quantidade em estoque: %s\n", quantidade);
+    printf("Código: %s\n", prod.id);
+    printf("Nome: %s\n", prod.nome);
+    printf("Preço: %s\n", prod.preco);
+    printf("Quantidade em estoque: %s\n", prod.quantidade);
     
-    salvar("produtos/produtos.csv", 4, id_gerado, nome, preco, quantidade);
-
+    salvar("produtos/produtos.csv", 4, prod.id, prod.nome, prod.preco, prod.quantidade);
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
@@ -81,16 +79,12 @@ void adicionar_produto(void)
 
 void buscar_produto(void)
 {
-    char id[10];
-    char id_lido[10];
-    char nome[50];
-    char preco[10];
-    char quantidade[10];
+    Produtos prod;
     FILE *arq_produtos;
 
     exibir_logo();
     exibir_titulo("Buscar Produto pelo Código");
-    input(id_lido, 15, "Digite o id do produto que deseja buscar: ");
+    input(prod.id_lido, 20, "Digite o id do produto que deseja buscar: ");
 
     arq_produtos = fopen("produtos/produtos.csv", "rt");
     if (arq_produtos == NULL)
@@ -101,15 +95,15 @@ void buscar_produto(void)
         return;
     }
 
-    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", id, nome, preco, quantidade) == 4)
+    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4)
     {
-        if (strcmp(id, id_lido) == 0)
+        if (strcmp(prod.id, prod.id_lido) == 0)
         {
             printf("\nProduto encontrado:\n");
-            printf("ID: %s\n", id);
-            printf("Nome: %s\n", nome);
-            printf("Preço: %s\n", preco);
-            printf("Quantidade: %s\n", quantidade);
+            printf("ID: %s\n", prod.id);
+            printf("Nome: %s\n", prod.nome);
+            printf("Preço: %s\n", prod.preco);
+            printf("Quantidade: %s\n", prod.quantidade);
             fclose(arq_produtos);
             printf("\nPressione <Enter> para continuar...");
             getchar();
@@ -117,7 +111,7 @@ void buscar_produto(void)
         }
     }
     fclose(arq_produtos);
-    printf("\nNenhum produto encontrado para o ID %s.\n", id_lido);
+    printf("\nNenhum produto encontrado para o ID %s.\n", prod.id_lido);
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -125,10 +119,12 @@ void buscar_produto(void)
 
 void atualizar_produto(void)
 {
+    Produtos prod;
     exibir_logo();
     exibir_titulo("Atualizar Produto");
     printf("║      Informe o Código do Produto que deseja atualizar:                                       ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(prod.id_lido, 20, "Digite o id do produto que deseja atualizar: ");
     printf("EM DESENVOLVIMENTO!\nPressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
@@ -136,10 +132,7 @@ void atualizar_produto(void)
 void listar_produtos(void)
 {
     FILE *arq_produtos;
-    char id [10];
-    char nome[50];
-    char preco[10];
-    char quantidade[10];
+    Produtos prod;
 
     exibir_logo();
     exibir_titulo("Listar Produtos");
@@ -151,10 +144,10 @@ void listar_produtos(void)
         getchar();
         return;
     }
-    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", id, nome, preco, quantidade) == 4)
+    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4)
     {
 
-        printf("id: %s\t║ Nome: %s\t║ Preço: %s\t║ Quantidade em estoque: %s\n", id, nome, preco, quantidade);
+        printf("id: %s\t║ Nome: %s\t║ Preço: %s\t║ Quantidade em estoque: %s\n", prod.id, prod.nome, prod.preco, prod.quantidade);
 
         printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
     }
@@ -167,10 +160,12 @@ void listar_produtos(void)
 
 void excluir_produto(void)
 {
+    Produtos prod;
     exibir_logo();
     exibir_titulo("Excluir Produto");
     printf("║      Informe o Código do Produto que deseja excluir:                                         ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(prod.id_lido, 20, "Digite o id do produto que deseja excluir: ");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
