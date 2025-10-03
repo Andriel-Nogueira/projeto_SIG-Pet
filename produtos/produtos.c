@@ -91,7 +91,7 @@ void adicionar_produto(void)
     input(quantidade, 50, "Quantidade em Estoque: ");
     printf("║                                                                                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    strcpy(id_gerado, gerar_id_generico("produtos/produtos.csv"));
+    strcpy(id_gerado, gerar_id("produtos/produtos.csv"));
 
     printf("\nProduto cadastrado com sucesso!\n");
     printf("Código: %s\n", id_gerado);
@@ -223,7 +223,7 @@ void listar_produtos(void)
     }
     while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", id, nome, preco, quantidade) == 4)
     {
-        
+
         printf("id: %s\t║ Nome: %s\t║ Preço: %s\t║ Quantidade em estoque: %s\n", id, nome, preco, quantidade);
 
         printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");

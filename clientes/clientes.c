@@ -78,7 +78,6 @@ void cadastrar_cliente(void)
     char nome[50];
     char data_nascimento[12];
     char telefone[20];
-    FILE  *arq_clientes;
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
     printf("║  ,-.'-  _\\  /==/_ /   _.='.'-,  \\                    .-`.' ,`.    ,-.--` , \\ /==/,  -   , -  ║\n");
@@ -99,18 +98,7 @@ void cadastrar_cliente(void)
     printf("Cliente cadastrado com sucesso!\n");
     printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.\nTelefone: %s.\n", nome, cpf, data_nascimento, telefone);
     
-                ///SALVAR DADOS ///
-    arq_clientes = fopen("clientes/clientes.csv","at");
-    if (arq_clientes == NULL){
-        printf("ERRO AO ABRIR ARQUIVO");
-        return;
-    }
-    fprintf(arq_clientes, "%s;", cpf);
-    fprintf(arq_clientes, "%s;", nome);
-    fprintf(arq_clientes, "%s;", data_nascimento);
-    fprintf(arq_clientes, "%s\n", telefone);
-    fclose(arq_clientes);
-                ///              ///
+    salvar("clientes/clientes.csv", 4, cpf, nome, data_nascimento, telefone);
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
@@ -150,17 +138,9 @@ void buscar_cliente(void)
         return;
     }
 
-    while (!feof(arq_clientes))
+    // Loop para ler o arquivo até o fim, verificando o retorno de fscanf
+    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cpf, nome, data_nascimento, telefone) == 4)
     {
-        fscanf(arq_clientes, "%[^;]", cpf);
-        fgetc(arq_clientes);
-        fscanf(arq_clientes, "%[^;]", nome);
-        fgetc(arq_clientes);
-        fscanf(arq_clientes, "%[^;]", data_nascimento);
-        fgetc(arq_clientes);
-        fscanf(arq_clientes, "%[^\n]", telefone);
-        fgetc(arq_clientes);
-
         if (strcmp(cpf, cpf_lido) == 0)
         {
             printf("\nCliente encontrado.");
@@ -177,6 +157,7 @@ void buscar_cliente(void)
    
     }
     fclose(arq_clientes);
+    printf("\nCliente com CPF %s não encontrado.\n", cpf_lido);
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -221,10 +202,10 @@ void listar_clientes(void)
     system("clear");
     printf("\n");
     FILE *arq_clientes;
-    char cpf[15] = "";
-    char nome[50] = "";
-    char data_nascimento[12] = "";
-    char telefone[20] = "";
+    char cpf[15];
+    char nome[50];
+    char data_nascimento[12];
+    char telefone[20];
 
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -248,18 +229,9 @@ void listar_clientes(void)
         getchar();
         return;
     }
-    while (!feof(arq_clientes))
+    // Loop para ler o arquivo até o fim, verificando o retorno de fscanf
+    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cpf, nome, data_nascimento, telefone) == 4)
     {
-        fscanf(arq_clientes, "%[^;]", cpf);
-        fgetc(arq_clientes);
-        fscanf(arq_clientes, "%[^;]", nome);
-        fgetc(arq_clientes);
-        fscanf(arq_clientes, "%[^;]", data_nascimento);
-        fgetc(arq_clientes);
-        fscanf(arq_clientes, "%[^\n]", telefone);
-        fgetc(arq_clientes);
-
-
         printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
         
         printf("CPF: %s\t║ Nome: %s\t║ Data de nascimento: %s\t║ Telefone: %s\n", cpf, nome, data_nascimento, telefone);
