@@ -94,7 +94,6 @@ void exibir_titulo(const char* titulo) //CRÉDITOS: ajuda da I.A Google Gemini, 
     // Garante que a soma dos espaços seja a correta, mesmo para títulos de tamanho ímpar
     espacos_direita = espacos_laterais - espacos_esquerda;
 
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     printf("║%*s%s%*s║\n", espacos_esquerda, "", titulo, espacos_direita, "");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 }
@@ -113,4 +112,6 @@ void exibir_logo(void)
     printf("║ /==/\\/ _ | |==|- |  \\==\\-  ,    (                  |==|,  |     |==|_  ,`-._       |==|, |   ║\n");
     printf("║ \\==\\ - , / /==/. /   /==/ _  ,  /                  /==/ - |     /==/ ,     /       /==/ -/   ║\n");
     printf("║  `--`---'  `--`-`    `--`------'                   `--`---'     `--`-----``        `--`--`   ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
 }
