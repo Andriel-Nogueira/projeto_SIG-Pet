@@ -5,6 +5,8 @@
 #include "../utilitarios/utilitarios.h"
 
 
+typedef struct clientes Clientes;
+typedef struct pets Pets;
 
 void m_clientes(void)
 {
@@ -59,21 +61,16 @@ void m_clientes(void)
 
 void cadastrar_cliente(void)
 {
-    char cpf[15];
-    char nome[50];
-    char data_nascimento[12];
-    char telefone[20];
-
+    Clientes cli;
     exibir_logo();
     exibir_titulo("Cadastrar Cliente");
-    input(cpf, 15, "Insira seu cpf");
-    input(nome, 50, "Digite o seu nome: ");
-    input(data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
-    input(telefone, 20, "Digite seu telefone: ");
+    input(cli.cpf, 15, "Insira seu cpf");
+    input(cli.nome, 50, "Digite o seu nome: ");
+    input(cli.data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
+    input(cli.telefone, 20, "Digite seu telefone: ");
     printf("Cliente cadastrado com sucesso!\n");
-    printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.\nTelefone: %s.\n", nome, cpf, data_nascimento, telefone);
-    
-    salvar("clientes/clientes.csv", 4, cpf, nome, data_nascimento, telefone);
+    printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.\nTelefone: %s.\n", cli.nome, cli.cpf, cli.data_nascimento, cli.telefone);
+    salvar("clientes/clientes.csv", 4, cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
@@ -82,16 +79,12 @@ void cadastrar_cliente(void)
 
 void buscar_cliente(void)
 {
-    char cpf_lido[15];
-    char cpf[15];
-    char nome[50];
-    char data_nascimento[12];
-    char telefone[20];
+    Clientes cli;
     FILE *arq_clientes;
 
     exibir_logo();
     exibir_titulo("Buscar Cliente pelo CPF");
-    input(cpf_lido, 15, "Digite o CPF do cliente que deseja buscar: ");
+    input(cli.cpf_lido, 15, "Digite o CPF do cliente que deseja buscar: ");
     arq_clientes = fopen("clientes/clientes.csv", "rt");
     if (arq_clientes == NULL)
     {
@@ -99,17 +92,16 @@ void buscar_cliente(void)
         getchar();
         return;
     }
-
     // Loop para ler o arquivo até o fim, verificando o retorno de fscanf
-    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cpf, nome, data_nascimento, telefone) == 4)
+    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone) == 4)
     {
-        if (strcmp(cpf, cpf_lido) == 0)
+        if (strcmp(cli.cpf, cli.cpf_lido) == 0)
         {
             printf("\nCliente encontrado.");
-            printf("CPF: %s\n", cpf);
-            printf("Nome: %s\n", nome);
-            printf("Data de nascimento: %s\n", data_nascimento);
-            printf("Telefone: %s\n", telefone);
+            printf("CPF: %s\n", cli.cpf);
+            printf("Nome: %s\n", cli.nome);
+            printf("Data de nascimento: %s\n", cli.data_nascimento);
+            printf("Telefone: %s\n", cli.telefone);
             printf("Pressione enter para continuar...");
             getchar();
             fclose(arq_clientes);
@@ -119,7 +111,7 @@ void buscar_cliente(void)
    
     }
     fclose(arq_clientes);
-    printf("\nCliente com CPF %s não encontrado.\n", cpf_lido);
+    printf("\nCliente com CPF %s não encontrado.\n", cli.cpf_lido);
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -132,13 +124,13 @@ void atualizar_cliente(void)
  //   char data_nascimento[12];
  //   char telefone[20];
  //   FILE *arq_clientes;
-    char cpf_lido[15];
+    Clientes cli;
 
     exibir_logo();
     exibir_titulo("Atualizar Dados do Cliente");
     printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_lido, 15, "Digite o CPF do cliente que deseja atualizar: ");
+    input(cli.cpf_lido, 15, "Digite o CPF do cliente que deseja atualizar: ");
     printf("\n");
     printf("\nEM DESENVOLVIMENTO!\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
@@ -148,10 +140,7 @@ void atualizar_cliente(void)
 void listar_clientes(void)
 {
     FILE *arq_clientes;
-    char cpf[15];
-    char nome[50];
-    char data_nascimento[12];
-    char telefone[20];
+    Clientes cli;
 
     exibir_logo();
     exibir_titulo("Listar de Clientes");
@@ -165,11 +154,11 @@ void listar_clientes(void)
         return;
     }
     // Loop para ler o arquivo até o fim, verificando o retorno de fscanf
-    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cpf, nome, data_nascimento, telefone) == 4)
+    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone) == 4)
     {
         printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
         
-        printf("CPF: %s\t║ Nome: %s\t║ Data de nascimento: %s\t║ Telefone: %s\n", cpf, nome, data_nascimento, telefone);
+        printf("CPF: %s\t║ Nome: %s\t║ Data de nascimento: %s\t║ Telefone: %s\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
 
         printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
     }
@@ -192,19 +181,16 @@ void excluir_cliente(void)
 
 void cadastrar_pet(void)
 {
-    char cpf[15];
-    char cpf_lido[15];
-    char nome[50];
-    char especie[2]; // G = gato, C = Cachorro, O = outros
+    Clientes cli;
+    Pets pet;
     char raca_input[3];
     FILE  *arq_clientes;
-    FILE *arq_pets;
     int encontrado = 0;
     char linha[256];
 
     exibir_logo();
     exibir_titulo("Cadastrar Pet");
-    input(cpf_lido, 15, "Digite o CPF do dono do pet: ");
+    input(cli.cpf_lido, 15, "Digite o CPF do dono do pet: ");
     arq_clientes = fopen("clientes/clientes.csv", "rt");
     
     if (arq_clientes == NULL)
@@ -214,49 +200,41 @@ void cadastrar_pet(void)
         return;
     }
 
+    // Procura o cliente pelo CPF
     while (fgets(linha, sizeof(linha), arq_clientes) != NULL) {
-        sscanf(linha, "%[^;]", cpf);
-        if (strcmp(cpf, cpf_lido) == 0) {
+        sscanf(linha, "%[^;]", cli.cpf);
+        if (strcmp(cli.cpf, cli.cpf_lido) == 0) {
             encontrado = 1;
             break;
         }
     }
     fclose(arq_clientes);
 
-
     if (encontrado == 1) {
         printf("\nCliente encontrado.\n");
-        input(nome, 50, "Digite o nome do pet: ");
+        strcpy(pet.cpf, cli.cpf_lido); // Copia o CPF para a struct do pet
+        input(pet.nome, 50, "Digite o nome do pet: ");
         input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
         
-        if (strcmp(raca_input, "1") == 0) {
-            strcpy(especie, "G");
-        } else if (strcmp(raca_input, "2") == 0) {
-            strcpy(especie, "C");
-        } else {
-            strcpy(especie, "O");
+        if (strcmp(raca_input, "1") == 0) { 
+
+            strcpy(pet.especie, "G"); 
+        } 
+        else if (strcmp(raca_input, "2") == 0) { 
+
+            strcpy(pet.especie, "C"); 
+        } 
+        else { 
+            
+            strcpy(pet.especie, "O"); 
         }
 
         printf("Pet cadastrado com sucesso!\n");
-        printf("CPF do cliente: %s.\nNome: %s.\nEspécie: %s.\n", cpf_lido, nome, especie);
-        
-        ///SALVAR DADOS ///
-        arq_pets = fopen("clientes/pets.csv", "at");
-        if (arq_pets == NULL) {
-            printf("ERRO AO ABRIR ARQUIVO de pets.csv");
-            getchar();
-            return;
-        }
-        
-        fprintf(arq_pets, "%s;", cpf_lido);
-        fprintf(arq_pets, "%s;", nome);
-        fprintf(arq_pets, "%s\n", especie);
-        fclose(arq_pets);
-        ///              ///
-
+        printf("CPF do cliente: %s.\nNome: %s.\nEspécie: %s.\n", pet.cpf, pet.nome, pet.especie);
+        salvar("clientes/pets.csv", 3, pet.cpf, pet.nome, pet.especie);
     }
     else {
-        printf("Cliente com CPF %s não encontrado.\n", cpf_lido);
+        printf("Cliente com CPF %s não encontrado.\n", cli.cpf_lido);
         printf("É necessário cadastrar o cliente primeiro.\n");
     }
 

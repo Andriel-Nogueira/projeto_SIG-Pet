@@ -9,4 +9,25 @@ void listar_clientes(void);
 void excluir_cliente(void);
 void cadastrar_pet(void);
 
+
+struct clientes
+{
+    char cpf[15];
+    char nome[50];
+    char data_nascimento[12];
+    char telefone[20];
+
+    char cpf_lido[15];
+    char status;
+};
+
+struct pets
+{
+    char cpf[15];
+    char nome[50];
+    char especie[2];
+};
+
+
+
 #endif
