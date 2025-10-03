@@ -198,11 +198,42 @@ void listar_produtos(void)
 void excluir_produto(void)
 {
     Produtos prod;
+    FILE *arq_produtos;
+    FILE *arq_produtos_temp;
     exibir_logo();
     exibir_titulo("Excluir Produto");
     printf("║      Informe o Código do Produto que deseja excluir:                                         ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(prod.id_lido, 20, "Digite o id do produto que deseja excluir: ");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+
+    arq_produtos = fopen("produtos/produtos.csv", "rt");
+    if (arq_produtos == NULL)
+    {
+        printf("\nErro ao abrir o arquivo de produtos. Nenhum produto cadastrado?\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    arq_produtos_temp = fopen("produtos/produtos_temp.csv", "wt");
+    if (arq_produtos_temp == NULL)
+    {
+        printf("\nErro ao criar arquivo temporário.\n");
+        fclose(arq_produtos);
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4){
+     if (strcmp(prod.id_lido, prod.id) != 0){
+        fprintf(arq_produtos_temp, "%s;%s;%s;%s\n", prod.id, prod.nome, prod.preco, prod.quantidade);
+     }
+    }
+    fclose(arq_produtos);
+    fclose(arq_produtos_temp);
+    remove("produtos/produtos.csv");
+    rename("produtos/produtos_temp.csv", "produtos/produtos.csv");
+    printf("\nProduto excluído com sucesso!\n");
     getchar();
 }
