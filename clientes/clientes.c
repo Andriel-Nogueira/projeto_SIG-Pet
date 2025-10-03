@@ -119,20 +119,54 @@ void buscar_cliente(void)
 
 void atualizar_cliente(void)
 {
- //   char cpf[15];
- //   char nome[50];
- //   char data_nascimento[12];
- //   char telefone[20];
- //   FILE *arq_clientes;
     Clientes cli;
+    FILE *arq_clientes;
+    FILE *arq_clientes_temp;
+    int encontrado = 0;
 
     exibir_logo();
     exibir_titulo("Atualizar Dados do Cliente");
     printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(cli.cpf_lido, 15, "Digite o CPF do cliente que deseja atualizar: ");
-    printf("\n");
-    printf("\nEM DESENVOLVIMENTO!\n");
+
+    arq_clientes = fopen("clientes/clientes.csv", "rt");
+    arq_clientes_temp = fopen("clientes/clientes_temp.csv", "wt");
+
+    if (arq_clientes == NULL || arq_clientes_temp == NULL) {
+        printf("\nErro ao abrir os arquivos!\n");
+        if (arq_clientes) fclose(arq_clientes);
+        if (arq_clientes_temp) fclose(arq_clientes_temp);
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone) == 4) {
+        if (strcmp(cli.cpf_lido, cli.cpf) == 0) {
+            encontrado = 1;
+            printf("\nCliente encontrado:\n");
+            printf("CPF: %s\nNome: %s\nData de Nascimento: %s\nTelefone: %s\n\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
+            printf("Digite os novos dados:\n");
+            input(cli.nome, 50, "Digite o novo nome: ");
+            input(cli.data_nascimento, 12, "Digite a nova data de nascimento (DD/MM/AAAA): ");
+            input(cli.telefone, 20, "Digite o novo telefone: ");
+            fprintf(arq_clientes_temp, "%s;%s;%s;%s\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
+            printf("\nCliente atualizado com sucesso!\n");
+        } else {
+            fprintf(arq_clientes_temp, "%s;%s;%s;%s\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
+        }
+    }
+
+    fclose(arq_clientes);
+    fclose(arq_clientes_temp);
+    remove("clientes/clientes.csv");
+    rename("clientes/clientes_temp.csv", "clientes/clientes.csv");
+
+    if (!encontrado) {
+        printf("\nCliente com CPF %s não encontrado.\n", cli.cpf_lido);
+    }
+
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
@@ -171,10 +205,53 @@ void listar_clientes(void)
 
 void excluir_cliente(void)
 {
+    Clientes cli;
+    FILE *arq_clientes;
+    FILE *arq_clientes_temp;
+    int encontrado = 0;
+
     exibir_logo();
     exibir_titulo("Excluir Cliente");
     printf("║      Informe o CPF do cliente que deseja excluir:                                            ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cli.cpf_lido, 15, "Digite o CPF do cliente que deseja excluir: ");
+
+    arq_clientes = fopen("clientes/clientes.csv", "rt");
+    if (arq_clientes == NULL) {
+        printf("\nErro ao abrir o arquivo de clientes. Nenhum cliente cadastrado?\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    arq_clientes_temp = fopen("clientes/clientes_temp.csv", "wt");
+    if (arq_clientes_temp == NULL) {
+        printf("\nErro ao criar arquivo temporário.\n");
+        fclose(arq_clientes);
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone) == 4) {
+        if (strcmp(cli.cpf_lido, cli.cpf) != 0) {
+            fprintf(arq_clientes_temp, "%s;%s;%s;%s\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
+        } else {
+            encontrado = 1;
+        }
+    }
+
+    fclose(arq_clientes);
+    fclose(arq_clientes_temp);
+    remove("clientes/clientes.csv");
+    rename("clientes/clientes_temp.csv", "clientes/clientes.csv");
+
+    if (encontrado) {
+        printf("\nCliente excluído com sucesso!\n");
+    } else {
+        printf("\nCliente com CPF %s não encontrado.\n", cli.cpf_lido);
+    }
+
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
