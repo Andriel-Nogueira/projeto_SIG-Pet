@@ -165,7 +165,8 @@ void atualizar_agend(void)
     rename("agendamentos/agendamentos_temp.csv", "agendamentos/agendamentos.csv");
 
     if (!encontrado)
-    {
+    {remove("clientes/clientes.csv");
+    rename("clientes/clientes_temp.csv", "clientes/clientes.csv");
         printf("Agendamento com CPF %s não encontrado.\n", agend.cpf_lido);
     }
     
@@ -175,11 +176,7 @@ void atualizar_agend(void)
 
 void listar_agend(void)
 {
-    char cpf[15] = "";
-    char nome_pet[30] = "";
-    char data[11] = "";
-    char hora[6] = "";
-    char telefone[20] = "";
+    Agendamentos agend;
     FILE *arq_agendamentos;
 
     exibir_logo();
@@ -192,22 +189,11 @@ void listar_agend(void)
         getchar();
         return;
     }
-    while (!feof(arq_agendamentos))
+    while (fscanf(arq_agendamentos, "%[^;];%[^;];%[^;];%[^;];%[^\n]\n", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone) == 5)
     {
-        fscanf(arq_agendamentos, "%[^;]", cpf);
-        fgetc(arq_agendamentos);
-        fscanf(arq_agendamentos, "%[^;]", nome_pet);
-        fgetc(arq_agendamentos);
-        fscanf(arq_agendamentos, "%[^;]", data);
-        fgetc(arq_agendamentos);
-        fscanf(arq_agendamentos, "%[^;]", hora);
-        fgetc(arq_agendamentos);
-        fscanf(arq_agendamentos, "%[^\n]", telefone);
-        fgetc(arq_agendamentos);
-
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
         printf("║                                                                                              ║\n");
-        printf("║ CPF: %s\t║ Nome do Pet: %s\t║ Data: %s\t║ Hora: %s\t║ Telefone: %s  ║\n", cpf, nome_pet, data, hora, telefone);
+        printf("║ CPF: %s\t║ Nome do Pet: %s\t║ Data: %s\t║ Hora: %s\t║ Telefone: %s  ║\n", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone);
         printf("║                                                                                              ║\n");
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
     }
@@ -220,11 +206,54 @@ void listar_agend(void)
 
 void excluir_agend(void)
 {
-    // EM DESENVOLVIMENTO!!
+    Agendamentos agend;
+    FILE *arq_agendamentos;
+    FILE *arq_agendamentos_temp;
+    int encontrado = 0;
+
     exibir_logo();
     exibir_titulo("Excluir Agendamento");
-    printf("║      Informe o CPF do Agendamento que deseja excluir:                                        ║\n");
+    printf("║      Informe o CPF referente ao agendamento que deseja excluir:                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(agend.cpf_lido, 15, "Digite o CPF referente ao agendamento que deseja excluir: ");
+
+    arq_agendamentos = fopen("agendamentos/agendamentos.csv", "rt");
+    if (arq_agendamentos == NULL) {
+        printf("\nErro ao abrir o arquivo de clientes. Nenhum cliente cadastrado?\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    arq_agendamentos_temp = fopen("agendamentos/agendamentos_temp.csv", "wt");
+    if (arq_agendamentos_temp == NULL) {
+        printf("\nErro ao criar arquivo temporário.\n");
+        fclose(arq_agendamentos);
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    while (fscanf(arq_agendamentos, "%[^;];%[^;];%[^;];%[^;];%[^\n]\n", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone) == 5)
+    {
+        if (strcmp(agend.cpf_lido, agend.cpf) != 0) {
+            fprintf(arq_agendamentos_temp, "%s;%s;%s;%s\n", agend.cpf, agend.nome_pet, agend.data, agend.telefone);
+        } else {
+            encontrado = 1;
+        }
+    }
+
+    fclose(arq_agendamentos);
+    fclose(arq_agendamentos_temp);
+    remove("agendamentos/agendamentos.csv");
+    rename("agendamentos/agendamentos_temp.csv", "agendamentos/agendamentos.csv");
+
+    if (encontrado) {
+        printf("\nAgendamento excluído com sucesso!\n");
+    } else {
+        printf("\nAgendamento com CPF %s não encontrado.\n", agend.cpf_lido);
+    }
+
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
