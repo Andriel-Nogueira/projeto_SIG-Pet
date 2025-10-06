@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../utilitarios/utilitarios.h"
 #include "servicos.h"
+#include "../utilitarios/utilitarios.h"
+
+typedef struct servicos Servicos;
 
 void m_servicos(void)
 {
@@ -50,28 +52,24 @@ void m_servicos(void)
         }
     } while (op != 0);
 }
+
 void cadastrar_servico(void)
 {
-    char nome[50];
-    char desc[256];
-    char preco_s[32];
-    char id_gerado[20];
-
+    Servicos serv;
     exibir_logo();
     exibir_titulo("Cadastrar Serviço");
     
     // Gera o ID automaticamente
-    strcpy(id_gerado, gerar_id("servicos/servicos.csv"));
-
-    input(nome, 50, "Nome do Serviço: ");
-    input(desc, 256, "Descrição: ");
-    input(preco_s, 32, "Preço (use . como separador): ");
+    strcpy(serv.id_gerado, gerar_id("servicos/servicos.csv"));
     
-    salvar("servicos/servicos.csv", 4, id_gerado, nome, desc, preco_s);
-
+    printf("ID do serviço gerado automaticamente: %s\n", serv.id_gerado);
+    input(serv.nome, 50, "Nome do Serviço: ");
+    input(serv.desc, 256, "Descrição: ");
+    input(serv.preco_s, 32, "Preço (use . como separador): "); 
+    
+    salvar("servicos/servicos.csv", 4, serv.nome, serv.desc, serv.preco_s, serv.id_gerado);
     printf("\nCadastro de serviço realizado com sucesso !\n");
-    printf("ID: %s\nNome: %s\nDescrição: %s\nPreço: %s\n", id_gerado, nome, desc, preco_s);
-
+    printf("ID: %s\nNome: %s\nDescrição: %s\nPreço: %s\n", serv.id_gerado, serv.nome, serv.desc, serv.preco_s);
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -198,11 +196,5 @@ void listar_servicos(void)
 
 void excluir_servico(void)
 {
-    //EM DESENVOLVIMENTO!!
-    exibir_logo();
-    exibir_titulo("Excluir Serviço");
-    printf("║      Informe o ID do Serviço que deseja excluir:                                             ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+
 }

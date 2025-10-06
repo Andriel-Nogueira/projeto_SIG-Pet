@@ -17,7 +17,6 @@ struct agendamentos
     char telefone[20];
 
     char cpf_lido[15];
-    char status;
 };
 
 #endif
