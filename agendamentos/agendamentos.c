@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include "agendamentos.h"
 #include "../utilitarios/utilitarios.h"
+
+typedef struct agendamentos Agendamentos;
 
 void m_agendamento(void)
 {
@@ -54,39 +55,17 @@ void m_agendamento(void)
 
 void agendar(void)
 {
-
-    char cpf[15];
-    char data[11];
-    char hora[6];
-    char nome_pet[30];
-    char telefone[20];
-    FILE *arq_agendamentos;
-
+    Agendamentos agend;
     exibir_logo();
     exibir_titulo("Agendar Serviço");
-    
-    input(cpf, 15, "Insira seu CPF:");
-    input(nome_pet, 30, "Digite o nome do Pet");
-    input(data, 11, "Insira a data desejada: xx/xx");
-    input(hora, 6, "Insira o horário desejado: xx:xx\n");
-    input(telefone, 20, "Insira seu telefone para contato:");
-
-    arq_agendamentos = fopen("agendamentos/agendamentos.csv", "at");
-    if (arq_agendamentos == NULL)
-    {
-        printf("ERRO AO ABRIR ARQUIVO");
-        return;
-    }
-
-    fprintf(arq_agendamentos, "%s;", cpf);
-    fprintf(arq_agendamentos, "%s;", nome_pet);
-    fprintf(arq_agendamentos, "%s;", data);
-    fprintf(arq_agendamentos, "%s;", hora);
-    fprintf(arq_agendamentos, "%s\n", telefone);
-    fclose(arq_agendamentos);
-
+    input(agend.cpf, 15, "Insira seu CPF:");
+    input(agend.nome_pet, 30, "Digite o nome do Pet");
+    input(agend.data, 11, "Insira a data desejada: xx/xx");
+    input(agend.hora, 6, "Insira o horário desejado: xx:xx\n");
+    input(agend.telefone, 20, "Insira seu telefone para contato:");
     printf("\nAgendamento feito com sucesso\n");
-    printf("CPF: %s.\nNome do pet: %s.\nData: %s.\nHorário: %s.\nTelefone: %s.", cpf, nome_pet, data, hora, telefone);
+    printf("CPF: %s.\nNome do pet: %s.\nData: %s.\nHorário: %s.\nTelefone: %s.", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone);
+    salvar("agendamentos/agendamentos.csv", 5, agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone);
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
