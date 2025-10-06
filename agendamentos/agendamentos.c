@@ -115,79 +115,60 @@ void buscar_agend(void)
 
 void atualizar_agend(void)
 {
-    char cpf[15];
-    char cpf_lido[15];
-    char data[11];
-    char hora[6];
-    char nome_pet[30];
-    char telefone[20];
+    Agendamentos agend;
     FILE *arq_agendamentos;
     FILE *arq_agendamentos_temp;
+    int encontrado = 0;
 
     exibir_logo();
     exibir_titulo("Atualizar Agendamento");
-    printf("Digite o cpf referente ao agendamento que deseja atualizar: ");
-    scanf("%15s", cpf_lido);
-    getchar();
-    printf("\n");
+    printf("║         Informe o CPF agendado que deseja atualizar:                                         ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(agend.cpf_lido, 15, "Digite o CPF do agendamento que deseja atualizar: ");
 
     arq_agendamentos = fopen("agendamentos/agendamentos.csv", "rt");
     arq_agendamentos_temp = fopen("agendamentos/agendamentos_temp.csv", "wt");
-    if (arq_agendamentos_temp == NULL)
-    {
-    printf("Erro ao criar arquivo temporário!\n");
-    fclose(arq_agendamentos);
-    getchar();
-    return;
-    }
 
-    if (arq_agendamentos == NULL)
+    if (arq_agendamentos_temp == NULL || arq_agendamentos == NULL)
     {
-        printf("Nenhum agendamento cadastrado !\n");
+        printf("Erro ao abrir os arquivos!\n");
+        if(arq_agendamentos) fclose(arq_agendamentos);
+        if(arq_agendamentos_temp) fclose(arq_agendamentos_temp);
+        fclose(arq_agendamentos);
         getchar();
         return;
     }
 
-    while (fscanf(arq_agendamentos, "%[^;];%[^;];%[^;];%[^;];%[^\n]\n", cpf, data, hora, nome_pet, telefone) == 5)
+    while (fscanf(arq_agendamentos, "%[^;];%[^;];%[^;];%[^;];%[^\n]\n", agend.cpf, agend.data, agend.hora, agend.nome_pet, agend.telefone) == 5)
     {
-        if (strcmp(cpf, cpf_lido) != 0)
+        if (strcmp(agend.cpf_lido, agend.cpf) == 0)
         {
-            fprintf(arq_agendamentos_temp, "%s;%s;%s;%s;%s\n", cpf, data, hora, nome_pet, telefone);
+            encontrado = 1;
+            printf("Agendamento encontrado.\n");
+            printf("CPF: %s\nNome do Pet: %s\nData: %s\nHorário: %s\nTelefone: %s\n", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone);
+            printf("Insira os novos dados do agendamento:\n");
+            input(agend.nome_pet, 30, "Digite o nome do Pet");
+            input(agend.data, 11, "Insira a nova data desejada: xx/xx");
+            input(agend.hora, 6, "Insira o novo horário desejado: xx:xx\n");
+            input(agend.telefone, 20, "Insira seu telefone para contato:");
+            fprintf(arq_agendamentos_temp, "%s;%s;%s;%s;%s\n", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone);
         }
         else
         {
-            printf("\n");
-            printf("Digite o CPF: ");
-            scanf("%15s", cpf);
-            getchar();
-            printf("\n");
-            printf(" Data do Agendamento: ");
-            scanf("%11s", data);
-            getchar();
-            printf("\n");
-            printf("Horário do Agendamento: ");
-            scanf("%6s", hora);
-            getchar();
-            printf("\n");
-            printf("Nome do Pet: ");
-            scanf("%30s", nome_pet);
-            getchar();
-            printf("\n");
-            printf("Telefone de contato: ");
-            scanf("%20s", telefone);
-            getchar();
-            printf("\n");
-
-            fprintf(arq_agendamentos_temp, "%s;%s;%s;%s;%s\n", cpf, data, hora, nome_pet, telefone);
+            fprintf(arq_agendamentos_temp, "%s;%s;%s;%s;%s\n", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone);
         }
     }
 
     fclose(arq_agendamentos);
     fclose(arq_agendamentos_temp);
-
     remove("agendamentos/agendamentos.csv");
     rename("agendamentos/agendamentos_temp.csv", "agendamentos/agendamentos.csv");
 
+    if (!encontrado)
+    {
+        printf("Agendamento com CPF %s não encontrado.\n", agend.cpf_lido);
+    }
+    
     printf("Dados do agendamento alterados com sucesso!\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
 }
