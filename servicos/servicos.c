@@ -117,13 +117,63 @@ void buscar_servico(void)
 
 void atualizar_servico(void)
 {
-    //EM DESENVOLVIMENTO!!
-    char id[20];
-
+    Servicos serv;
+    FILE *arq_servicos;
+    FILE *arq_servicos_temp;
+    int encontrado = 0;
+    
     exibir_logo();
     exibir_titulo("Atualizar Serviço");
-    input(id, 20, "Informe o ID do serviço que deseja atualizar:");
-    printf("\nEM DESENVOLVIMENTO!\n");
+    printf("║      Informe o ID do serviço que deseja atualizar:                                           ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(serv.id_gerado, 20, "Informe o ID do serviço que deseja atualizar:");
+
+    arq_servicos = fopen("servicos/servicos.csv", "rt");
+    arq_servicos_temp = fopen("servicos/servicos_temp.csv", "wt");
+
+    if (arq_servicos == NULL || arq_servicos_temp == NULL) 
+    {
+        printf("\nErro ao abrir/criar arquivo de serviços.\n");
+        if (arq_servicos) fclose(arq_servicos);
+        if (arq_servicos_temp) fclose(arq_servicos_temp);
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    while (fscanf(arq_servicos, "%[^;];%[^;];%[^;];%[^\n]\n", serv.nome, serv.desc, serv.preco_s, serv.id_gerado) == 4) 
+    {
+        if (strcmp(serv.id_gerado, serv.id_gerado) == 0) 
+        {
+            encontrado = 1;
+            printf("\nServiço encontrado. Informe os novos dados:\n");
+            input(serv.nome, 50, "Nome do Serviço: ");
+            input(serv.desc, 256, "Descrição: ");
+            input(serv.preco_s, 32, "Preço (use . como separador): "); 
+            
+            fprintf(arq_servicos_temp, "%s;%s;%s;%s\n", serv.nome, serv.desc, serv.preco_s, serv.id_gerado);
+        } 
+        else 
+        {
+            fprintf(arq_servicos_temp, "%s;%s;%s;%s\n", serv.nome, serv.desc, serv.preco_s, serv.id_gerado);
+        }
+    }
+
+    fclose(arq_servicos);
+    fclose(arq_servicos_temp);
+    remove("servicos/servicos.csv");
+    rename("servicos/servicos_temp.csv", "servicos/servicos.csv");
+
+    if (!encontrado) 
+    {
+        printf("\nServiço com ID %s não encontrado.\n", serv.id_gerado);
+    } 
+    else 
+    {
+        printf("\nServiço atualizado com sucesso!\n");
+    } 
+
+
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
