@@ -77,24 +77,12 @@ void cadastrar_servico(void)
 
 void buscar_servico(void)
 {
-    char nome[50];
-    char desc[256];
-    char preco_s[32];
-    char id[20];
-    char id_lido[20];
+    Servicos serv;
     FILE *arq_servicos;
 
     exibir_logo();
     exibir_titulo("Buscar Serviço pelo ID");
-    printf("║                            Serviços pré-cadastrados no sistema:                              ║\n");
-    printf("║         ID-1: Banho                                                                          ║\n");
-    printf("║         ID-2: Tosa                                                                           ║\n");
-    printf("║         ID-3: Cuidados complementares                                                        ║\n");
-    printf("║         ID-4: Banho Premium                                                                  ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-
-    input(id_lido, 20, "Informe o ID do serviço que deseja buscar:");
-
+    input(serv.id_lido, 20, "Informe o ID do serviço que deseja buscar:");
     arq_servicos = fopen("servicos/servicos.csv", "rt");
     if (arq_servicos == NULL) 
     {
@@ -104,36 +92,26 @@ void buscar_servico(void)
         return;
     }
 
-    while (!feof(arq_servicos)) 
+    while (fscanf(arq_servicos, "%[^;];%[^;];%[^;];%[^\n]\n", serv.nome, serv.desc, serv.preco_s, serv.id_gerado) == 4) 
     {
-        fscanf(arq_servicos, "%[^;]", nome);
-        fgetc(arq_servicos);
-        fscanf(arq_servicos, "%[^;]", desc);
-        fgetc(arq_servicos);
-        fscanf(arq_servicos, "%[^;]", preco_s);
-        fgetc(arq_servicos);
-        fscanf(arq_servicos, "%[^\n]", id);
-        fgetc(arq_servicos);
-
-        if (strcmp(id, id_lido) == 0) 
+        if (strcmp(serv.id_gerado, serv.id_lido) == 0) 
         {
             printf("\nServiço encontrado:\n");
-            printf("Nome: %s\n", nome);
-            printf("Descrição: %s\n", desc);
-            printf("Preço: %s\n", preco_s);
-            printf("ID: %s\n", id);
-            fclose(arq_servicos);
-            printf("\n");
+            printf("Nome: %s\n", serv.nome);
+            printf("Descrição: %s\n", serv.desc);
+            printf("Preço: %s\n", serv.preco_s);
+            printf("ID: %s\n", serv.id_gerado);
             printf("Pressione <Enter> para voltar ao menu principal...                         \n");
             getchar();
+            fclose(arq_servicos);
+
             return;
         }
     }
     fclose(arq_servicos);
-    printf("\nServiço com ID %s não encontrado.\n", id_lido);
+    printf("\nServiço com ID %s não encontrado.\n", serv.id_lido);
     
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
     getchar();
 }
 
