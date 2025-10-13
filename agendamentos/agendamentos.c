@@ -54,22 +54,47 @@ void m_agendamento(void)
 }
 
 void agendar(void)
-{
-    Agendamentos agend;
+{   
+
+    FILE *arq_agendamentos;
+    Agendamentos* agend;
+
     exibir_logo();
     exibir_titulo("Agendar Serviço");
-    input(agend.cpf, 15, "Insira seu CPF:");
-    input(agend.nome_pet, 30, "Digite o nome do Pet");
-    input(agend.data, 11, "Insira a data desejada: xx/xx");
-    input(agend.hora, 6, "Insira o horário desejado: xx:xx\n");
-    input(agend.telefone, 20, "Insira seu telefone para contato:");
-    printf("\nAgendamento feito com sucesso\n");
-    printf("CPF: %s.\nNome do pet: %s.\nData: %s.\nHorário: %s.\nTelefone: %s.", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone);
-    salvar("agendamentos/agendamentos.csv", 5, agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone);
+    agend = (Agendamentos*)malloc(sizeof(Agendamentos));
+    input(agend->cpf, 15, "Insira seu CPF:");
+    input(agend->nome_pet, 30, "Digite o nome do Pet");
+    input(agend->data, 11, "Insira a data desejada: xx/xx");
+    input(agend->hora, 6, "Insira o horário desejado: xx:xx");
+    input(agend->telefone, 20, "Insira seu telefone para contato:");
 
+    agend->status = True;
+    arq_agendamentos = fopen("agendamentos/agendamentos.dat", "ab");
+    if(arq_agendamentos == NULL)
+    {
+        printf("Erro na criação ou abertura do arquivo!\n");
+        printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+        free(agend);
+        getchar();
+        return;
+    }
+
+    fwrite(agend, sizeof(Agendamentos), 1, arq_agendamentos);
+    fclose(arq_agendamentos);
+    
+    system("clear");
+    printf("\nAgendamento realizado com sucesso!\n");
+    printf("\nCPF: %s\n", agend->cpf);
+    printf("\nNome do Pet: %s\n", agend->nome_pet);
+    printf("\nData do Agendamento: %s\n", agend->data);
+    printf("\nHorário do Agendamento: %s\n", agend->hora);
+    printf("\nTelefone: %s\n", agend->telefone);
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    printf("\n");
+
+    free(agend);
 }
 
 void buscar_agend(void)
