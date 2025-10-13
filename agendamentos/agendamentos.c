@@ -57,7 +57,7 @@ void agendar(void)
 {   
 
     FILE *arq_agendamentos;
-    Agendamentos* agend;
+    Agendamentos *agend;
 
     exibir_logo();
     exibir_titulo("Agendar Serviço");
@@ -99,43 +99,58 @@ void agendar(void)
 
 void buscar_agend(void)
 {
-    Agendamentos agend;
     FILE *arq_agendamentos;
+    Agendamentos *agend;
+    int encontrado = 0;
+    char buscar_cpf[15];
 
     exibir_logo();
     exibir_titulo("Buscar Agendamento pelo CPF");
-    input(agend.cpf_lido, 15, "Digite o CPF do cliente que realizou o agendamento: ");
-    arq_agendamentos = fopen("agendamentos/agendamentos.csv", "rt");
+    agend = (Agendamentos*)malloc(sizeof(Agendamentos));
+    input(buscar_cpf, 15, "Digite o CPF do cliente que realizou o agendamento: ");
+    
+    arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
     if (arq_agendamentos == NULL)
     {
         printf("Nenhum agendamento cadastrado.\n");
+        free(agend);
         getchar();
         return;
     }
-    // Loop para ler o arquivo até o fim, verificando o retorno de fscanf
-    while (fscanf(arq_agendamentos, "%[^;];%[^;];%[^;];%[^;];%[^\n]\n", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone) == 5)
+    
+    while (fread(agend, sizeof(Agendamentos), 1, arq_agendamentos))
     {
-        if (strcmp(agend.cpf, agend.cpf_lido) == 0)
+        if ((strcmp(agend->cpf, buscar_cpf) == 0) && (agend->status))
         {
-            printf("\nAgendamento encontrado.");
-            printf("CPF: %s\n", agend.cpf);
-            printf("Nome do Pet: %s\n", agend.nome_pet);
-            printf("Data do Agendamento: %s\n", agend.data);
-            printf("Horário do Agendamento: %s\n", agend.hora);
-            printf("Telefone: %s\n", agend.telefone);
+            encontrado = 1;
+            printf("\nAgendamento encontrado.\n");
+            printf("CPF: %s\n", agend->cpf);
+            printf("Nome do Pet: %s\n", agend->nome_pet);
+            printf("Data do Agendamento: %s\n", agend->data);
+            printf("Horário do Agendamento: %s\n", agend->hora);
+            printf("Telefone: %s\n", agend->telefone);
             printf("Pressione enter para continuar...");
             getchar();
-            fclose(arq_agendamentos);
-
             return;
         }
    
     }
     fclose(arq_agendamentos);
-    printf("\nAgendamento com CPF %s não encontrado.\n", agend.cpf_lido);
+    free(agend);
 
+    if (encontrado)
+    {
+        printf("\nAgendamento encontrado.\n");
+    }
+    else
+    {
+        printf("\nAgendamento não encontrado.\n");
+    }
+
+    printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    printf("\n");
 }
 
 void atualizar_agend(void)
