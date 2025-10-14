@@ -55,26 +55,40 @@ void m_produtos(void)
 
 void adicionar_produto(void)
 {
-    Produtos prod;
+    Produtos* prod;
+    FILE* arq_produtos;
 
     exibir_logo();
     exibir_titulo("Adicionar Produto");
-    input(prod.nome, 50, "Nome do Produto: ");
-    input(prod.preco, 10, "Preço do Produto: ");
-    input(prod.quantidade, 10, "Quantidade em Estoque: ");
-    strcpy(prod.id, gerar_id("produtos/produtos.csv"));
+
+    prod = (Produtos*) malloc(sizeof(Produtos));
+    if (prod == NULL) {
+        printf("Erro de alocação de memória!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    input(prod->nome, 50, "Nome do Produto: ");
+    input(prod->preco, 10, "Preço do Produto: ");
+    input(prod->quantidade, 10, "Quantidade em Estoque: ");
+    strcpy(prod->id, gerar_id("produtos/produtos.dat"));
+    prod->status = '1';
+
+    arq_produtos = fopen("produtos/produtos.dat", "ab");
+    fwrite(prod, sizeof(Produtos), 1, arq_produtos);
+    fclose(arq_produtos);
 
     printf("\nProduto cadastrado com sucesso!\n");
-    printf("Código: %s\n", prod.id);
-    printf("Nome: %s\n", prod.nome);
-    printf("Preço: %s\n", prod.preco);
-    printf("Quantidade em estoque: %s\n", prod.quantidade);
-    
-    salvar("produtos/produtos.csv", 4, prod.id, prod.nome, prod.preco, prod.quantidade);
+    printf("Código: %s\n", prod->id);
+    printf("Nome: %s\n", prod->nome);
+    printf("Preço: %s\n", prod->preco);
+    printf("Quantidade em estoque: %s\n", prod->quantidade);
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    free(prod);
 }
 
 void buscar_produto(void)
