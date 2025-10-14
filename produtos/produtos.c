@@ -99,7 +99,7 @@ void buscar_produto(void)
     int encontrado = 0;
 
     exibir_logo();
-    exibir_titulo("Buscar Produto pelo Código");
+    exibir_titulo("Buscar Produto pelo Codigo");
     input(id_lido, 20, "Digite o id do produto que deseja buscar: ");
 
     prod = (Produtos*) malloc(sizeof(Produtos));

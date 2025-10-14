@@ -59,7 +59,7 @@ void cadastrar_servico(void)
     FILE *arq_servicos;
 
     exibir_logo();
-    exibir_titulo("Cadastrar Serviço");
+    exibir_titulo("Cadastrar Servico");
 
     serv = (Servicos*) malloc(sizeof(Servicos));
     if (serv == NULL) {
@@ -105,7 +105,7 @@ void buscar_servico(void)
     int encontrado = 0;
 
     exibir_logo();
-    exibir_titulo("Buscar Serviço pelo ID");
+    exibir_titulo("Buscar Servico pelo ID");
     input(id_lido, 20, "Informe o ID do serviço que deseja buscar:");
 
     serv = (Servicos*) malloc(sizeof(Servicos));
@@ -153,7 +153,7 @@ void atualizar_servico(void)
     int encontrado = 0;
     
     exibir_logo();
-    exibir_titulo("Atualizar Serviço");
+    exibir_titulo("Atualizar Servico");
     printf("║      Informe o ID do serviço que deseja atualizar:                                           ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(id_lido, 20, "Informe o ID do serviço que deseja atualizar:");
@@ -208,7 +208,7 @@ void listar_servicos(void)
     Servicos *serv;
 
     exibir_logo();
-    exibir_titulo("Listar Serviços");
+    exibir_titulo("Listar Servicos");
     
     serv = (Servicos*) malloc(sizeof(Servicos));
     arq_servicos = fopen("servicos/servicos.dat", "rb");
@@ -248,7 +248,7 @@ void excluir_servico(void)
     int encontrado = 0;
 
     exibir_logo();
-    exibir_titulo("Excluir Serviço");
+    exibir_titulo("Excluir Servico");
 
     input(id_excluir, 20, "Informe o ID do serviço que deseja excluir:");
 

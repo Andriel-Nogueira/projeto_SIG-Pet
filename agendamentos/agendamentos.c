@@ -60,7 +60,7 @@ void agendar(void)
     Agendamentos *agend;
 
     exibir_logo();
-    exibir_titulo("Agendar Serviço");
+    exibir_titulo("Agendar Servico");
     agend = (Agendamentos*)malloc(sizeof(Agendamentos));
     input(agend->cpf, 15, "Insira seu CPF:");
     input(agend->nome_pet, 30, "Digite o nome do Pet");
