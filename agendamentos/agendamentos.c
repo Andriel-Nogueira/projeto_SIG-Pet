@@ -214,28 +214,43 @@ void atualizar_agend(void)
 
 void listar_agend(void)
 {
-    Agendamentos agend;
     FILE *arq_agendamentos;
+    Agendamentos *agend;
 
     exibir_logo();
     exibir_titulo("Listar Agendamentos");
-    arq_agendamentos = fopen("agendamentos/agendamentos.csv", "rt");
-    if (arq_agendamentos == NULL)
-    {
-        printf("Nenhum agendamento cadastrado ou erro ao abrir o arquivo.\n");
+
+    agend = (Agendamentos*)malloc(sizeof(Agendamentos));
+    if (agend == NULL) {
+        printf("Erro de memória.\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
         return;
     }
-    while (fscanf(arq_agendamentos, "%[^;];%[^;];%[^;];%[^;];%[^\n]\n", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone) == 5)
+
+    arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
+    if (arq_agendamentos == NULL)
     {
-        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-        printf("║                                                                                              ║\n");
-        printf("║ CPF: %s\t║ Nome do Pet: %s\t║ Data: %s\t║ Hora: %s\t║ Telefone: %s  ║\n", agend.cpf, agend.nome_pet, agend.data, agend.hora, agend.telefone);
-        printf("║                                                                                              ║\n");
-        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("Nenhum agendamento cadastrado ou erro ao abrir o arquivo.\n");
+        free(agend);
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
     }
+
+    while (fread(agend, sizeof(Agendamentos), 1, arq_agendamentos) == 1)
+    {
+        if (agend->status) {
+            printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+            printf("║                                                                                              ║\n");
+            printf("║ CPF: %s\t║ Nome do Pet: %s\t║ Data: %s\t║ Hora: %s\t║ Telefone: %s  ║\n", agend->cpf, agend->nome_pet, agend->data, agend->hora, agend->telefone);
+            printf("║                                                                                              ║\n");
+            printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        }
+    }
+
     fclose(arq_agendamentos);
+    free(agend);
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
