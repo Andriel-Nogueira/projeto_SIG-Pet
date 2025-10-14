@@ -59,144 +59,197 @@ void m_clientes(void)
     } while (op != 0);
 }
 
+// verifica se um cliente já está cadastrado e ativo
+int verif_cli_cadastrado(const char* cpf) {
+    FILE* arq_clientes;
+    Clientes* cli;
+    int encontrado = 0;
+
+    arq_clientes = fopen("clientes/clientes.dat", "rb");
+    if (arq_clientes == NULL) {
+        return 0; // Se o arquivo não existe, o cliente não pode estar cadastrado
+    }
+
+    cli = (Clientes*) malloc(sizeof(Clientes));
+    if (cli == NULL) {
+        fclose(arq_clientes);
+        return 0; // Falha na alocação de memória
+    }
+    
+    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
+        if ((strcmp(cli->cpf, cpf) == 0) && (cli->status == '1')) {
+            encontrado = 1;
+            break;
+        }
+    }
+    fclose(arq_clientes);
+    free(cli);
+    return encontrado;
+}
+
 void cadastrar_cliente(void)
 {
-    Clientes cli;
+    Clientes* cli;
+    FILE* arq_clientes;
+    cli = (Clientes*) malloc(sizeof(Clientes));
+
     exibir_logo();
     exibir_titulo("Cadastrar Cliente");
-    input(cli.cpf, 15, "Insira seu cpf");
-    input(cli.nome, 50, "Digite o seu nome: ");
-    input(cli.data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
-    input(cli.telefone, 20, "Digite seu telefone: ");
+
+
+    input(cli->cpf, 15, "Insira seu cpf");
+
+    if (verif_cli_cadastrado(cli->cpf)) {
+        printf("\nEste CPF já pertence a um cliente cadastrado.\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(cli);
+        return;
+    }
+
+    input(cli->nome, 50, "Digite o seu nome: ");
+    input(cli->data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
+    input(cli->telefone, 20, "Digite seu telefone: ");
+    cli->status = '1'; // '1' para ativo
+
+    arq_clientes = fopen("clientes/clientes.dat", "ab");
+    if (arq_clientes == NULL) {
+        printf("Erro na abertura do arquivo!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(cli);
+        return;
+    }
+    fwrite(cli, sizeof(Clientes), 1, arq_clientes);
+    fclose(arq_clientes);
+
     printf("Cliente cadastrado com sucesso!\n");
-    printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.\nTelefone: %s.\n", cli.nome, cli.cpf, cli.data_nascimento, cli.telefone);
-    salvar("clientes/clientes.csv", 4, cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
+    printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.\nTelefone: %s.\n", cli->nome, cli->cpf, cli->data_nascimento, cli->telefone);
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    free(cli);
 }
 
 void buscar_cliente(void)
 {
-    Clientes cli;
+    Clientes* cli;
     FILE *arq_clientes;
+    char cpf_busca[15];
 
     exibir_logo();
     exibir_titulo("Buscar Cliente pelo CPF");
-    input(cli.cpf_lido, 15, "Digite o CPF do cliente que deseja buscar: ");
-    arq_clientes = fopen("clientes/clientes.csv", "rt");
-    if (arq_clientes == NULL)
-    {
-        printf("Nenhum cliente cadastrado.\n");
-        getchar();
-        return;
-    }
-    // Loop para ler o arquivo até o fim, verificando o retorno de fscanf
-    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone) == 4)
-    {
-        if (strcmp(cli.cpf, cli.cpf_lido) == 0)
-        {
-            printf("\nCliente encontrado.");
-            printf("CPF: %s\n", cli.cpf);
-            printf("Nome: %s\n", cli.nome);
-            printf("Data de nascimento: %s\n", cli.data_nascimento);
-            printf("Telefone: %s\n", cli.telefone);
-            printf("Pressione enter para continuar...");
-            getchar();
-            fclose(arq_clientes);
 
+    input(cpf_busca, 15, "Digite o CPF do cliente que deseja buscar: ");
+
+    if (verif_cli_cadastrado(cpf_busca)) {
+        cli = (Clientes*) malloc(sizeof(Clientes));
+        arq_clientes = fopen("clientes/clientes.dat", "rb");
+        if (arq_clientes == NULL) { // Verificação extra de segurança
+            printf("Erro ao abrir o arquivo para leitura.\n");
+            free(cli);
             return;
         }
-   
+        while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
+            if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == '1')) {
+                printf("\nCliente encontrado:\n");
+                printf("CPF: %s\n", cli->cpf);
+                printf("Nome: %s\n", cli->nome);
+                printf("Data de nascimento: %s\n", cli->data_nascimento);
+                printf("Telefone: %s\n", cli->telefone);
+            }
+        }
+        fclose(arq_clientes);
+        free(cli);
+    } else {
+        printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
     }
-    fclose(arq_clientes);
-    printf("\nCliente com CPF %s não encontrado.\n", cli.cpf_lido);
 
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("\nPressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
 void atualizar_cliente(void)
 {
-    Clientes cli;
+    Clientes* cli;
     FILE *arq_clientes;
-    FILE *arq_clientes_temp;
+    char cpf_busca[15];
     int encontrado = 0;
 
     exibir_logo();
     exibir_titulo("Atualizar Dados do Cliente");
     printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cli.cpf_lido, 15, "Digite o CPF do cliente que deseja atualizar: ");
+    input(cpf_busca, 15, "Digite o CPF do cliente que deseja atualizar: ");
 
-    arq_clientes = fopen("clientes/clientes.csv", "rt");
-    arq_clientes_temp = fopen("clientes/clientes_temp.csv", "wt");
+    cli = (Clientes*) malloc(sizeof(Clientes));
+    arq_clientes = fopen("clientes/clientes.dat", "r+b");
 
-    if (arq_clientes == NULL || arq_clientes_temp == NULL) {
-        printf("\nErro ao abrir os arquivos!\n");
-        if (arq_clientes) fclose(arq_clientes);
-        if (arq_clientes_temp) fclose(arq_clientes_temp);
+    if (arq_clientes == NULL) {
+        printf("\nErro ao abrir o arquivo!\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
+        free(cli);
         return;
     }
 
-    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone) == 4) {
-        if (strcmp(cli.cpf_lido, cli.cpf) == 0) {
+    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
+        if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == '1')) {
             encontrado = 1;
             printf("\nCliente encontrado:\n");
-            printf("CPF: %s\nNome: %s\nData de Nascimento: %s\nTelefone: %s\n\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
+            printf("CPF: %s\nNome: %s\nData de Nascimento: %s\nTelefone: %s\n\n", cli->cpf, cli->nome, cli->data_nascimento, cli->telefone);
             printf("Digite os novos dados:\n");
-            input(cli.nome, 50, "Digite o novo nome: ");
-            input(cli.data_nascimento, 12, "Digite a nova data de nascimento (DD/MM/AAAA): ");
-            input(cli.telefone, 20, "Digite o novo telefone: ");
-            fprintf(arq_clientes_temp, "%s;%s;%s;%s\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
+            input(cli->nome, 50, "Digite o novo nome: ");
+            input(cli->data_nascimento, 12, "Digite a nova data de nascimento (DD/MM/AAAA): ");
+            input(cli->telefone, 20, "Digite o novo telefone: ");
+            
+            fseek(arq_clientes, -sizeof(Clientes), SEEK_CUR);
+            fwrite(cli, sizeof(Clientes), 1, arq_clientes);
             printf("\nCliente atualizado com sucesso!\n");
-        } else {
-            fprintf(arq_clientes_temp, "%s;%s;%s;%s\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
         }
     }
 
-    fclose(arq_clientes);
-    fclose(arq_clientes_temp);
-    remove("clientes/clientes.csv");
-    rename("clientes/clientes_temp.csv", "clientes/clientes.csv");
-
     if (!encontrado) {
-        printf("\nCliente com CPF %s não encontrado.\n", cli.cpf_lido);
+        printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
     }
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+    fclose(arq_clientes);
+    free(cli);
 }
 
 void listar_clientes(void)
 {
-    FILE *arq_clientes;
-    Clientes cli;
+    FILE* arq_clientes;
+    Clientes* cli;
 
     exibir_logo();
     exibir_titulo("Listar de Clientes");
-    arq_clientes = fopen("clientes/clientes.csv", "rt");
+    
+    cli = (Clientes*) malloc(sizeof(Clientes));
+    arq_clientes = fopen("clientes/clientes.dat", "rb");
 
     if (arq_clientes == NULL)
     {
         printf("Nenhum cliente cadastrado ou erro ao abrir o arquivo.\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
+        free(cli);
         return;
     }
-    // Loop para ler o arquivo até o fim, verificando o retorno de fscanf
-    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone) == 4)
-    {
-        printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
-        
-        printf("CPF: %s\t║ Nome: %s\t║ Data de nascimento: %s\t║ Telefone: %s\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
 
-        printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
+    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
+        if (cli->status == '1') {
+            printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
+            printf("CPF: %s\t║ Nome: %s\t║ Data de nascimento: %s\t║ Telefone: %s\n", cli->cpf, cli->nome, cli->data_nascimento, cli->telefone);
+            printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
+        }
     }
+
     fclose(arq_clientes);
+    free(cli);
 
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
@@ -205,113 +258,98 @@ void listar_clientes(void)
 
 void excluir_cliente(void)
 {
-    Clientes cli;
+    Clientes* cli;
     FILE *arq_clientes;
-    FILE *arq_clientes_temp;
+    char cpf_busca[15];
     int encontrado = 0;
 
     exibir_logo();
     exibir_titulo("Excluir Cliente");
     printf("║      Informe o CPF do cliente que deseja excluir:                                            ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cli.cpf_lido, 15, "Digite o CPF do cliente que deseja excluir: ");
+    input(cpf_busca, 15, "Digite o CPF do cliente que deseja excluir: ");
 
-    arq_clientes = fopen("clientes/clientes.csv", "rt");
+    cli = (Clientes*) malloc(sizeof(Clientes));
+    arq_clientes = fopen("clientes/clientes.dat", "r+b");
+
     if (arq_clientes == NULL) {
         printf("\nErro ao abrir o arquivo de clientes. Nenhum cliente cadastrado?\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
+        free(cli);
         return;
     }
 
-    arq_clientes_temp = fopen("clientes/clientes_temp.csv", "wt");
-    if (arq_clientes_temp == NULL) {
-        printf("\nErro ao criar arquivo temporário.\n");
-        fclose(arq_clientes);
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        return;
-    }
-
-    while (fscanf(arq_clientes, "%[^;];%[^;];%[^;];%[^\n]\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone) == 4) {
-        if (strcmp(cli.cpf_lido, cli.cpf) != 0) {
-            fprintf(arq_clientes_temp, "%s;%s;%s;%s\n", cli.cpf, cli.nome, cli.data_nascimento, cli.telefone);
-        } else {
+    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
+        if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == '1')) {
             encontrado = 1;
+            cli->status = '0'; // Marca como inativo
+            fseek(arq_clientes, -sizeof(Clientes), SEEK_CUR);
+            fwrite(cli, sizeof(Clientes), 1, arq_clientes);
+            printf("\nCliente excluído com sucesso!\n");
         }
     }
 
-    fclose(arq_clientes);
-    fclose(arq_clientes_temp);
-    remove("clientes/clientes.csv");
-    rename("clientes/clientes_temp.csv", "clientes/clientes.csv");
-
-    if (encontrado) {
-        printf("\nCliente excluído com sucesso!\n");
-    } else {
-        printf("\nCliente com CPF %s não encontrado.\n", cli.cpf_lido);
+    if (!encontrado) {
+        printf("\nCliente com CPF %s não encontrado ou já excluído.\n", cpf_busca);
     }
 
+    fclose(arq_clientes);
+    free(cli);
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
 void cadastrar_pet(void)
 {
-    Clientes cli;
-    Pets pet;
+    Pets* pet;
+    FILE* arq_pets;
+
+    char cpf_busca[15];
     char raca_input[3];
-    FILE  *arq_clientes;
-    int encontrado = 0;
-    char linha[256];
 
     exibir_logo();
     exibir_titulo("Cadastrar Pet");
-    input(cli.cpf_lido, 15, "Digite o CPF do dono do pet: ");
-    arq_clientes = fopen("clientes/clientes.csv", "rt");
-    
-    if (arq_clientes == NULL)
-    {
-        printf("Nenhum cliente cadastrado.\n");
-        getchar();
-        return;
-    }
+    input(cpf_busca, 15, "Digite o CPF do dono do pet: ");
 
-    // Procura o cliente pelo CPF
-    while (fgets(linha, sizeof(linha), arq_clientes) != NULL) {
-        sscanf(linha, "%[^;]", cli.cpf);
-        if (strcmp(cli.cpf, cli.cpf_lido) == 0) {
-            encontrado = 1;
-            break;
-        }
-    }
-    fclose(arq_clientes);
-
-    if (encontrado == 1) {
+    if (verif_cli_cadastrado(cpf_busca)) {
         printf("\nCliente encontrado.\n");
-        strcpy(pet.cpf, cli.cpf_lido); // Copia o CPF para a struct do pet
-        input(pet.nome, 50, "Digite o nome do pet: ");
+        pet = (Pets*) malloc(sizeof(Pets));
+        if (pet == NULL) {
+            printf("Erro de alocação de memória!\n");
+            printf("Pressione <Enter> para voltar...");
+            getchar();
+            return;
+        }
+
+        strcpy(pet->cpf, cpf_busca);
+        input(pet->nome, 50, "Digite o nome do pet: ");
         input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
         
         if (strcmp(raca_input, "1") == 0) { 
-
-            strcpy(pet.especie, "G"); 
+            strcpy(pet->especie, "G"); 
         } 
         else if (strcmp(raca_input, "2") == 0) { 
-
-            strcpy(pet.especie, "C"); 
+            strcpy(pet->especie, "C"); 
         } 
         else { 
-            
-            strcpy(pet.especie, "O"); 
+            strcpy(pet->especie, "O"); 
         }
+        pet->status = '1';
 
+        arq_pets = fopen("clientes/pets.dat", "ab");
+        if (arq_pets == NULL) {
+            printf("Erro na abertura do arquivo de pets!\n");
+        } else {
+            fwrite(pet, sizeof(Pets), 1, arq_pets);
+            fclose(arq_pets);
+        }
         printf("Pet cadastrado com sucesso!\n");
-        printf("CPF do cliente: %s.\nNome: %s.\nEspécie: %s.\n", pet.cpf, pet.nome, pet.especie);
-        salvar("clientes/pets.csv", 3, pet.cpf, pet.nome, pet.especie);
+        printf("CPF do cliente: %s.\nNome: %s.\nEspécie: %s.\n", pet->cpf, pet->nome, pet->especie);
+        free(pet);
     }
     else {
-        printf("Cliente com CPF %s não encontrado.\n", cli.cpf_lido);
+        printf("Cliente com CPF %s não encontrado.\n", cpf_busca);
         printf("É necessário cadastrar o cliente primeiro.\n");
     }
 
