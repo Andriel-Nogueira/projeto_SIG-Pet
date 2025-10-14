@@ -17,7 +17,6 @@ struct agendamentos
     char telefone[20];
     char status;
 
-    char cpf_lido[15];
 };
 
 typedef struct agendamentos Agendamentos;

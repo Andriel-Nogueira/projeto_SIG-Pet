@@ -102,12 +102,12 @@ void buscar_agend(void)
     FILE *arq_agendamentos;
     Agendamentos *agend;
     int encontrado = 0;
-    char buscar_cpf[15];
+    char cpf_lido[15];
 
     exibir_logo();
     exibir_titulo("Buscar Agendamento pelo CPF");
     agend = (Agendamentos*)malloc(sizeof(Agendamentos));
-    input(buscar_cpf, 15, "Digite o CPF do cliente que realizou o agendamento: ");
+    input(cpf_lido, 15, "Digite o CPF do cliente que realizou o agendamento: ");
     
     arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
     if (arq_agendamentos == NULL)
@@ -120,7 +120,7 @@ void buscar_agend(void)
     
     while (fread(agend, sizeof(Agendamentos), 1, arq_agendamentos))
     {
-        if ((strcmp(agend->cpf, buscar_cpf) == 0) && (agend->status))
+        if ((strcmp(agend->cpf, cpf_lido) == 0) && (agend->status))
         {
             encontrado = 1;
             printf("\nAgendamento encontrado.\n");
@@ -157,7 +157,7 @@ void atualizar_agend(void)
 {
     FILE *arq_agendamentos;
     Agendamentos *agend;
-    char buscar_cpf[15];
+    char cpf_lido[15];
     int encontrado = 0;
 
     exibir_logo();
@@ -165,7 +165,7 @@ void atualizar_agend(void)
     printf("║         Informe o CPF agendado que deseja atualizar:                                         ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     agend = (Agendamentos*)malloc(sizeof(Agendamentos));
-    input(buscar_cpf, 15, "Digite o CPF do agendamento que deseja atualizar: ");
+    input(cpf_lido, 15, "Digite o CPF do agendamento que deseja atualizar: ");
 
     arq_agendamentos = fopen("agendamentos/agendamentos.dat", "r+b");
     if (arq_agendamentos == NULL)
@@ -179,11 +179,11 @@ void atualizar_agend(void)
 
     while (fread(agend, sizeof(Agendamentos), 1, arq_agendamentos))
     {
-        if ((strcmp(agend->cpf, buscar_cpf) == 0) && (agend->status))
+        if ((strcmp(agend->cpf, cpf_lido) == 0) && (agend->status))
         {
             encontrado = 1;
             printf("Agendamento encontrado.\n");
-            printf("CPF: %s\nNome do Pet: %s\nData: %s\nHorário: %s\nTelefone: %s\n", buscar_cpf, agend->nome_pet, agend->data, agend->hora, agend->telefone);
+            printf("CPF: %s\nNome do Pet: %s\nData: %s\nHorário: %s\nTelefone: %s\n", cpf_lido, agend->nome_pet, agend->data, agend->hora, agend->telefone);
             printf("Insira os novos dados do agendamento:\n");
             input(agend->nome_pet, 30, "Digite o nome do Pet");
             input(agend->data, 11, "Insira a nova data desejada: xx/xx");
@@ -261,7 +261,7 @@ void excluir_agend(void)
 {
     FILE *arq_agendamentos;
     Agendamentos *agend;
-    char buscar_cpf[15];
+    char cpf_lido[15];
     int encontrado = 0;
 
     exibir_logo();
@@ -269,7 +269,7 @@ void excluir_agend(void)
     printf("║      Informe o CPF referente ao agendamento que deseja excluir:                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     agend = (Agendamentos*)malloc(sizeof(Agendamentos));
-    input(buscar_cpf, 15, "Digite o CPF referente ao agendamento que deseja excluir: ");
+    input(cpf_lido, 15, "Digite o CPF referente ao agendamento que deseja excluir: ");
 
     arq_agendamentos = fopen("agendamentos/agendamentos.dat", "r+b");
     if (arq_agendamentos == NULL) 
@@ -282,7 +282,7 @@ void excluir_agend(void)
 
     while (fread(agend, sizeof(Agendamentos), 1, arq_agendamentos))
     {
-        if ((strcmp(agend->cpf, buscar_cpf) == 0) && (agend->status))
+        if ((strcmp(agend->cpf, cpf_lido) == 0) && (agend->status))
         {
             agend->status = False;
             encontrado = 1;
@@ -301,7 +301,7 @@ void excluir_agend(void)
     } 
     else 
     {
-        printf("\nAgendamento com CPF %s não encontrado.\n", buscar_cpf);
+        printf("\nAgendamento com CPF %s não encontrado.\n", cpf_lido);
     }
 
     printf("\n");
