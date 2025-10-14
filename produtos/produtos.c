@@ -93,39 +93,44 @@ void adicionar_produto(void)
 
 void buscar_produto(void)
 {
-    Produtos prod;
+    Produtos* prod;
     FILE *arq_produtos;
+    char id_lido[20];
+    int encontrado = 0;
 
     exibir_logo();
     exibir_titulo("Buscar Produto pelo Código");
-    input(prod.id_lido, 20, "Digite o id do produto que deseja buscar: ");
+    input(id_lido, 20, "Digite o id do produto que deseja buscar: ");
 
-    arq_produtos = fopen("produtos/produtos.csv", "rt");
+    prod = (Produtos*) malloc(sizeof(Produtos));
+    arq_produtos = fopen("produtos/produtos.dat", "rb");
     if (arq_produtos == NULL)
     {
         printf("Nenhum produto cadastrado.\n");
         printf("Pressione <Enter> para voltar...");
+        free(prod);
         getchar();
         return;
     }
 
-    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4)
+    while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
-        if (strcmp(prod.id, prod.id_lido) == 0)
+        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == '1'))
         {
+            encontrado = 1;
             printf("\nProduto encontrado:\n");
-            printf("ID: %s\n", prod.id);
-            printf("Nome: %s\n", prod.nome);
-            printf("Preço: %s\n", prod.preco);
-            printf("Quantidade: %s\n", prod.quantidade);
-            fclose(arq_produtos);
-            printf("\nPressione <Enter> para continuar...");
-            getchar();
-            return;
+            printf("ID: %s\n", prod->id);
+            printf("Nome: %s\n", prod->nome);
+            printf("Preço: %s\n", prod->preco);
+            printf("Quantidade: %s\n", prod->quantidade);
+            break;
         }
     }
     fclose(arq_produtos);
-    printf("\nNenhum produto encontrado para o ID %s.\n", prod.id_lido);
+    free(prod);
+    if (!encontrado) {
+        printf("\nNenhum produto encontrado para o ID %s.\n", id_lido);
+    }
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
