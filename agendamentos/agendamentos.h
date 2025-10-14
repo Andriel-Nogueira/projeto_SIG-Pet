@@ -1,5 +1,5 @@
-#define True 1;
-#define False 0;
+#ifndef AGENDAMENTOS_H
+#define AGENDAMENTOS_H
 
 void m_agendamento(void);
 void agendar(void);
@@ -15,8 +15,8 @@ struct agendamentos
     char data[11];
     char hora[6];
     char telefone[20];
-    char status;
+    int status;
 
 };
 
-typedef struct agendamentos Agendamentos;
+#endif
