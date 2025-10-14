@@ -192,27 +192,31 @@ void atualizar_produto(void)
 void listar_produtos(void)
 {
     FILE *arq_produtos;
-    Produtos prod;
+    Produtos* prod;
 
     exibir_logo();
     exibir_titulo("Listar Produtos");
-    arq_produtos = fopen("produtos/produtos.csv", "rt");
+
+    prod = (Produtos*) malloc(sizeof(Produtos));
+    arq_produtos = fopen("produtos/produtos.dat", "rb");
     if (arq_produtos == NULL)
     {
         printf("Nenhum produto cadastrado ou erro ao abrir o arquivo.\n");
         printf("Pressione <Enter> para voltar...");
+        free(prod);
         getchar();
         return;
     }
-    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4)
+    while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
-
-        printf("id: %s\t║ Nome: %s\t║ Preço: %s\t║ Quantidade em estoque: %s\n", prod.id, prod.nome, prod.preco, prod.quantidade);
-
-        printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
+        if (prod->status == '1') {
+            printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+            printf("║ ID: %-10s ║ Nome: %-20s ║ Preço: R$ %-10s ║ Estoque: %-5s ║\n", prod->id, prod->nome, prod->preco, prod->quantidade);
+        }
     }
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     fclose(arq_produtos);
-
+    free(prod);
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
