@@ -73,7 +73,7 @@ void adicionar_produto(void)
     input(prod->preco, 10, "Preço do Produto: ");
     input(prod->quantidade, 10, "Quantidade em Estoque: ");
     strcpy(prod->id, gerar_id("produtos/produtos.dat"));
-    prod->status = '1';
+    prod->status = True;
 
     arq_produtos = fopen("produtos/produtos.dat", "ab");
     fwrite(prod, sizeof(Produtos), 1, arq_produtos);
@@ -115,7 +115,7 @@ void buscar_produto(void)
 
     while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
-        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == '1'))
+        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == True))
         {
             encontrado = 1;
             printf("\nProduto encontrado:\n");
@@ -161,7 +161,7 @@ void atualizar_produto(void)
 
     while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
-        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == '1'))
+        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == True))
         {
             encontrado = 1;
             printf("\nProduto encontrado:\n");
@@ -209,7 +209,7 @@ void listar_produtos(void)
     }
     while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
-        if (prod->status == '1') {
+        if (prod->status == True) {
             printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
             printf("║ ID: %-10s ║ Nome: %-20s ║ Preço: R$ %-10s ║ Estoque: %-5s ║\n", prod->id, prod->nome, prod->preco, prod->quantidade);
         }
@@ -247,9 +247,9 @@ void excluir_produto(void)
     }
 
     while (fread(prod, sizeof(Produtos), 1, arq_produtos)) {
-        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == '1')) {
+        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == True)) {
             encontrado = 1;
-            prod->status = '0'; // Exclusão lógica
+            prod->status = False; // Exclusão lógica
             fseek(arq_produtos, -sizeof(Produtos), SEEK_CUR);
             fwrite(prod, sizeof(Produtos), 1, arq_produtos);
             printf("\nProduto com ID %s excluído com sucesso!\n", id_lido);
