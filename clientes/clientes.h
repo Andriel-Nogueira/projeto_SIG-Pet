@@ -8,7 +8,6 @@ void atualizar_cliente(void);
 void listar_clientes(void);
 void excluir_cliente(void);
 void cadastrar_pet(void);
-int verif_cli_cadastrado(const char* cpf);
 
 
 struct clientes
@@ -19,7 +18,7 @@ struct clientes
     char telefone[20];
 
     char cpf_lido[15];
-    char status;
+    int status;
 };
 
 struct pets
@@ -27,9 +26,7 @@ struct pets
     char cpf[15];
     char nome[50];
     char especie[2];
-    char status;
+    int status;
 };
-
-
 
 #endif

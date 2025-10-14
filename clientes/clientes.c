@@ -77,7 +77,7 @@ int verif_cli_cadastrado(const char* cpf) {
     }
     
     while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-        if ((strcmp(cli->cpf, cpf) == 0) && (cli->status == '1')) {
+        if ((strcmp(cli->cpf, cpf) == 0) && (cli->status == True)) {
             encontrado = 1;
             break;
         }
@@ -110,7 +110,7 @@ void cadastrar_cliente(void)
     input(cli->nome, 50, "Digite o seu nome: ");
     input(cli->data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
     input(cli->telefone, 20, "Digite seu telefone: ");
-    cli->status = '1'; // '1' para ativo
+    cli->status = True;
 
     arq_clientes = fopen("clientes/clientes.dat", "ab");
     if (arq_clientes == NULL) {
@@ -152,7 +152,7 @@ void buscar_cliente(void)
             return;
         }
         while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-            if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == '1')) {
+            if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == True)) {
                 printf("\nCliente encontrado:\n");
                 printf("CPF: %s\n", cli->cpf);
                 printf("Nome: %s\n", cli->nome);
@@ -195,7 +195,7 @@ void atualizar_cliente(void)
     }
 
     while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-        if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == '1')) {
+        if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == True)) {
             encontrado = 1;
             printf("\nCliente encontrado:\n");
             printf("CPF: %s\nNome: %s\nData de Nascimento: %s\nTelefone: %s\n\n", cli->cpf, cli->nome, cli->data_nascimento, cli->telefone);
@@ -241,7 +241,7 @@ void listar_clientes(void)
     }
 
     while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-        if (cli->status == '1') {
+        if (cli->status == True) {
             printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
             printf("CPF: %s\t║ Nome: %s\t║ Data de nascimento: %s\t║ Telefone: %s\n", cli->cpf, cli->nome, cli->data_nascimento, cli->telefone);
             printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
@@ -281,9 +281,9 @@ void excluir_cliente(void)
     }
 
     while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-        if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == '1')) {
+        if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == True)) {
             encontrado = 1;
-            cli->status = '0'; // Marca como inativo
+            cli->status = False; // Marca como inativo
             fseek(arq_clientes, -sizeof(Clientes), SEEK_CUR);
             fwrite(cli, sizeof(Clientes), 1, arq_clientes);
             printf("\nCliente excluído com sucesso!\n");
@@ -335,7 +335,7 @@ void cadastrar_pet(void)
         else { 
             strcpy(pet->especie, "O"); 
         }
-        pet->status = '1';
+        pet->status = True;
 
         arq_pets = fopen("clientes/pets.dat", "ab");
         if (arq_pets == NULL) {
