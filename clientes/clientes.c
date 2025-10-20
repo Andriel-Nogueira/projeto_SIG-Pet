@@ -22,7 +22,7 @@ void m_clientes(void)
         printf("║          2 - Buscar cliente pelo CPF                                                         ║\n");
         printf("║          3 - Atualizar clientes                                                              ║\n");
         printf("║          4 - Listar clientes                                                                 ║\n");
-        printf("║          5 - Excluir cliente (Lógica)                                                        ║\n");
+        printf("║          5 - Inativar cliente                                                                ║\n");
         printf("║          6 - Excluir cliente (Fisicamente)                                                   ║\n");
         printf("║          7 - Cadastrar Pet                                                                   ║\n");
         printf("║          0 - Voltar ao menu principal                                                        ║\n");

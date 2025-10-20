@@ -7,6 +7,7 @@ void buscar_produto(void);
 void atualizar_produto(void);
 void listar_produtos(void);
 void excluir_produto(void);
+void excluir_produto_fisico(void);
 
 struct produtos
 {

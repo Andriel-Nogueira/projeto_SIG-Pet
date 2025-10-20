@@ -20,7 +20,8 @@ void m_produtos(void)
         printf("║          2 - Buscar produto pelo código                                                      ║\n");
         printf("║          3 - Atualizar produto                                                               ║\n");
         printf("║          4 - Listar produtos                                                                 ║\n");
-        printf("║          5 - Excluir produto                                                                 ║\n");
+        printf("║          5 - Inativar produto                                                                ║\n");
+        printf("║          6 - Excluir produto (Fisicamente)                                                   ║\n");
         printf("║          0 - Voltar ao menu principal                                                        ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -44,6 +45,9 @@ void m_produtos(void)
             break;
         case 5:
             excluir_produto();
+            break;
+        case 6:
+            excluir_produto_fisico();
             break;
         case 0:
             break;
@@ -132,6 +136,66 @@ void buscar_produto(void)
         printf("\nNenhum produto encontrado para o ID %s.\n", id_lido);
     }
 
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
+void excluir_produto_fisico(void)
+{
+    Produtos* prod;
+    FILE *arq_produtos;
+    FILE *arq_temp;
+    char id_busca[20];
+    int encontrado = 0;
+
+    exibir_logo();
+    exibir_titulo("Excluir Produto Fisicamente");
+    printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
+    printf("║      Informe o código do produto que deseja excluir permanentemente:                         ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(id_busca, 20, "Digite o código do produto: ");
+
+    prod = (Produtos*) malloc(sizeof(Produtos));
+    if (prod == NULL) {
+        printf("Erro de alocação de memória!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    arq_produtos = fopen("produtos/produtos.dat", "rb");
+    arq_temp = fopen("produtos/produtos_temp.dat", "wb");
+
+    if (arq_produtos == NULL || arq_temp == NULL) {
+        printf("\nErro ao abrir os arquivos. A operação não pode ser concluída.\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(prod);
+        if (arq_produtos) fclose(arq_produtos);
+        if (arq_temp) fclose(arq_temp);
+        return;
+    }
+
+    while(fread(prod, sizeof(Produtos), 1, arq_produtos)) {
+        if (strcmp(prod->id, id_busca) != 0) {
+            fwrite(prod, sizeof(Produtos), 1, arq_temp);
+        } else {
+            encontrado = 1;
+        }
+    }
+
+    fclose(arq_produtos);
+    fclose(arq_temp);
+    free(prod);
+
+    remove("produtos/produtos.dat");
+    rename("produtos/produtos_temp.dat", "produtos/produtos.dat");
+
+    if (encontrado) {
+        printf("\nProduto com código %s excluído permanentemente com sucesso!\n", id_busca);
+    } else {
+        printf("\nProduto com código %s não encontrado.\n", id_busca);
+    }
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
