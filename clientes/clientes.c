@@ -22,8 +22,9 @@ void m_clientes(void)
         printf("║          2 - Buscar cliente pelo CPF                                                         ║\n");
         printf("║          3 - Atualizar clientes                                                              ║\n");
         printf("║          4 - Listar clientes                                                                 ║\n");
-        printf("║          5 - Excluir cliente                                                                 ║\n");
-        printf("║          6 - Cadastrar Pet                                                                   ║\n");
+        printf("║          5 - Excluir cliente (Lógica)                                                        ║\n");
+        printf("║          6 - Excluir cliente (Fisicamente)                                                   ║\n");
+        printf("║          7 - Cadastrar Pet                                                                   ║\n");
         printf("║          0 - Voltar ao menu principal                                                        ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -48,7 +49,10 @@ void m_clientes(void)
         case 5:
             excluir_cliente();
             break;
-        case 6:
+        case 6: 
+            excluir_cliente_fisico();
+            break;
+        case 7: 
             cadastrar_pet();
             break;
         case 0:
@@ -296,6 +300,66 @@ void excluir_cliente(void)
 
     fclose(arq_clientes);
     free(cli);
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
+void excluir_cliente_fisico(void)
+{
+    Clientes* cli;
+    FILE *arq_clientes;
+    FILE *arq_temp;
+    char cpf_busca[15];
+    int encontrado = 0;
+
+    exibir_logo();
+    exibir_titulo("Excluir Cliente Fisicamente");
+    printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
+    printf("║      Informe o CPF do cliente que deseja excluir permanentemente:                            ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_busca, 15, "Digite o CPF do cliente: ");
+
+    cli = (Clientes*) malloc(sizeof(Clientes));
+    if (cli == NULL) {
+        printf("Erro de alocação de memória!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    arq_clientes = fopen("clientes/clientes.dat", "rb");
+    arq_temp = fopen("clientes/clientes_temp.dat", "wb");
+
+    if (arq_clientes == NULL || arq_temp == NULL) {
+        printf("\nErro ao abrir os arquivos. A operação não pode ser concluída.\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(cli);
+        if (arq_clientes) fclose(arq_clientes);
+        if (arq_temp) fclose(arq_temp);
+        return;
+    }
+
+    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
+        if (strcmp(cli->cpf, cpf_busca) != 0) {
+            fwrite(cli, sizeof(Clientes), 1, arq_temp);
+        } else {
+            encontrado = 1;
+        }
+    }
+
+    fclose(arq_clientes);
+    fclose(arq_temp);
+    free(cli);
+
+    remove("clientes/clientes.dat");
+    rename("clientes/clientes_temp.dat", "clientes/clientes.dat");
+
+    if (encontrado) {
+        printf("\nCliente com CPF %s excluído permanentemente com sucesso!\n", cpf_busca);
+    } else {
+        printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
+    }
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
