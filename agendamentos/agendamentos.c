@@ -20,7 +20,8 @@ void m_agendamento(void)
         printf("║          2 - Buscar agendamento pelo cliente                                                 ║\n");
         printf("║          3 - Atualizar agendamento                                                           ║\n");
         printf("║          4 - Listar agendamentos                                                             ║\n");
-        printf("║          5 - Excluir agendamento                                                             ║\n");
+        printf("║          5 - Inativar agendamento                                                            ║\n");
+        printf("║          6 - Excluir agendamento (Fisicamente)                                               ║\n");
         printf("║          0 - Voltar ao menu principal                                                        ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -45,6 +46,9 @@ void m_agendamento(void)
         case 5:
             excluir_agend();
             break;
+        case 6:
+            excluir_agend_fisico();
+            break;
         case 0:
             break;
         default:
@@ -54,14 +58,14 @@ void m_agendamento(void)
 }
 
 void agendar(void)
-{   
+{
 
     FILE *arq_agendamentos;
     Agendamentos *agend;
 
     exibir_logo();
     exibir_titulo("Agendar Servico");
-    agend = (Agendamentos*)malloc(sizeof(Agendamentos));
+    agend = (Agendamentos *)malloc(sizeof(Agendamentos));
     input(agend->cpf, 15, "Insira seu CPF:");
     input(agend->nome_pet, 30, "Digite o nome do Pet");
     input(agend->data, 11, "Insira a data desejada: xx/xx");
@@ -70,7 +74,7 @@ void agendar(void)
 
     agend->status = True;
     arq_agendamentos = fopen("agendamentos/agendamentos.dat", "ab");
-    if(arq_agendamentos == NULL)
+    if (arq_agendamentos == NULL)
     {
         printf("Erro na criação ou abertura do arquivo!\n");
         printf("Pressione <Enter> para voltar ao menu principal...                         \n");
@@ -81,7 +85,7 @@ void agendar(void)
 
     fwrite(agend, sizeof(Agendamentos), 1, arq_agendamentos);
     fclose(arq_agendamentos);
-    
+
     system("clear");
     printf("\nAgendamento realizado com sucesso!\n");
     printf("\nCPF: %s\n", agend->cpf);
@@ -106,9 +110,9 @@ void buscar_agend(void)
 
     exibir_logo();
     exibir_titulo("Buscar Agendamento pelo CPF");
-    agend = (Agendamentos*)malloc(sizeof(Agendamentos));
+    agend = (Agendamentos *)malloc(sizeof(Agendamentos));
     input(cpf_lido, 15, "Digite o CPF do cliente que realizou o agendamento: ");
-    
+
     arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
     if (arq_agendamentos == NULL)
     {
@@ -117,7 +121,7 @@ void buscar_agend(void)
         getchar();
         return;
     }
-    
+
     while (fread(agend, sizeof(Agendamentos), 1, arq_agendamentos))
     {
         if ((strcmp(agend->cpf, cpf_lido) == 0) && (agend->status))
@@ -133,7 +137,6 @@ void buscar_agend(void)
             getchar();
             return;
         }
-   
     }
     fclose(arq_agendamentos);
     free(agend);
@@ -153,6 +156,77 @@ void buscar_agend(void)
     printf("\n");
 }
 
+void excluir_agend_fisico(void)
+{
+    FILE *arq_agendamentos;
+    FILE *arq_temp;
+    Agendamentos *agend;
+    char cpf_busca[15];
+    int encontrado = 0;
+
+    exibir_logo();
+    exibir_titulo("Excluir Agendamento Fisicamente");
+    printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
+    printf("║      Informe o código do produto que deseja excluir permanentemente:                         ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_busca, 15, "Digite o CPF do agendamento que deseja excluir permanentemente: ");
+
+    agend = (Agendamentos *)malloc(sizeof(Agendamentos));
+    if (agend == NULL)
+    {
+        printf("\nErro de memória!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
+    arq_temp = fopen("agendamentos/agendamentos_temp.dat", "wb");
+
+    if (arq_agendamentos == NULL || arq_temp == NULL)
+    {
+        printf("\nErro ao abrir os arquivos!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(agend);
+        if (arq_agendamentos)
+            fclose(arq_agendamentos);
+        if (arq_temp)
+            fclose(arq_temp);
+        return;
+    }
+
+    while (fread(agend, sizeof(Agendamentos), 1, arq_agendamentos))
+    {
+        if (strcmp(agend->cpf, cpf_busca) != 0)
+        {
+            fwrite(agend, sizeof(Agendamentos), 1, arq_temp);
+        }
+        else
+        {
+            encontrado = 1;
+        }
+    }
+
+    fclose(arq_agendamentos);
+    fclose(arq_temp);
+    free(agend);
+
+    remove("agendamentos/agendamentos.dat");
+    rename("agendamentos/agendamentos_temp.dat", "agendamentos/agendamentos.dat");
+
+    if (encontrado)
+    {
+        printf("\nAgendamento com CPF %s excluído permanentemente com sucesso!\n", cpf_busca);
+    }
+    else
+    {
+        printf("\nAgendamento com CPF %s não encontrado.\n", cpf_busca);
+    }
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
 void atualizar_agend(void)
 {
     FILE *arq_agendamentos;
@@ -164,7 +238,7 @@ void atualizar_agend(void)
     exibir_titulo("Atualizar Agendamento");
     printf("║         Informe o CPF agendado que deseja atualizar:                                         ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    agend = (Agendamentos*)malloc(sizeof(Agendamentos));
+    agend = (Agendamentos *)malloc(sizeof(Agendamentos));
     input(cpf_lido, 15, "Digite o CPF do agendamento que deseja atualizar: ");
 
     arq_agendamentos = fopen("agendamentos/agendamentos.dat", "r+b");
@@ -190,7 +264,7 @@ void atualizar_agend(void)
             input(agend->hora, 6, "Insira o novo horário desejado: xx:xx");
             input(agend->telefone, 20, "Insira seu telefone para contato:");
 
-            fseek(arq_agendamentos, (-1)*sizeof(Agendamentos), SEEK_CUR);
+            fseek(arq_agendamentos, (-1) * sizeof(Agendamentos), SEEK_CUR);
             fwrite(agend, sizeof(Agendamentos), 1, arq_agendamentos);
         }
     }
@@ -211,7 +285,6 @@ void atualizar_agend(void)
     getchar();
 }
 
-
 void listar_agend(void)
 {
     FILE *arq_agendamentos;
@@ -220,8 +293,9 @@ void listar_agend(void)
     exibir_logo();
     exibir_titulo("Listar Agendamentos");
 
-    agend = (Agendamentos*)malloc(sizeof(Agendamentos));
-    if (agend == NULL) {
+    agend = (Agendamentos *)malloc(sizeof(Agendamentos));
+    if (agend == NULL)
+    {
         printf("Erro de memória.\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
@@ -240,7 +314,8 @@ void listar_agend(void)
 
     while (fread(agend, sizeof(Agendamentos), 1, arq_agendamentos) == 1)
     {
-        if (agend->status) {
+        if (agend->status)
+        {
             printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
             printf("║                                                                                              ║\n");
             printf("║ CPF: %s\t║ Nome do Pet: %s\t║ Data: %s\t║ Hora: %s\t║ Telefone: %s  ║\n", agend->cpf, agend->nome_pet, agend->data, agend->hora, agend->telefone);
@@ -268,14 +343,15 @@ void excluir_agend(void)
     exibir_titulo("Excluir Agendamento");
     printf("║      Informe o CPF referente ao agendamento que deseja excluir:                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    agend = (Agendamentos*)malloc(sizeof(Agendamentos));
     input(cpf_lido, 15, "Digite o CPF referente ao agendamento que deseja excluir: ");
 
+    agend = (Agendamentos *)malloc(sizeof(Agendamentos));
     arq_agendamentos = fopen("agendamentos/agendamentos.dat", "r+b");
-    if (arq_agendamentos == NULL) 
+    if (arq_agendamentos == NULL)
     {
         printf("\nErro ao abrir o arquivo de clientes. Nenhum cliente cadastrado?\n");
         printf("Pressione <Enter> para voltar...");
+        free(agend);
         getchar();
         return;
     }
@@ -284,22 +360,21 @@ void excluir_agend(void)
     {
         if ((strcmp(agend->cpf, cpf_lido) == 0) && (agend->status))
         {
-            agend->status = False;
             encontrado = 1;
-            fseek(arq_agendamentos, (-1)*sizeof(Agendamentos), SEEK_CUR);
+            agend->status = False; // Exclusão lógica
+            fseek(arq_agendamentos, (-1) * sizeof(Agendamentos), SEEK_CUR);
             fwrite(agend, sizeof(Agendamentos), 1, arq_agendamentos);
         }
-             
     }
 
     fclose(arq_agendamentos);
     free(agend);
 
-    if (encontrado) 
+    if (encontrado)
     {
         printf("\nAgendamento excluído com sucesso!\n");
-    } 
-    else 
+    }
+    else
     {
         printf("\nAgendamento com CPF %s não encontrado.\n", cpf_lido);
     }
