@@ -18,7 +18,7 @@ struct clientes
     char telefone[20];
 
     char cpf_lido[15];
-    char status;
+    int status;
 };
 
 struct pets
@@ -26,8 +26,7 @@ struct pets
     char cpf[15];
     char nome[50];
     char especie[2];
+    int status;
 };
-
-
 
 #endif

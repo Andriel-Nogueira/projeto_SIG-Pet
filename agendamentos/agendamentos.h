@@ -15,8 +15,8 @@ struct agendamentos
     char data[11];
     char hora[6];
     char telefone[20];
+    int status;
 
-    char cpf_lido[15];
 };
 
 #endif

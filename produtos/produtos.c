@@ -55,63 +55,82 @@ void m_produtos(void)
 
 void adicionar_produto(void)
 {
-    Produtos prod;
+    Produtos* prod;
+    FILE* arq_produtos;
 
     exibir_logo();
     exibir_titulo("Adicionar Produto");
-    input(prod.nome, 50, "Nome do Produto: ");
-    input(prod.preco, 10, "Preço do Produto: ");
-    input(prod.quantidade, 10, "Quantidade em Estoque: ");
-    strcpy(prod.id, gerar_id("produtos/produtos.csv"));
 
-    printf("\nProduto cadastrado com sucesso!\n");
-    printf("Código: %s\n", prod.id);
-    printf("Nome: %s\n", prod.nome);
-    printf("Preço: %s\n", prod.preco);
-    printf("Quantidade em estoque: %s\n", prod.quantidade);
-    
-    salvar("produtos/produtos.csv", 4, prod.id, prod.nome, prod.preco, prod.quantidade);
-
-    printf("\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
-}
-
-void buscar_produto(void)
-{
-    Produtos prod;
-    FILE *arq_produtos;
-
-    exibir_logo();
-    exibir_titulo("Buscar Produto pelo Código");
-    input(prod.id_lido, 20, "Digite o id do produto que deseja buscar: ");
-
-    arq_produtos = fopen("produtos/produtos.csv", "rt");
-    if (arq_produtos == NULL)
-    {
-        printf("Nenhum produto cadastrado.\n");
+    prod = (Produtos*) malloc(sizeof(Produtos));
+    if (prod == NULL) {
+        printf("Erro de alocação de memória!\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
         return;
     }
 
-    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4)
+    input(prod->nome, 50, "Nome do Produto: ");
+    input(prod->preco, 10, "Preço do Produto: ");
+    input(prod->quantidade, 10, "Quantidade em Estoque: ");
+    strcpy(prod->id, gerar_id("produtos/produtos.dat"));
+    prod->status = True;
+
+    arq_produtos = fopen("produtos/produtos.dat", "ab");
+    fwrite(prod, sizeof(Produtos), 1, arq_produtos);
+    fclose(arq_produtos);
+
+    printf("\nProduto cadastrado com sucesso!\n");
+    printf("Código: %s\n", prod->id);
+    printf("Nome: %s\n", prod->nome);
+    printf("Preço: %s\n", prod->preco);
+    printf("Quantidade em estoque: %s\n", prod->quantidade);
+
+    printf("\n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+    free(prod);
+}
+
+void buscar_produto(void)
+{
+    Produtos* prod;
+    FILE *arq_produtos;
+    char id_lido[20];
+    int encontrado = 0;
+
+    exibir_logo();
+    exibir_titulo("Buscar Produto pelo Codigo");
+    input(id_lido, 20, "Digite o id do produto que deseja buscar: ");
+
+    prod = (Produtos*) malloc(sizeof(Produtos));
+    arq_produtos = fopen("produtos/produtos.dat", "rb");
+    if (arq_produtos == NULL)
     {
-        if (strcmp(prod.id, prod.id_lido) == 0)
+        printf("Nenhum produto cadastrado.\n");
+        printf("Pressione <Enter> para voltar...");
+        free(prod);
+        getchar();
+        return;
+    }
+
+    while (fread(prod, sizeof(Produtos), 1, arq_produtos))
+    {
+        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == True))
         {
+            encontrado = 1;
             printf("\nProduto encontrado:\n");
-            printf("ID: %s\n", prod.id);
-            printf("Nome: %s\n", prod.nome);
-            printf("Preço: %s\n", prod.preco);
-            printf("Quantidade: %s\n", prod.quantidade);
-            fclose(arq_produtos);
-            printf("\nPressione <Enter> para continuar...");
-            getchar();
-            return;
+            printf("ID: %s\n", prod->id);
+            printf("Nome: %s\n", prod->nome);
+            printf("Preço: %s\n", prod->preco);
+            printf("Quantidade: %s\n", prod->quantidade);
+            break;
         }
     }
     fclose(arq_produtos);
-    printf("\nNenhum produto encontrado para o ID %s.\n", prod.id_lido);
+    free(prod);
+    if (!encontrado) {
+        printf("\nNenhum produto encontrado para o ID %s.\n", id_lido);
+    }
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -119,77 +138,85 @@ void buscar_produto(void)
 
 void atualizar_produto(void)
 {
-    Produtos prod;
-    FILE * arq_produtos;
-    FILE * arq_produtos_temp;
+    Produtos* prod;
+    FILE* arq_produtos;
+    char id_lido[20];
+    int encontrado = 0;
+
     exibir_logo();
     exibir_titulo("Atualizar Produto");
     printf("║      Informe o Código do Produto que deseja atualizar:                                       ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(prod.id_lido, 20, "Digite o id do produto que deseja atualizar: ");
-    arq_produtos = fopen("produtos/produtos.csv", "rt");
-    arq_produtos_temp = fopen("produtos/produtos_temp.csv", "wt");
-    int encontrado = 0;
-    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4)
+    input(id_lido, 20, "Digite o id do produto que deseja atualizar: ");
+
+    prod = (Produtos*) malloc(sizeof(Produtos));
+    arq_produtos = fopen("produtos/produtos.dat", "r+b");
+    if (arq_produtos == NULL) {
+        printf("\nErro ao abrir o arquivo!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(prod);
+        return;
+    }
+
+    while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
-        if (strcmp(prod.id_lido, prod.id) == 0) // se encontrar, vai pedir os novos dados
+        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == True))
         {
             encontrado = 1;
-
             printf("\nProduto encontrado:\n");
-            printf("ID: %s\n", prod.id);
-            printf("Nome: %s\n", prod.nome);
-            printf("Preço do produto: %s\n", prod.preco);
-            printf("Quantidade em estoque: %s\n", prod.quantidade);
+            printf("ID: %s\n", prod->id);
+            printf("Nome: %s\n", prod->nome);
+            printf("Preço do produto: %s\n", prod->preco);
+            printf("Quantidade em estoque: %s\n", prod->quantidade);
             printf("\n");
             printf("Digite os novos dados do produto:\n");
-            input(prod.nome, 50, "Nome do Produto: ");
-            input(prod.preco, 10, "Preço do Produto: ");
-            input(prod.quantidade, 10, "Quantidade em Estoque: ");
-
-            fprintf(arq_produtos_temp, "%s;%s;%s;%s\n", prod.id, prod.nome, prod.preco, prod.quantidade);
-            printf("Produto atualizado com sucesso!\n");
-            
-        }
-        else {
-            fprintf(arq_produtos_temp, "%s;%s;%s;%s\n", prod.id, prod.nome, prod.preco, prod.quantidade);
+            input(prod->nome, 50, "Nome do Produto: ");
+            input(prod->preco, 10, "Preço do Produto: ");
+            input(prod->quantidade, 10, "Quantidade em Estoque: ");
+            fseek(arq_produtos, -sizeof(Produtos), SEEK_CUR);
+            fwrite(prod, sizeof(Produtos), 1, arq_produtos);
+            printf("\nProduto atualizado com sucesso!\n");
+            break;
         }
     }
-    remove("produtos/produtos.csv");
-    rename("produtos/produtos_temp.csv", "produtos/produtos.csv");
     fclose(arq_produtos);
-    fclose(arq_produtos_temp);
-    if (encontrado != 1)
-    {
-        printf("Nenhum produto encontrado para o ID %s.\n", prod.id_lido);
+    free(prod);
+    if (!encontrado) {
+        printf("\nNenhum produto encontrado para o ID %s.\n", id_lido);
     }
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
 
 void listar_produtos(void)
 {
     FILE *arq_produtos;
-    Produtos prod;
+    Produtos* prod;
 
     exibir_logo();
     exibir_titulo("Listar Produtos");
-    arq_produtos = fopen("produtos/produtos.csv", "rt");
+
+    prod = (Produtos*) malloc(sizeof(Produtos));
+    arq_produtos = fopen("produtos/produtos.dat", "rb");
     if (arq_produtos == NULL)
     {
         printf("Nenhum produto cadastrado ou erro ao abrir o arquivo.\n");
         printf("Pressione <Enter> para voltar...");
+        free(prod);
         getchar();
         return;
     }
-    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4)
+    while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
-
-        printf("id: %s\t║ Nome: %s\t║ Preço: %s\t║ Quantidade em estoque: %s\n", prod.id, prod.nome, prod.preco, prod.quantidade);
-
-        printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
+        if (prod->status == True) {
+            printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+            printf("║ ID: %-10s ║ Nome: %-20s ║ Preço: R$ %-10s ║ Estoque: %-5s ║\n", prod->id, prod->nome, prod->preco, prod->quantidade);
+        }
     }
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     fclose(arq_produtos);
-
+    free(prod);
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -197,43 +224,43 @@ void listar_produtos(void)
 
 void excluir_produto(void)
 {
-    Produtos prod;
-    FILE *arq_produtos;
-    FILE *arq_produtos_temp;
+    Produtos* prod;
+    FILE* arq_produtos;
+    char id_lido[20];
+    int encontrado = 0;
+
     exibir_logo();
     exibir_titulo("Excluir Produto");
     printf("║      Informe o Código do Produto que deseja excluir:                                         ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(prod.id_lido, 20, "Digite o id do produto que deseja excluir: ");
+    input(id_lido, 20, "Digite o id do produto que deseja excluir: ");
 
-    arq_produtos = fopen("produtos/produtos.csv", "rt");
+    prod = (Produtos*) malloc(sizeof(Produtos));
+    arq_produtos = fopen("produtos/produtos.dat", "r+b");
     if (arq_produtos == NULL)
     {
         printf("\nErro ao abrir o arquivo de produtos. Nenhum produto cadastrado?\n");
         printf("Pressione <Enter> para voltar...");
+        free(prod);
         getchar();
         return;
     }
 
-    arq_produtos_temp = fopen("produtos/produtos_temp.csv", "wt");
-    if (arq_produtos_temp == NULL)
-    {
-        printf("\nErro ao criar arquivo temporário.\n");
-        fclose(arq_produtos);
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        return;
-    }
-
-    while (fscanf(arq_produtos, "%[^;];%[^;];%[^;];%[^\n]\n", prod.id, prod.nome, prod.preco, prod.quantidade) == 4){
-     if (strcmp(prod.id_lido, prod.id) != 0){
-        fprintf(arq_produtos_temp, "%s;%s;%s;%s\n", prod.id, prod.nome, prod.preco, prod.quantidade);
-     }
+    while (fread(prod, sizeof(Produtos), 1, arq_produtos)) {
+        if ((strcmp(prod->id, id_lido) == 0) && (prod->status == True)) {
+            encontrado = 1;
+            prod->status = False; // Exclusão lógica
+            fseek(arq_produtos, -sizeof(Produtos), SEEK_CUR);
+            fwrite(prod, sizeof(Produtos), 1, arq_produtos);
+            printf("\nProduto com ID %s excluído com sucesso!\n", id_lido);
+            break;
+        }
     }
     fclose(arq_produtos);
-    fclose(arq_produtos_temp);
-    remove("produtos/produtos.csv");
-    rename("produtos/produtos_temp.csv", "produtos/produtos.csv");
-    printf("\nProduto excluído com sucesso!\n");
+    free(prod);
+    if (!encontrado) {
+        printf("\nProduto com ID %s não encontrado ou já foi excluído.\n", id_lido);
+    }
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }

@@ -15,6 +15,7 @@ struct produtos
     char preco[10];
     char quantidade[10];
     char id_lido[20];
+    int status;
 };
 
 #endif
