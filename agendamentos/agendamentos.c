@@ -167,7 +167,7 @@ void excluir_agend_fisico(void)
     exibir_logo();
     exibir_titulo("Excluir Agendamento Fisicamente");
     printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
-    printf("║      Informe o código do produto que deseja excluir permanentemente:                         ║\n");
+    printf("║      Informe o CPF do agendamento que deseja excluir permanentemente:                        ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(cpf_busca, 15, "Digite o CPF do agendamento que deseja excluir permanentemente: ");
 

@@ -20,7 +20,8 @@ void m_servicos(void)
         printf("║          2 - Buscar serviço pelo código                                                      ║\n");
         printf("║          3 - Atualizar serviço                                                               ║\n");
         printf("║          4 - Listar serviços                                                                 ║\n");
-        printf("║          5 - Excluir serviço                                                                 ║\n");
+        printf("║          5 - Inativar serviço                                                                ║\n");
+        printf("║          6 - Excluir serviço (Fisicamente)                                                   ║\n");
         printf("║          0 - Voltar ao menu principal                                                        ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -44,6 +45,9 @@ void m_servicos(void)
             break;
         case 5:
             excluir_servico();
+            break;
+        case 6:
+            excluir_servico_fisico();
             break;
         case 0:
             break;
@@ -143,6 +147,76 @@ void buscar_servico(void)
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
     free(serv);
+}
+
+void excluir_servico_fisico(void)
+{
+    Servicos *serv;
+    FILE *arq_servicos;
+    FILE *arq_temp;
+    char id_busca[20];
+    int encontrado = 0;
+
+    exibir_logo();
+    exibir_titulo("Excluir Servico Fisicamente");
+    printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
+    printf("║      Informe o ID do serviço que deseja excluir permanentemente:                             ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(id_busca, 20, "Informe o ID do serviço que deseja excluir permanentemente:");
+
+    serv = (Servicos*) malloc(sizeof(Servicos));
+    if (serv == NULL) 
+    {
+        printf("Erro de alocação de memória!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    arq_servicos = fopen("servicos/servicos.dat", "rb");
+    arq_temp = fopen("servicos/servicos_temp.dat", "wb");
+
+    if (arq_servicos == NULL || arq_temp == NULL) 
+    {
+        printf("Erro ao abrir os arquivos!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(serv);
+        if (arq_servicos) fclose(arq_servicos);
+        if (arq_temp) fclose(arq_temp);
+        return;
+    }
+
+    while (fread(serv, sizeof(Servicos), 1, arq_servicos)) 
+    {
+        if (strcmp(serv->id_gerado, id_busca) != 0) 
+        {
+            fwrite(serv, sizeof(Servicos), 1, arq_temp);
+        } 
+        else 
+        {
+            encontrado = 1;
+        }
+    }
+
+    fclose(arq_servicos);
+    fclose(arq_temp);
+    free(serv);
+
+    remove("servicos/servicos.dat");
+    rename("servicos/servicos_temp.dat", "servicos/servicos.dat");
+
+    if (encontrado) 
+    {
+        printf("Serviço com ID %s excluído permanentemente com sucesso!\n", id_busca);
+    } 
+    else 
+    {
+        printf("Serviço com ID %s não encontrado.\n", id_busca);
+    }
+
+    printf("\nPressione <Enter> para voltar ao menu principal...\n");
+    getchar();
 }
 
 void atualizar_servico(void)
@@ -264,7 +338,7 @@ void excluir_servico(void)
     while (fread(serv, sizeof(Servicos), 1, arq_servicos)) {
         if ((strcmp(serv->id_gerado, id_excluir) == 0) && (serv->status == True)) {
             encontrado = 1;
-            serv->status = False;
+            serv->status = False; //Exclusão lógica
             fseek(arq_servicos, -sizeof(Servicos), SEEK_CUR);
             fwrite(serv, sizeof(Servicos), 1, arq_servicos);
             break;
