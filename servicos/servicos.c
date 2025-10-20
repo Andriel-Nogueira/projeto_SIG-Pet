@@ -65,8 +65,9 @@ void cadastrar_servico(void)
     exibir_logo();
     exibir_titulo("Cadastrar Servico");
 
-    serv = (Servicos*) malloc(sizeof(Servicos));
-    if (serv == NULL) {
+    serv = (Servicos *)malloc(sizeof(Servicos));
+    if (serv == NULL)
+    {
         printf("Erro de alocação de memória!\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
@@ -74,15 +75,16 @@ void cadastrar_servico(void)
     }
 
     strcpy(serv->id_gerado, gerar_id("servicos/servicos.dat"));
-    
+
     printf("ID do serviço gerado automaticamente: %s\n", serv->id_gerado);
     input(serv->nome, 50, "Nome do Serviço: ");
     input(serv->desc, 256, "Descrição: ");
-    input(serv->preco_s, 32, "Preço (use . como separador): "); 
+    input(serv->preco_s, 32, "Preço (use . como separador): ");
     serv->status = True;
 
     arq_servicos = fopen("servicos/servicos.dat", "ab");
-    if (arq_servicos == NULL) {
+    if (arq_servicos == NULL)
+    {
         printf("Erro na abertura do arquivo!\n");
         printf("Pressione <Enter> para voltar...");
         free(serv);
@@ -112,9 +114,9 @@ void buscar_servico(void)
     exibir_titulo("Buscar Servico pelo ID");
     input(id_lido, 20, "Informe o ID do serviço que deseja buscar:");
 
-    serv = (Servicos*) malloc(sizeof(Servicos));
+    serv = (Servicos *)malloc(sizeof(Servicos));
     arq_servicos = fopen("servicos/servicos.dat", "rb");
-    if (arq_servicos == NULL) 
+    if (arq_servicos == NULL)
     {
         printf("ERRO AO ABRIR ARQUIVO DE SERVIÇOS\n");
         printf("Pressione <Enter> para voltar...");
@@ -139,11 +141,12 @@ void buscar_servico(void)
         }
     }
     fclose(arq_servicos);
-    
-    if (!encontrado) {
+
+    if (!encontrado)
+    {
         printf("\nServiço com ID %s não encontrado.\n", id_lido);
     }
-    
+
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
     free(serv);
@@ -164,8 +167,8 @@ void excluir_servico_fisico(void)
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(id_busca, 20, "Informe o ID do serviço que deseja excluir permanentemente:");
 
-    serv = (Servicos*) malloc(sizeof(Servicos));
-    if (serv == NULL) 
+    serv = (Servicos *)malloc(sizeof(Servicos));
+    if (serv == NULL)
     {
         printf("Erro de alocação de memória!\n");
         printf("Pressione <Enter> para voltar...");
@@ -176,24 +179,26 @@ void excluir_servico_fisico(void)
     arq_servicos = fopen("servicos/servicos.dat", "rb");
     arq_temp = fopen("servicos/servicos_temp.dat", "wb");
 
-    if (arq_servicos == NULL || arq_temp == NULL) 
+    if (arq_servicos == NULL || arq_temp == NULL)
     {
         printf("Erro ao abrir os arquivos!\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
         free(serv);
-        if (arq_servicos) fclose(arq_servicos);
-        if (arq_temp) fclose(arq_temp);
+        if (arq_servicos)
+            fclose(arq_servicos);
+        if (arq_temp)
+            fclose(arq_temp);
         return;
     }
 
-    while (fread(serv, sizeof(Servicos), 1, arq_servicos)) 
+    while (fread(serv, sizeof(Servicos), 1, arq_servicos))
     {
-        if (strcmp(serv->id_gerado, id_busca) != 0) 
+        if (strcmp(serv->id_gerado, id_busca) != 0)
         {
             fwrite(serv, sizeof(Servicos), 1, arq_temp);
-        } 
-        else 
+        }
+        else
         {
             encontrado = 1;
         }
@@ -206,11 +211,11 @@ void excluir_servico_fisico(void)
     remove("servicos/servicos.dat");
     rename("servicos/servicos_temp.dat", "servicos/servicos.dat");
 
-    if (encontrado) 
+    if (encontrado)
     {
         printf("Serviço com ID %s excluído permanentemente com sucesso!\n", id_busca);
-    } 
-    else 
+    }
+    else
     {
         printf("Serviço com ID %s não encontrado.\n", id_busca);
     }
@@ -225,17 +230,17 @@ void atualizar_servico(void)
     FILE *arq_servicos;
     char id_lido[20];
     int encontrado = 0;
-    
+
     exibir_logo();
     exibir_titulo("Atualizar Servico");
     printf("║      Informe o ID do serviço que deseja atualizar:                                           ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(id_lido, 20, "Informe o ID do serviço que deseja atualizar:");
 
-    serv = (Servicos*)malloc(sizeof(Servicos));
+    serv = (Servicos *)malloc(sizeof(Servicos));
     arq_servicos = fopen("servicos/servicos.dat", "r+b");
 
-    if (arq_servicos == NULL) 
+    if (arq_servicos == NULL)
     {
         printf("\nErro ao abrir arquivo de serviços.\n");
         free(serv);
@@ -252,8 +257,8 @@ void atualizar_servico(void)
             printf("\nServiço encontrado. Informe os novos dados:\n");
             input(serv->nome, 50, "Nome do Serviço: ");
             input(serv->desc, 256, "Descrição: ");
-            input(serv->preco_s, 32, "Preço (use . como separador): "); 
-            
+            input(serv->preco_s, 32, "Preço (use . como separador): ");
+
             fseek(arq_servicos, -sizeof(Servicos), SEEK_CUR);
             fwrite(serv, sizeof(Servicos), 1, arq_servicos);
             break;
@@ -262,14 +267,14 @@ void atualizar_servico(void)
 
     fclose(arq_servicos);
 
-    if (!encontrado) 
+    if (!encontrado)
     {
         printf("\nServiço com ID %s não encontrado.\n", id_lido);
-    } 
-    else 
+    }
+    else
     {
         printf("\nServiço atualizado com sucesso!\n");
-    } 
+    }
 
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -283,8 +288,8 @@ void listar_servicos(void)
 
     exibir_logo();
     exibir_titulo("Listar Servicos");
-    
-    serv = (Servicos*) malloc(sizeof(Servicos));
+
+    serv = (Servicos *)malloc(sizeof(Servicos));
     arq_servicos = fopen("servicos/servicos.dat", "rb");
 
     if (arq_servicos == NULL)
@@ -295,9 +300,10 @@ void listar_servicos(void)
         getchar();
         return;
     }
-    while (fread(serv, sizeof(Servicos), 1, arq_servicos)) 
+    while (fread(serv, sizeof(Servicos), 1, arq_servicos))
     {
-        if (serv->status == True) {
+        if (serv->status == True)
+        {
             printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
             printf("║                                                                                              ║\n");
             printf("║ Nome: %s\t║ Preço: %s\t║ ID: %s                                       ║\n", serv->nome, serv->preco_s, serv->id_gerado);
@@ -326,19 +332,22 @@ void excluir_servico(void)
 
     input(id_excluir, 20, "Informe o ID do serviço que deseja excluir:");
 
-    serv = (Servicos*) malloc(sizeof(Servicos));
+    serv = (Servicos *)malloc(sizeof(Servicos));
     arq_servicos = fopen("servicos/servicos.dat", "r+b");
-    if (arq_servicos == NULL) {
+    if (arq_servicos == NULL)
+    {
         printf("Erro ao abrir arquivo de serviços.\n");
         free(serv);
         getchar();
         return;
     }
 
-    while (fread(serv, sizeof(Servicos), 1, arq_servicos)) {
-        if ((strcmp(serv->id_gerado, id_excluir) == 0) && (serv->status == True)) {
+    while (fread(serv, sizeof(Servicos), 1, arq_servicos))
+    {
+        if ((strcmp(serv->id_gerado, id_excluir) == 0) && (serv->status == True))
+        {
             encontrado = 1;
-            serv->status = False; //Exclusão lógica
+            serv->status = False; // Exclusão lógica
             fseek(arq_servicos, -sizeof(Servicos), SEEK_CUR);
             fwrite(serv, sizeof(Servicos), 1, arq_servicos);
             break;
@@ -347,9 +356,12 @@ void excluir_servico(void)
 
     fclose(arq_servicos);
 
-    if (encontrado) {
+    if (encontrado)
+    {
         printf("Serviço com ID %s excluído com sucesso.\n", id_excluir);
-    } else {
+    }
+    else
+    {
         printf("Serviço com ID %s não encontrado.\n", id_excluir);
     }
 
