@@ -24,7 +24,9 @@ void m_clientes(void)
         printf("║          4 - Listar clientes                                                                 ║\n");
         printf("║          5 - Inativar cliente                                                                ║\n");
         printf("║          6 - Excluir cliente (Fisicamente)                                                   ║\n");
-        printf("║          7 - Cadastrar Pet                                                                   ║\n");
+        printf("║          7 - Cadastrar pet                                                                   ║\n");
+        printf("║          8 - Inativar pet                                                                    ║\n");
+        printf("║          9 - Excluir pet (Fisicamente)                                                       ║\n");
         printf("║          0 - Voltar ao menu principal                                                        ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -54,6 +56,12 @@ void m_clientes(void)
             break;
         case 7: 
             cadastrar_pet();
+            break;
+        case 8:
+            excluir_pet_logico();
+            break;
+        case 9:
+            excluir_pet_fisico();
             break;
         case 0:
             break;
@@ -256,6 +264,124 @@ void listar_clientes(void)
     free(cli);
 
     printf("\n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
+void excluir_pet_logico(void)
+{
+    Pets* pet;
+    FILE *arq_pets;
+    char cpf_busca[15];
+    char nome_pet_busca[50];
+    int encontrado = 0;
+
+    exibir_logo();
+    exibir_titulo("Inativar Pet (Exclusão Lógica)");
+    printf("║      Informe os dados do pet que deseja inativar:                                            ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_busca, 15, "Digite o CPF do dono: ");
+    input(nome_pet_busca, 50, "Digite o nome do pet: ");
+
+    pet = (Pets*) malloc(sizeof(Pets));
+    arq_pets = fopen("clientes/pets.dat", "r+b");
+
+    if (arq_pets == NULL) {
+        printf("\nErro ao abrir o arquivo de pets. Nenhum pet cadastrado?\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(pet);
+        return;
+    }
+
+    while(fread(pet, sizeof(Pets), 1, arq_pets)) {
+        if ((strcmp(pet->cpf, cpf_busca) == 0) && (strcmp(pet->nome, nome_pet_busca) == 0) && (pet->status == True)) {
+            encontrado = 1;
+            pet->status = False; // Marca como inativo
+            fseek(arq_pets, -sizeof(Pets), SEEK_CUR);
+            fwrite(pet, sizeof(Pets), 1, arq_pets);
+            printf("\nPet '%s' inativado com sucesso!\n", nome_pet_busca);
+            break; 
+        }
+    }
+
+    if (!encontrado) {
+        printf("\nPet '%s' do cliente com CPF %s não encontrado ou já está inativo.\n", nome_pet_busca, cpf_busca);
+    }
+
+    fclose(arq_pets);
+    free(pet);
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}
+
+void excluir_pet_fisico(void)
+{
+    Pets* pet;
+    FILE *arq_pets;
+    FILE *arq_temp;
+    char cpf_busca[15];
+    char nome_pet_busca[50];
+    int encontrado = 0;
+
+    exibir_logo();
+    exibir_titulo("Excluir Pet Fisicamente");
+    printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
+    printf("║      Informe os dados do pet que deseja excluir permanentemente:                             ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_busca, 15, "Digite o CPF do dono: ");
+    input(nome_pet_busca, 50, "Digite o nome do pet: ");
+
+    pet = (Pets*) malloc(sizeof(Pets));
+    if (pet == NULL) {
+        printf("Erro de alocação de memória!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        return;
+    }
+
+    arq_pets = fopen("clientes/pets.dat", "rb");
+    arq_temp = fopen("clientes/pets_temp.dat", "wb");
+
+    if (arq_pets == NULL) {
+        printf("\nNenhum pet cadastrado. A operação não pode ser concluída.\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(pet);
+        if (arq_temp) fclose(arq_temp);
+        remove("clientes/pets_temp.dat");
+        return;
+    }
+
+    if (arq_temp == NULL) {
+        printf("\nErro ao criar arquivo temporário. A operação não pode ser concluída.\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(pet);
+        fclose(arq_pets);
+        return;
+    }
+
+    while(fread(pet, sizeof(Pets), 1, arq_pets)) {
+        if (!((strcmp(pet->cpf, cpf_busca) == 0) && (strcmp(pet->nome, nome_pet_busca) == 0))) {
+            fwrite(pet, sizeof(Pets), 1, arq_temp);
+        } else {
+            encontrado = 1;
+        }
+    }
+
+    fclose(arq_pets);
+    fclose(arq_temp);
+    free(pet);
+
+    remove("clientes/pets.dat");
+    rename("clientes/pets_temp.dat", "clientes/pets.dat");
+
+    if (encontrado) {
+        printf("\nPet '%s' excluído permanentemente com sucesso!\n", nome_pet_busca);
+    } else {
+        printf("\nPet '%s' do cliente com CPF %s não encontrado.\n", nome_pet_busca, cpf_busca);
+    }
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
 }
