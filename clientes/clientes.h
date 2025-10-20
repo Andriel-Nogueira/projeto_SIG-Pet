@@ -7,7 +7,10 @@ void buscar_cliente(void);
 void atualizar_cliente(void);
 void listar_clientes(void);
 void excluir_cliente(void);
+void excluir_cliente_fisico(void);
 void cadastrar_pet(void);
+void excluir_pet_logico(void);
+void excluir_pet_fisico(void);
 
 
 struct clientes
