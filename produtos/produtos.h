@@ -5,8 +5,8 @@ struct produtos
 {
     int id;
     char nome[50];
-    char preco[10];
-    char quantidade[10];
+    float preco;
+    float quantidade;
     int status;
 };
 

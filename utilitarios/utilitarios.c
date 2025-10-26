@@ -198,3 +198,19 @@ int validar_nome(const char* nome) {
     }
     return 1;
 }
+
+int validar_float(const char* str) {
+    int dot_count = 0;
+    if (str[0] == '\0') {
+        return 0; // String vazia não é válida
+    }
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == '.') {
+            dot_count++;
+        } else if (!eh_digito(str[i])) {
+            return 0; // Não é dígito nem ponto
+        }
+    }
+    // Permite no máximo um ponto decimal
+    return dot_count <= 1;
+}

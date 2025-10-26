@@ -63,11 +63,29 @@ Produtos* tela_cadastrar_produto(void) {
         return NULL;
     }
 
+    char preco_str[10];
+    char qtd_str[10];
+
     exibir_logo();
     exibir_titulo("Cadastrar Produto");
-    input(prod->nome, 50, "Nome do Produto: ");
-    input(prod->preco, 10, "Preço do Produto: ");
-    input(prod->quantidade, 10, "Quantidade em Estoque: ");
+    
+    do {
+        input(prod->nome, 50, "Nome do Produto:");
+        if (!validar_nome(prod->nome)) {
+            printf("\nNome inválido! Digite apenas letras e espaços.\n");
+        }
+    } while (!validar_nome(prod->nome));
+
+    do {
+        input(preco_str, 10, "Preço do Produto (ex: 25.50):");
+    } while (!validar_float(preco_str));
+    prod->preco = atof(preco_str);
+
+    do {
+        input(qtd_str, 10, "Quantidade em Estoque (ex: 10):");
+    } while (!validar_float(qtd_str));
+    prod->quantidade = atof(qtd_str);
+
     prod->id = GERAR_ID("produtos/produtos.dat", Produtos);
     prod->status = True;
     return prod;
@@ -92,8 +110,8 @@ void exibir_produto(const Produtos* prod) {
     printf("\n= = = Produto Cadastrado = = =\n");
     printf("Código: %d\n", prod->id);
     printf("Nome: %s\n", prod->nome);
-    printf("Preço: R$ %s\n", prod->preco);
-    printf("Quantidade em estoque: %s\n", prod->quantidade);
+    printf("Preço: R$ %.2f\n", prod->preco);
+    printf("Quantidade em estoque: %.2f\n", prod->quantidade);
 }
 
 void cadastrar_produto(void) {
@@ -113,8 +131,11 @@ int tela_buscar_produto(void) {
     int id_busca;
     exibir_logo();
     exibir_titulo("Buscar Produto pelo Código");
-    input(id_str, 20, "Digite o código do produto que deseja buscar: ");
-    // Adicionar validação para ter certeza que é um número
+    
+    do {
+        input(id_str, 20, "Digite o código do produto que deseja buscar: ");
+    } while (!validar_numero(id_str));
+
     id_busca = atoi(id_str);
     return id_busca;
 }
@@ -178,7 +199,7 @@ void listar_produtos(void)
     {
         if (prod->status == True) {
             printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-            printf("║ ID: %-10d ║ Nome: %-20s ║ Preço: R$ %-10s ║ Estoque: %-5s ║\n", prod->id, prod->nome, prod->preco, prod->quantidade);
+            printf("║ ID: %-10d ║ Nome: %-20s ║ Preço: R$ %-10.2f ║ Estoque: %-5.2f ║\n", prod->id, prod->nome, prod->preco, prod->quantidade);
         }
     }
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
@@ -238,9 +259,22 @@ void atualizar_produto(void) {
 
         // Reutiliza a tela de cadastro para obter os novos dados
         prod_novo = (Produtos*) malloc(sizeof(Produtos));
-        input(prod_novo->nome, 50, "Novo nome do Produto: ");
-        input(prod_novo->preco, 10, "Novo preço do Produto: ");
-        input(prod_novo->quantidade, 10, "Nova quantidade em Estoque: ");
+        char preco_str[10];
+        char qtd_str[10];
+
+        do {
+            input(prod_novo->nome, 50, "Novo nome do Produto:");
+        } while (!validar_nome(prod_novo->nome));
+
+        do {
+            input(preco_str, 10, "Novo preço do Produto (ex: 25.50):");
+        } while (!validar_float(preco_str));
+        prod_novo->preco = atof(preco_str);
+
+        do {
+            input(qtd_str, 10, "Nova quantidade em Estoque (ex: 10):");
+        } while (!validar_float(qtd_str));
+        prod_novo->quantidade = atof(qtd_str);
         
         // Mantém o ID e status originais
         prod_novo->id = id_busca;
