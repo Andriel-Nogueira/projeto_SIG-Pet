@@ -408,88 +408,77 @@ void excluir_pet_fisico(void)
     pressione_enter();
 }
 
+char* tela_excluir_cliente(void) {
+    char* cpf_busca;
+    cpf_busca = (char*) malloc(15 * sizeof(char));
+    exibir_logo();
+    exibir_titulo("Inativar Cliente (Exclusão Lógica)");
+    printf("║      Informe o CPF do cliente que deseja inativar:                                           ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_busca, 15, "Digite o CPF do cliente: ");
+    return cpf_busca;
+}
+
 void excluir_cliente(void)
 {
     Clientes* cli;
-    FILE *arq_clientes;
-    char cpf_busca[15];
-    int encontrado = 0;
+    char* cpf_busca;
 
-    exibir_logo();
-    exibir_titulo("Excluir Cliente");
-    printf("║      Informe o CPF do cliente que deseja excluir:                                            ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do cliente que deseja excluir: ");
+    cpf_busca = tela_excluir_cliente();
+    cli = buscar_cliente_por_cpf(cpf_busca);
 
-    cli = (Clientes*) malloc(sizeof(Clientes));
-    arq_clientes = fopen("clientes/clientes.dat", "r+b");
-
-    if (arq_clientes == NULL) {
-        printf("\nErro ao abrir o arquivo de clientes. Nenhum cliente cadastrado?\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        free(cli);
-        return;
+    if (cli == NULL) {
+        printf("\nCliente com CPF %s não encontrado ou já está inativo.\n", cpf_busca);
+    } else {
+        cli->status = False;
+        gravar_atualizacao_cliente(cli);
+        printf("\nCliente inativado com sucesso!\n");
     }
-
-    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-        if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == True)) {
-            encontrado = 1;
-            cli->status = False; // Marca como inativo
-            fseek(arq_clientes, -sizeof(Clientes), SEEK_CUR);
-            fwrite(cli, sizeof(Clientes), 1, arq_clientes);
-            printf("\nCliente excluído com sucesso!\n");
-        }
-    }
-
-    if (!encontrado) {
-        printf("\nCliente com CPF %s não encontrado ou já excluído.\n", cpf_busca);
-    }
-
-    fclose(arq_clientes);
     free(cli);
+    free(cpf_busca);
     pressione_enter();
 }
 
-void excluir_cliente_fisico(void)
-{
-    Clientes* cli;
-    FILE *arq_clientes;
-    FILE *arq_temp;
-    char cpf_busca[15];
-    int encontrado = 0;
-
+char* tela_excluir_cliente_fisico(void) {
+    char* cpf_busca;
+    cpf_busca = (char*) malloc(15 * sizeof(char));
+    if (cpf_busca == NULL) {
+        printf("Erro de alocação de memória!\n");
+        pressione_enter();
+        return NULL;
+    }
     exibir_logo();
     exibir_titulo("Excluir Cliente Fisicamente");
     printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
     printf("║      Informe o CPF do cliente que deseja excluir permanentemente:                            ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(cpf_busca, 15, "Digite o CPF do cliente: ");
+    return cpf_busca;
+}
 
-    cli = (Clientes*) malloc(sizeof(Clientes));
-    if (cli == NULL) {
-        printf("Erro de alocação de memória!\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        return;
-    }
+int remover_cliente_do_arquivo(const char* cpf_busca) {
+    FILE *arq_clientes, *arq_temp;
+    Clientes cli;
+    int encontrado = 0;
+
+    // se retornar -1 significa erro de arquivo
 
     arq_clientes = fopen("clientes/clientes.dat", "rb");
-    arq_temp = fopen("clientes/clientes_temp.dat", "wb");
-
-    if (arq_clientes == NULL || arq_temp == NULL) {
-        printf("\nErro ao abrir os arquivos. A operação não pode ser concluída.\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        free(cli);
-        if (arq_clientes) fclose(arq_clientes);
-        if (arq_temp) fclose(arq_temp);
-        return;
+    if (arq_clientes == NULL) {
+        printf("\nNenhum cliente cadastrado. A operação não pode ser concluída.\n");
+        return -1; 
     }
 
-    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-        if (strcmp(cli->cpf, cpf_busca) != 0) {
-            fwrite(cli, sizeof(Clientes), 1, arq_temp);
+    arq_temp = fopen("clientes/clientes_temp.dat", "wb");
+    if (arq_temp == NULL) {
+        printf("\nErro ao criar arquivo temporário. A operação não pode ser concluída.\n");
+        fclose(arq_clientes);
+        return -1;
+    }
+
+    while(fread(&cli, sizeof(Clientes), 1, arq_clientes)) {
+        if (strcmp(cli.cpf, cpf_busca) != 0) {
+            fwrite(&cli, sizeof(Clientes), 1, arq_temp);
         } else {
             encontrado = 1;
         }
@@ -497,16 +486,39 @@ void excluir_cliente_fisico(void)
 
     fclose(arq_clientes);
     fclose(arq_temp);
-    free(cli);
-
-    remove("clientes/clientes.dat");
-    rename("clientes/clientes_temp.dat", "clientes/clientes.dat");
 
     if (encontrado) {
-        printf("\nCliente com CPF %s excluído permanentemente com sucesso!\n", cpf_busca);
+        remove("clientes/clientes.dat");
+        rename("clientes/clientes_temp.dat", "clientes/clientes.dat");
     } else {
+        remove("clientes/clientes_temp.dat");
+    }
+
+    return encontrado;
+}
+
+void excluir_cliente_fisico(void)
+{
+    Clientes* cli;
+    FILE *arq_clientes;
+    FILE *arq_temp;
+    char* cpf_busca;
+    int encontrado = 0;
+
+    cpf_busca = tela_excluir_cliente_fisico();
+    if (cpf_busca == NULL) {
+        return;
+    }
+
+    encontrado = remover_cliente_do_arquivo(cpf_busca);
+
+    if (encontrado == 1) {
+        printf("\nCliente com CPF %s excluído permanentemente com sucesso!\n", cpf_busca);
+    } else if (encontrado == 0) {
         printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
     }
+
+    free(cpf_busca);
     pressione_enter();
 }
 
