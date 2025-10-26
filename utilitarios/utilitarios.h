@@ -25,5 +25,6 @@ void ler_data(int* dia, int* mes, int* ano);
 int eh_letra(char c);
 int validar_nome(const char* nome);
 int validar_float(const char* str);
+void obter_data_atual(char* data_str);
 
 #endif

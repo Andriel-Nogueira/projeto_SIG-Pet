@@ -74,7 +74,10 @@ void exibir_titulo(const char* titulo) //CRÉDITOS: ajuda da I.A Google Gemini, 
 
 void exibir_logo(void) 
 {
-    system("clear");
+    // Comando para limpar a tela que funciona em Windows (cls) e Linux/macOS (clear)
+    if (system("cls")) {
+        system("clear");
+    }
     printf("\n");
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║    ,-,--.    .=-.-.       _,---.                        _ __         ,----.   ,--.--------.  ║\n");
@@ -213,4 +216,10 @@ int validar_float(const char* str) {
     }
     // Permite no máximo um ponto decimal
     return dot_count <= 1;
+}
+
+void obter_data_atual(char* data_str) {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    sprintf(data_str, "%02d/%02d/%04d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
 }
