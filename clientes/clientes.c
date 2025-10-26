@@ -68,126 +68,6 @@ void m_clientes(void)
     } while (op != 0);
 }
 
-int verificar_cliente_cadastrado(const char* cpf) {
-    FILE* arq_clientes;
-    Clientes* cli;
-    int encontrado = 0;
-
-    arq_clientes = fopen("clientes/clientes.dat", "rb");
-    if (arq_clientes == NULL) {
-        return 0; // Se o arquivo não existe, o cliente não pode estar cadastrado
-    }
-
-    cli = (Clientes*) malloc(sizeof(Clientes));
-    if (cli == NULL) {
-        fclose(arq_clientes);
-        return 0; // Falha na alocação de memória
-    }
-    
-    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-        if ((strcmp(cli->cpf, cpf) == 0) && (cli->status == True)) {
-            encontrado = 1;
-            break;
-        }
-    }
-    fclose(arq_clientes);
-    free(cli);
-    return encontrado;
-}
-
-Clientes* buscar_cliente_por_cpf(const char* cpf) {
-    FILE* arq_clientes;
-    Clientes* cli;
-
-    arq_clientes = fopen("clientes/clientes.dat", "rb");
-    if (arq_clientes == NULL) {
-        return NULL;
-    }
-
-    cli = (Clientes*) malloc(sizeof(Clientes));
-    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-        if ((strcmp(cli->cpf, cpf) == 0) && (cli->status == True)) {
-            fclose(arq_clientes);
-            return cli;
-        }
-    }
-
-    fclose(arq_clientes);
-    free(cli); 
-    return NULL; 
-}
-
-
-Clientes* tela_cadastrar_cliente(void){
-    Clientes* cli;
-    cli = (Clientes*) malloc(sizeof(Clientes));
-
-    exibir_logo();
-    exibir_titulo("Cadastrar Cliente");
-
-
-    input(cli->cpf, 15, "Insira seu cpf");
-
-    if (verificar_cliente_cadastrado(cli->cpf)) {
-        printf("\nEste CPF já pertence a um cliente cadastrado.\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        free(cli);
-        return NULL;
-    }
-
-    input(cli->nome, 50, "Digite o seu nome: ");
-    input(cli->data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
-    input(cli->telefone, 20, "Digite seu telefone: ");
-    cli->status = True;
-    return cli;
-}
-
-void exibir_cliente(const Clientes* cli)
-{
-    if (cli == NULL) {
-        return;
-    }
-    printf("CPF: %s\n", cli->cpf);
-    printf("Nome: %s\n", cli->nome);
-    printf("Data de nascimento: %s\n", cli->data_nascimento);
-    printf("Telefone: %s\n", cli->telefone);
-}
-
-void gravar_cliente(Clientes* cli){
-    FILE* arq_clientes;
-    arq_clientes = fopen("clientes/clientes.dat", "ab");
-    if (arq_clientes == NULL) {
-        printf("Erro na abertura do arquivo!\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        free(cli);
-        return;
-    }
-    fwrite(cli, sizeof(Clientes), 1, arq_clientes);
-    fclose(arq_clientes);
-}
-void gravar_atualizacao_cliente(const Clientes* cli) {
-    FILE* arq_clientes;
-    arq_clientes = fopen("clientes/clientes.dat", "r+b");
-    if (arq_clientes == NULL) {
-        printf("Erro ao abrir o arquivo para atualização.\n");
-        return;
-    }
-
-    Clientes temp_cli;
-    while(fread(&temp_cli, sizeof(Clientes), 1, arq_clientes)) {
-        if ((strcmp(temp_cli.cpf, cli->cpf) == 0) && (temp_cli.status == True)) {
-            fseek(arq_clientes, -sizeof(Clientes), SEEK_CUR);
-            fwrite(cli, sizeof(Clientes), 1, arq_clientes);
-            printf("\nCliente atualizado com sucesso!\n");
-            break;
-        }
-    }
-    fclose(arq_clientes);
-}
-
-
 void cadastrar_cliente(void)
 {
     Clientes* cli;
@@ -224,17 +104,6 @@ void buscar_cliente(void)
     }
 
     pressione_enter();
-}
-
-char* tela_atualizar_cliente(void) {
-    char* cpf_busca;
-    cpf_busca = (char*) malloc(15 * sizeof(char));
-    exibir_logo();
-    exibir_titulo("Atualizar Dados do Cliente");
-    printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do cliente que deseja atualizar: ");
-    return cpf_busca;
 }
 
 void atualizar_cliente(void)
@@ -292,6 +161,138 @@ void listar_clientes(void)
     pressione_enter();
 }
 
+void inativar_cliente(void)
+{
+    Clientes* cli;
+    char* cpf_busca;
+
+    cpf_busca = tela_inativar_cliente();
+    cli = buscar_cliente_por_cpf(cpf_busca);
+
+    if (cli == NULL) {
+        printf("\nCliente com CPF %s não encontrado ou já está inativo.\n", cpf_busca);
+    } else {
+        cli->status = False;
+        gravar_atualizacao_cliente(cli);
+        printf("\nCliente inativado com sucesso!\n");
+    }
+    free(cli);
+    free(cpf_busca);
+    pressione_enter();
+}
+
+void excluir_cliente_fisico(void)
+{
+    char* cpf_busca;
+    int encontrado = 0;
+
+    cpf_busca = tela_excluir_cliente_fisico();
+    if (cpf_busca == NULL) {
+        return;
+    }
+
+    encontrado = remover_cliente_do_arquivo(cpf_busca);
+
+    if (encontrado == 1) {
+        printf("\nCliente com CPF %s excluído permanentemente com sucesso!\n", cpf_busca);
+    } else if (encontrado == 0) {
+        printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
+    }
+
+    free(cpf_busca);
+    pressione_enter();
+}
+
+
+
+Clientes* buscar_cliente_por_cpf(const char* cpf) {
+    FILE* arq_clientes;
+    Clientes* cli;
+
+    arq_clientes = fopen("clientes/clientes.dat", "rb");
+    if (arq_clientes == NULL) {
+        return NULL;
+    }
+
+    cli = (Clientes*) malloc(sizeof(Clientes));
+    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
+        if ((strcmp(cli->cpf, cpf) == 0) && (cli->status == True)) {
+            fclose(arq_clientes);
+            return cli;
+        }
+    }
+
+    fclose(arq_clientes);
+    free(cli); 
+    return NULL; 
+}
+
+
+Clientes* tela_cadastrar_cliente(void){
+    Clientes* cli;
+    cli = (Clientes*) malloc(sizeof(Clientes));
+
+    exibir_logo();
+    exibir_titulo("Cadastrar Cliente");
+
+
+    input(cli->cpf, 15, "Insira seu cpf");
+
+    if (verificar_cliente_cadastrado(cli->cpf)) {
+        printf("\nEste CPF já pertence a um cliente cadastrado.\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(cli);
+        return NULL;
+    }
+
+    input(cli->nome, 50, "Digite o seu nome: ");
+    input(cli->data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
+    input(cli->telefone, 20, "Digite seu telefone: ");
+    cli->status = True;
+    return cli;
+}
+
+char* tela_atualizar_cliente(void) {
+    char* cpf_busca;
+    cpf_busca = (char*) malloc(15 * sizeof(char));
+    exibir_logo();
+    exibir_titulo("Atualizar Dados do Cliente");
+    printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_busca, 15, "Digite o CPF do cliente que deseja atualizar: ");
+    return cpf_busca;
+}
+
+void exibir_cliente(const Clientes* cli)
+{
+    if (cli == NULL) {
+        return;
+    }
+    printf("CPF: %s\n", cli->cpf);
+    printf("Nome: %s\n", cli->nome);
+    printf("Data de nascimento: %s\n", cli->data_nascimento);
+    printf("Telefone: %s\n", cli->telefone);
+}
+
+void gravar_cliente(Clientes* cli){
+    FILE* arq_clientes;
+    arq_clientes = fopen("clientes/clientes.dat", "ab");
+    if (arq_clientes == NULL) {
+        printf("Erro na abertura do arquivo!\n");
+        printf("Pressione <Enter> para voltar...");
+        getchar();
+        free(cli);
+        return;
+    }
+    fwrite(cli, sizeof(Clientes), 1, arq_clientes);
+    fclose(arq_clientes);
+}
+
+
+
+
+
 void tela_inativar_pet(char* cpf_busca, char* nome_pet_busca) {
     exibir_logo();
     exibir_titulo("Inativar Pet (Exclusão Lógica)");
@@ -299,6 +300,54 @@ void tela_inativar_pet(char* cpf_busca, char* nome_pet_busca) {
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(cpf_busca, 15, "Digite o CPF do dono: ");
     input(nome_pet_busca, 50, "Digite o nome do pet: ");
+}
+
+void tela_excluir_pet_fisico(char* cpf_busca, char* nome_pet_busca) {
+    exibir_logo();
+    exibir_titulo("Excluir Pet Fisicamente");
+    printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
+    printf("║      Informe os dados do pet que deseja excluir permanentemente:                             ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_busca, 15, "Digite o CPF do dono: ");
+    input(nome_pet_busca, 50, "Digite o nome do pet: ");
+}
+
+Pets* tela_cadastrar_pet(void)
+{
+    Pets* pet;
+    char cpf_busca[15];
+    char raca_input[3];
+
+    exibir_logo();
+    exibir_titulo("Cadastrar Pet");
+    input(cpf_busca, 15, "Digite o CPF do dono do pet: ");
+
+    if (!verificar_cliente_cadastrado(cpf_busca)) {
+        printf("Cliente com CPF %s não encontrado.\n", cpf_busca);
+        printf("É necessário cadastrar o cliente primeiro.\n");
+        return NULL;
+    }
+
+    printf("\nCliente encontrado.\n");
+    pet = (Pets*) malloc(sizeof(Pets));
+    if (pet == NULL) {
+        printf("Erro de alocação de memória!\n");
+        return NULL;
+    }
+
+    strcpy(pet->cpf, cpf_busca);
+    input(pet->nome, 50, "Digite o nome do pet: ");
+    input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
+    
+    if (strcmp(raca_input, "1") == 0) { 
+        strcpy(pet->especie, "G"); 
+    } else if (strcmp(raca_input, "2") == 0) { 
+        strcpy(pet->especie, "C"); 
+    } else { 
+        strcpy(pet->especie, "O"); 
+    }
+    pet->status = True;
+    return pet;
 }
 
 Pets* buscar_pet(const char* cpf, const char* nome) {
@@ -342,6 +391,26 @@ void gravar_atualizacao_pet(const Pets* pet_atualizado) {
     fclose(arq_pets);
 }
 
+void gravar_atualizacao_cliente(const Clientes* cli) {
+    FILE* arq_clientes;
+    arq_clientes = fopen("clientes/clientes.dat", "r+b");
+    if (arq_clientes == NULL) {
+        printf("Erro ao abrir o arquivo para atualização.\n");
+        return;
+    }
+
+    Clientes temp_cli;
+    while(fread(&temp_cli, sizeof(Clientes), 1, arq_clientes)) {
+        if ((strcmp(temp_cli.cpf, cli->cpf) == 0) && (temp_cli.status == True)) {
+            fseek(arq_clientes, -sizeof(Clientes), SEEK_CUR);
+            fwrite(cli, sizeof(Clientes), 1, arq_clientes);
+            printf("\nCliente atualizado com sucesso!\n");
+            break;
+        }
+    }
+    fclose(arq_clientes);
+}
+
 void inativar_pet(void)
 {
     Pets* pet;
@@ -362,15 +431,6 @@ void inativar_pet(void)
     pressione_enter();
 }
 
-void tela_excluir_pet_fisico(char* cpf_busca, char* nome_pet_busca) {
-    exibir_logo();
-    exibir_titulo("Excluir Pet Fisicamente");
-    printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
-    printf("║      Informe os dados do pet que deseja excluir permanentemente:                             ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do dono: ");
-    input(nome_pet_busca, 50, "Digite o nome do pet: ");
-}
 
 int remover_pet_do_arquivo(const char* cpf, const char* nome) {
     FILE *arq_pets, *arq_temp;
@@ -404,70 +464,6 @@ int remover_pet_do_arquivo(const char* cpf, const char* nome) {
         remove("clientes/pets_temp.dat");
     }
     return encontrado;
-}
-
-void excluir_pet_fisico(void) {
-    char cpf_busca[15];
-    char nome_pet_busca[50];
-    int encontrado = 0;
-
-    tela_excluir_pet_fisico(cpf_busca, nome_pet_busca);
-    encontrado = remover_pet_do_arquivo(cpf_busca, nome_pet_busca);
-
-    if (encontrado) {
-        printf("\nPet '%s' excluído permanentemente com sucesso!\n", nome_pet_busca);
-    } else {
-        printf("\nPet '%s' do cliente com CPF %s não encontrado.\n", nome_pet_busca, cpf_busca);
-    }
-    pressione_enter();
-}
-
-char* tela_inativar_cliente(void) {
-    char* cpf_busca;
-    cpf_busca = (char*) malloc(15 * sizeof(char));
-    exibir_logo();
-    exibir_titulo("Inativar Cliente (Exclusão Lógica)");
-    printf("║      Informe o CPF do cliente que deseja inativar:                                           ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do cliente: ");
-    return cpf_busca;
-}
-
-void inativar_cliente(void)
-{
-    Clientes* cli;
-    char* cpf_busca;
-
-    cpf_busca = tela_inativar_cliente();
-    cli = buscar_cliente_por_cpf(cpf_busca);
-
-    if (cli == NULL) {
-        printf("\nCliente com CPF %s não encontrado ou já está inativo.\n", cpf_busca);
-    } else {
-        cli->status = False;
-        gravar_atualizacao_cliente(cli);
-        printf("\nCliente inativado com sucesso!\n");
-    }
-    free(cli);
-    free(cpf_busca);
-    pressione_enter();
-}
-
-char* tela_excluir_cliente_fisico(void) {
-    char* cpf_busca;
-    cpf_busca = (char*) malloc(15 * sizeof(char));
-    if (cpf_busca == NULL) {
-        printf("Erro de alocação de memória!\n");
-        pressione_enter();
-        return NULL;
-    }
-    exibir_logo();
-    exibir_titulo("Excluir Cliente Fisicamente");
-    printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
-    printf("║      Informe o CPF do cliente que deseja excluir permanentemente:                            ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do cliente: ");
-    return cpf_busca;
 }
 
 int remover_cliente_do_arquivo(const char* cpf_busca) {
@@ -511,68 +507,52 @@ int remover_cliente_do_arquivo(const char* cpf_busca) {
     return encontrado;
 }
 
-void excluir_cliente_fisico(void)
-{
-    Clientes* cli;
-    FILE *arq_clientes;
-    FILE *arq_temp;
-    char* cpf_busca;
+void excluir_pet_fisico(void) {
+    char cpf_busca[15];
+    char nome_pet_busca[50];
     int encontrado = 0;
 
-    cpf_busca = tela_excluir_cliente_fisico();
-    if (cpf_busca == NULL) {
-        return;
+    tela_excluir_pet_fisico(cpf_busca, nome_pet_busca);
+    encontrado = remover_pet_do_arquivo(cpf_busca, nome_pet_busca);
+
+    if (encontrado) {
+        printf("\nPet '%s' excluído permanentemente com sucesso!\n", nome_pet_busca);
+    } else {
+        printf("\nPet '%s' do cliente com CPF %s não encontrado.\n", nome_pet_busca, cpf_busca);
     }
-
-    encontrado = remover_cliente_do_arquivo(cpf_busca);
-
-    if (encontrado == 1) {
-        printf("\nCliente com CPF %s excluído permanentemente com sucesso!\n", cpf_busca);
-    } else if (encontrado == 0) {
-        printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
-    }
-
-    free(cpf_busca);
     pressione_enter();
 }
 
-Pets* tela_cadastrar_pet(void)
-{
-    Pets* pet;
-    char cpf_busca[15];
-    char raca_input[3];
-
+char* tela_inativar_cliente(void) {
+    char* cpf_busca;
+    cpf_busca = (char*) malloc(15 * sizeof(char));
     exibir_logo();
-    exibir_titulo("Cadastrar Pet");
-    input(cpf_busca, 15, "Digite o CPF do dono do pet: ");
-
-    if (!verificar_cliente_cadastrado(cpf_busca)) {
-        printf("Cliente com CPF %s não encontrado.\n", cpf_busca);
-        printf("É necessário cadastrar o cliente primeiro.\n");
-        return NULL;
-    }
-
-    printf("\nCliente encontrado.\n");
-    pet = (Pets*) malloc(sizeof(Pets));
-    if (pet == NULL) {
-        printf("Erro de alocação de memória!\n");
-        return NULL;
-    }
-
-    strcpy(pet->cpf, cpf_busca);
-    input(pet->nome, 50, "Digite o nome do pet: ");
-    input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
-    
-    if (strcmp(raca_input, "1") == 0) { 
-        strcpy(pet->especie, "G"); 
-    } else if (strcmp(raca_input, "2") == 0) { 
-        strcpy(pet->especie, "C"); 
-    } else { 
-        strcpy(pet->especie, "O"); 
-    }
-    pet->status = True;
-    return pet;
+    exibir_titulo("Inativar Cliente (Exclusão Lógica)");
+    printf("║      Informe o CPF do cliente que deseja inativar:                                           ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_busca, 15, "Digite o CPF do cliente: ");
+    return cpf_busca;
 }
+
+char* tela_excluir_cliente_fisico(void) {
+
+    char* cpf_busca;
+    cpf_busca = (char*) malloc(15 * sizeof(char));
+    if (cpf_busca == NULL) {
+        printf("Erro de alocação de memória!\n");
+        pressione_enter();
+        return NULL;
+    }
+    exibir_logo();
+    exibir_titulo("Excluir Cliente Fisicamente");
+    printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
+    printf("║      Informe o CPF do cliente que deseja excluir permanentemente:                            ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    input(cpf_busca, 15, "Digite o CPF do cliente: ");
+    return cpf_busca;
+}
+
+
 
 void gravar_pet(Pets* pet) {
     FILE* arq_pets;
@@ -607,4 +587,32 @@ void cadastrar_pet(void)
     }
 
     pressione_enter();
+}
+
+
+int verificar_cliente_cadastrado(const char* cpf) {
+    FILE* arq_clientes;
+    Clientes* cli;
+    int encontrado = 0;
+
+    arq_clientes = fopen("clientes/clientes.dat", "rb");
+    if (arq_clientes == NULL) {
+        return 0; // Se o arquivo não existe, o cliente não pode estar cadastrado
+    }
+
+    cli = (Clientes*) malloc(sizeof(Clientes));
+    if (cli == NULL) {
+        fclose(arq_clientes);
+        return 0; // Falha na alocação de memória
+    }
+    
+    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
+        if ((strcmp(cli->cpf, cpf) == 0) && (cli->status == True)) {
+            encontrado = 1;
+            break;
+        }
+    }
+    fclose(arq_clientes);
+    free(cli);
+    return encontrado;
 }
