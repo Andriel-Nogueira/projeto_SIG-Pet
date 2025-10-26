@@ -250,7 +250,12 @@ Clientes* tela_cadastrar_cliente(void){
         return NULL;
     }
 
-    input(cli->nome, 50, "Digite o seu nome: ");
+    do {
+        input(cli->nome, 50, "Digite o seu nome:");
+        if (!validar_nome(cli->nome)) {
+            printf("\nNome inválido! Digite apenas letras e espaços.\n");
+        }
+    } while (!validar_nome(cli->nome));
     
     // Validação da data de nascimento
     int dia, mes, ano;
@@ -352,7 +357,14 @@ Pets* tela_cadastrar_pet(void)
     }
 
     strcpy(pet->cpf, cpf_busca);
-    input(pet->nome, 50, "Digite o nome do pet: ");
+    
+    do {
+        input(pet->nome, 50, "Digite o nome do pet:");
+        if (!validar_nome(pet->nome)) {
+            printf("\nNome inválido! Digite apenas letras e espaços.\n");
+        }
+    } while (!validar_nome(pet->nome));
+
     input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
     
     if (strcmp(raca_input, "1") == 0) { 

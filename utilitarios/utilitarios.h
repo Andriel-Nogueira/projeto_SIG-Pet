@@ -21,5 +21,7 @@ int eh_digito(char c);
 int eh_bissexto(int ano);
 int validar_data(int dia, int mes, int ano);
 void ler_data(int* dia, int* mes, int* ano);
+int eh_letra(char c);
+int validar_nome(const char* nome);
 
 #endif

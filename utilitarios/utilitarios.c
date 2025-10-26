@@ -181,3 +181,25 @@ void ler_data(int* dia, int* mes, int* ano) {
         }
     } while (!data_valida);
 }
+
+int eh_letra(char c) {
+    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int validar_nome(const char* nome) {
+    // Verifica se o nome não está vazio
+    if (nome[0] == '\0') {
+        return 0;
+    }
+    for (int i = 0; nome[i] != '\0'; i++) {
+        // Permite letras e espaços
+        if (!eh_letra(nome[i]) && nome[i] != ' ') {
+            return 0;
+        }
+    }
+    return 1;
+}
