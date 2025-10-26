@@ -235,8 +235,12 @@ Clientes* tela_cadastrar_cliente(void){
     exibir_logo();
     exibir_titulo("Cadastrar Cliente");
 
-
-    input(cli->cpf, 15, "Insira seu cpf");
+    do {
+        input(cli->cpf, 15, "Insira seu CPF (apenas números):");
+        if (!validar_numero(cli->cpf)) {
+            printf("\nCPF inválido! Digite apenas números.\n");
+        }
+    } while (!validar_numero(cli->cpf));
 
     if (verificar_cliente_cadastrado(cli->cpf)) {
         printf("\nEste CPF já pertence a um cliente cadastrado.\n");
@@ -248,7 +252,14 @@ Clientes* tela_cadastrar_cliente(void){
 
     input(cli->nome, 50, "Digite o seu nome: ");
     input(cli->data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
-    input(cli->telefone, 20, "Digite seu telefone: ");
+    
+    do {
+        input(cli->telefone, 20, "Digite seu telefone (10 ou 11 dígitos, com DDD):");
+        if (!validar_telefone(cli->telefone)) {
+            printf("\nTelefone inválido! Deve conter 10 ou 11 dígitos numéricos.\n");
+        }
+    } while (!validar_telefone(cli->telefone));
+
     cli->status = True;
     return cli;
 }

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <stdarg.h>
+#include <ctype.h>
 #include "utilitarios.h"
 
 int escolha(void)
@@ -34,29 +35,7 @@ void input(char *nome, int tamanho, char *mensagem)
     nome[tam - 1] = '\0';
 }
 
-void salvar(const char* nome_arquivo, int num_args, ...) {
-    FILE* arquivo = fopen(nome_arquivo, "at");
-    if (arquivo == NULL) {
-        printf("Erro na criação ou abertura do arquivo!\n");
-        return;
-    }
 
-    va_list args;
-    va_start(args, num_args);
-
-    // Escreve os dados no arquivo, separados por ";"
-    for (int i = 0; i < num_args; i++) {
-        fprintf(arquivo, "%s", va_arg(args, char*));
-        if (i < num_args - 1) {
-            fprintf(arquivo, ";");  // Adiciona o separador ";"
-        }
-    }
-
-    va_end(args);
-
-    fprintf(arquivo, "\n");
-    fclose(arquivo);
-}
 
 char* gerar_id(const char* caminho_arquivo)
 {
@@ -121,4 +100,35 @@ void pressione_enter(void)
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
+}
+
+int eh_digito(char c) {
+    if (c >= '0' && c <= '9') {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int validar_numero(const char* str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!eh_digito(str[i])) {
+            return 0; 
+        }
+    }
+    return 1; 
+}
+
+int validar_telefone(const char* telefone) {
+    int i = 0;
+    while (telefone[i] != '\0') {
+        if (!eh_digito(telefone[i])) {
+            return 0;
+        }
+        i++;
+    }
+    if (i < 10 || i > 11) {
+        return 0;
+    }
+    return 1;
 }

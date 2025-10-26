@@ -15,4 +15,8 @@ void exibir_logo(void);
 void exibir_titulo(const char* titulo);
 void pressione_enter(void);
 
+int validar_numero(const char* str);
+int validar_telefone(const char* telefone);
+int eh_digito(char c);
+
 #endif
