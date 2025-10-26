@@ -251,7 +251,12 @@ Clientes* tela_cadastrar_cliente(void){
     }
 
     input(cli->nome, 50, "Digite o seu nome: ");
-    input(cli->data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
+    
+    // Validação da data de nascimento
+    int dia, mes, ano;
+    printf("Digite sua data de nascimento:\n");
+    ler_data(&dia, &mes, &ano);
+    sprintf(cli->data_nascimento, "%02d/%02d/%04d", dia, mes, ano);
     
     do {
         input(cli->telefone, 20, "Digite seu telefone (10 ou 11 dígitos, com DDD):");

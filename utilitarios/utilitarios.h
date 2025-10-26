@@ -18,5 +18,8 @@ void pressione_enter(void);
 int validar_numero(const char* str);
 int validar_telefone(const char* telefone);
 int eh_digito(char c);
+int eh_bissexto(int ano);
+int validar_data(int dia, int mes, int ano);
+void ler_data(int* dia, int* mes, int* ano);
 
 #endif

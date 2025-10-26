@@ -132,3 +132,52 @@ int validar_telefone(const char* telefone) {
     }
     return 1;
 }
+
+int eh_bissexto(int ano) {
+    if ((ano % 4 == 0) && (ano % 100 != 0)) {
+        return 1;
+    } else if (ano % 400 == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int validar_data(int dia, int mes, int ano) {
+    int maior_dia;
+    if (ano < 1900 || ano > 2024 || mes < 1 || mes > 12 || dia < 1) {
+        return 0;
+    }
+    if (mes == 2) { // Fevereiro
+        maior_dia = eh_bissexto(ano) ? 29 : 28;
+    } else if (mes == 4 || mes == 6 || mes == 9 || mes == 11) { // Meses com 30 dias
+        maior_dia = 30;
+    } else { // Meses com 31 dias
+        maior_dia = 31;
+    }
+    if (dia > maior_dia) {
+        return 0;
+    }
+    return 1; // Data válida
+}
+
+void ler_data(int* dia, int* mes, int* ano) {
+    char dia_str[4], mes_str[4], ano_str[6];
+    int data_valida;
+
+    do {
+        printf("Digite a data:\n");
+        input(dia_str, 4, "Dia (DD):");
+        input(mes_str, 4, "Mês (MM):");
+        input(ano_str, 6, "Ano (AAAA):");
+
+        *dia = atoi(dia_str);
+        *mes = atoi(mes_str);
+        *ano = atoi(ano_str);
+
+        data_valida = validar_data(*dia, *mes, *ano);
+        if (!data_valida) {
+            printf("\nData inválida! Por favor, insira uma data correta.\n");
+        }
+    } while (!data_valida);
+}
