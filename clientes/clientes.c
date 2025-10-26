@@ -46,7 +46,7 @@ void m_clientes(void)
             listar_clientes();
             break;
         case 5:
-            excluir_cliente();
+            inativar_cliente();
             break;
         case 6: 
             excluir_cliente_fisico();
@@ -54,8 +54,8 @@ void m_clientes(void)
         case 7: 
             cadastrar_pet();
             break;
-        case 8:
-            excluir_pet_logico();
+        case 8: 
+            inativar_pet();
             break;
         case 9:
             excluir_pet_fisico();
@@ -68,7 +68,7 @@ void m_clientes(void)
     } while (op != 0);
 }
 
-int verif_cli_cadastrado(const char* cpf) {
+int verificar_cliente_cadastrado(const char* cpf) {
     FILE* arq_clientes;
     Clientes* cli;
     int encontrado = 0;
@@ -128,7 +128,7 @@ Clientes* tela_cadastrar_cliente(void){
 
     input(cli->cpf, 15, "Insira seu cpf");
 
-    if (verif_cli_cadastrado(cli->cpf)) {
+    if (verificar_cliente_cadastrado(cli->cpf)) {
         printf("\nEste CPF já pertence a um cliente cadastrado.\n");
         printf("Pressione <Enter> para voltar...");
         getchar();
@@ -244,7 +244,7 @@ void atualizar_cliente(void)
 
     cpf_busca = tela_atualizar_cliente();
     
-    if (!verif_cli_cadastrado(cpf_busca)) {
+    if (!verificar_cliente_cadastrado(cpf_busca)) {
         printf("\nCliente com CPF %s não encontrado ou inativo.\n", cpf_busca);
     } else {
         cli = tela_cadastrar_cliente();
@@ -292,7 +292,7 @@ void listar_clientes(void)
     pressione_enter();
 }
 
-void excluir_pet_logico(void)
+void inativar_pet(void)
 {
     Pets* pet;
     FILE *arq_pets;
@@ -408,7 +408,7 @@ void excluir_pet_fisico(void)
     pressione_enter();
 }
 
-char* tela_excluir_cliente(void) {
+char* tela_inativar_cliente(void) {
     char* cpf_busca;
     cpf_busca = (char*) malloc(15 * sizeof(char));
     exibir_logo();
@@ -419,12 +419,12 @@ char* tela_excluir_cliente(void) {
     return cpf_busca;
 }
 
-void excluir_cliente(void)
+void inativar_cliente(void)
 {
     Clientes* cli;
     char* cpf_busca;
 
-    cpf_busca = tela_excluir_cliente();
+    cpf_busca = tela_inativar_cliente();
     cli = buscar_cliente_por_cpf(cpf_busca);
 
     if (cli == NULL) {
@@ -534,7 +534,7 @@ void cadastrar_pet(void)
     exibir_titulo("Cadastrar Pet");
     input(cpf_busca, 15, "Digite o CPF do dono do pet: ");
 
-    if (verif_cli_cadastrado(cpf_busca)) {
+    if (verificar_cliente_cadastrado(cpf_busca)) {
         printf("\nCliente encontrado.\n");
         pet = (Pets*) malloc(sizeof(Pets));
         if (pet == NULL) {

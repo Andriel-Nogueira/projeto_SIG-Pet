@@ -23,12 +23,14 @@ void cadastrar_cliente(void);
 void buscar_cliente(void);
 void atualizar_cliente(void);
 void listar_clientes(void);
-void excluir_cliente(void);
+void inativar_cliente(void);
 void excluir_cliente_fisico(void);
 void cadastrar_pet(void);
-void excluir_pet_logico(void);
+void inativar_pet(void);
 void excluir_pet_fisico(void);
 Clientes* tela_cadastrar_cliente(void);
+char* tela_excluir_cliente_fisico(void);
+int remover_cliente_do_arquivo(const char* cpf);
 void gravar_cliente(Clientes*);
 
 
