@@ -9,7 +9,8 @@ int escolha(void);
 
 void salvar(const char* nome_arquivo, int num_args, ...) ;
 
-char* gerar_id(const char* caminho_arquivo);
+int gerar_id(const char* caminho_arquivo, size_t tamanho_registro);
+#define GERAR_ID(caminho, tipo) gerar_id(caminho, sizeof(tipo))
 
 void exibir_logo(void);
 void exibir_titulo(const char* titulo);

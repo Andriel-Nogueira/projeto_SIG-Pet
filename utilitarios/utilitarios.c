@@ -37,28 +37,23 @@ void input(char *nome, int tamanho, char *mensagem)
 
 
 
-char* gerar_id(const char* caminho_arquivo)
+int gerar_id(const char* caminho_arquivo, size_t tamanho_registro)
 {
-    int id = 0;
-    static char id_str[20];
-    char linha[255];
     FILE *arquivo;
+    long tamanho_arquivo;
+    int num_registros;
 
-    arquivo = fopen(caminho_arquivo, "rt");
+    arquivo = fopen(caminho_arquivo, "rb");
     if (arquivo == NULL)
     {
-        return "1";
+        return 1; // Se o arquivo não existe, o primeiro ID é 1
     }
 
-    while (fgets(linha, sizeof(linha), arquivo) != NULL)
-    {
-        id++;  
-    }
-
+    fseek(arquivo, 0, SEEK_END);
+    tamanho_arquivo = ftell(arquivo);
     fclose(arquivo);
-    sprintf(id_str, "%d", id + 1);
-    
-    return id_str;
+    num_registros = tamanho_arquivo / tamanho_registro;
+    return num_registros + 1;
 }
 
 void exibir_titulo(const char* titulo) //CRÉDITOS: ajuda da I.A Google Gemini, adpatada pelo dev Jefferson 

@@ -3,11 +3,10 @@
 
 struct produtos
 {
-    char id[20];
+    int id;
     char nome[50];
     char preco[10];
     char quantidade[10];
-    char id_lido[20];
     int status;
 };
 

@@ -74,9 +74,8 @@ void cadastrar_servico(void)
         return;
     }
 
-    strcpy(serv->id_gerado, gerar_id("servicos/servicos.dat"));
-
-    printf("ID do serviço gerado automaticamente: %s\n", serv->id_gerado);
+    serv->id = GERAR_ID("servicos/servicos.dat", Servicos);
+    printf("ID do serviço gerado automaticamente: %d\n", serv->id);
     input(serv->nome, 50, "Nome do Serviço: ");
     input(serv->desc, 256, "Descrição: ");
     input(serv->preco_s, 32, "Preço (use . como separador): ");
@@ -96,7 +95,7 @@ void cadastrar_servico(void)
     fclose(arq_servicos);
 
     printf("\nCadastro de serviço realizado com sucesso !\n");
-    printf("ID: %s\nNome: %s\nDescrição: %s\nPreço: %s\n", serv->id_gerado, serv->nome, serv->desc, serv->preco_s);
+    printf("ID: %d\nNome: %s\nDescrição: %s\nPreço: %s\n", serv->id, serv->nome, serv->desc, serv->preco_s);
     printf("\n");
     printf("Pressione <Enter> para voltar ao menu principal...                         \n");
     getchar();
@@ -127,14 +126,14 @@ void buscar_servico(void)
 
     while (fread(serv, sizeof(Servicos), 1, arq_servicos))
     {
-        if ((strcmp(serv->id_gerado, id_lido) == 0) && (serv->status == True))
+        if ((serv->id == atoi(id_lido)) && (serv->status == True))
         {
             encontrado = 1;
             printf("\nServiço encontrado:\n");
             printf("Nome: %s\n", serv->nome);
             printf("Descrição: %s\n", serv->desc);
             printf("Preço: %s\n", serv->preco_s);
-            printf("ID: %s\n", serv->id_gerado);
+            printf("ID: %d\n", serv->id);
             printf("Pressione <Enter> para voltar ao menu principal...                         \n");
             getchar();
             break;
@@ -194,7 +193,7 @@ void excluir_servico_fisico(void)
 
     while (fread(serv, sizeof(Servicos), 1, arq_servicos))
     {
-        if (strcmp(serv->id_gerado, id_busca) != 0)
+        if (serv->id != atoi(id_busca))
         {
             fwrite(serv, sizeof(Servicos), 1, arq_temp);
         }
@@ -251,7 +250,7 @@ void atualizar_servico(void)
 
     while (fread(serv, sizeof(Servicos), 1, arq_servicos))
     {
-        if ((strcmp(serv->id_gerado, id_lido) == 0) && (serv->status == True))
+        if ((serv->id == atoi(id_lido)) && (serv->status == True))
         {
             encontrado = 1;
             printf("\nServiço encontrado. Informe os novos dados:\n");
@@ -306,7 +305,7 @@ void listar_servicos(void)
         {
             printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
             printf("║                                                                                              ║\n");
-            printf("║ Nome: %s\t║ Preço: %s\t║ ID: %s                                       ║\n", serv->nome, serv->preco_s, serv->id_gerado);
+            printf("║ Nome: %s\t║ Preço: %s\t║ ID: %d                                       ║\n", serv->nome, serv->preco_s, serv->id);
             printf("║ Descrição: %s   ║\n", serv->desc);
             printf("║                                                                                              ║\n");
             printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
@@ -344,7 +343,7 @@ void excluir_servico(void)
 
     while (fread(serv, sizeof(Servicos), 1, arq_servicos))
     {
-        if ((strcmp(serv->id_gerado, id_excluir) == 0) && (serv->status == True))
+        if ((serv->id == atoi(id_excluir)) && (serv->status == True))
         {
             encontrado = 1;
             serv->status = False; // Exclusão lógica

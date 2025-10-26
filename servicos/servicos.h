@@ -14,7 +14,7 @@ struct servicos
     char nome[50];
     char desc[256];
     char preco_s[32];
-    char id_gerado[20];
+    int id;
     int status;
 
 };
