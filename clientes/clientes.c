@@ -96,6 +96,29 @@ int verif_cli_cadastrado(const char* cpf) {
     return encontrado;
 }
 
+Clientes* buscar_cliente_por_cpf(const char* cpf) {
+    FILE* arq_clientes;
+    Clientes* cli;
+
+    arq_clientes = fopen("clientes/clientes.dat", "rb");
+    if (arq_clientes == NULL) {
+        return NULL; // Arquivo não existe
+    }
+
+    cli = (Clientes*) malloc(sizeof(Clientes));
+    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
+        if ((strcmp(cli->cpf, cpf) == 0) && (cli->status == True)) {
+            fclose(arq_clientes);
+            return cli; // Retorna o cliente encontrado
+        }
+    }
+
+    fclose(arq_clientes);
+    free(cli); // Libera a memória se não encontrou
+    return NULL; // Cliente não encontrado
+}
+
+
 Clientes* tela_cadastrar_cliente(void){
     Clientes* cli;
     cli = (Clientes*) malloc(sizeof(Clientes));
@@ -163,30 +186,19 @@ void cadastrar_cliente(void)
 
 void buscar_cliente(void)
 {
-    Clientes* cli;
-    FILE *arq_clientes;
     char cpf_busca[15];
+    Clientes* cli = NULL;
 
     exibir_logo();
     exibir_titulo("Buscar Cliente pelo CPF");
 
     input(cpf_busca, 15, "Digite o CPF do cliente que deseja buscar: ");
 
-    if (verif_cli_cadastrado(cpf_busca)) {
-        cli = (Clientes*) malloc(sizeof(Clientes));
-        arq_clientes = fopen("clientes/clientes.dat", "rb");
-        if (arq_clientes == NULL) { // Verificação extra de segurança
-            printf("Erro ao abrir o arquivo para leitura.\n");
-            free(cli);
-            return;
-        }
-        while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-            if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == True)) {
-                printf("\nCliente encontrado:\n");
-                exibir_cliente(cli);
-            }
-        }
-        fclose(arq_clientes);
+    cli = buscar_cliente_por_cpf(cpf_busca);
+
+    if (cli != NULL) {
+        printf("\nCliente encontrado:\n");
+        exibir_cliente(cli);
         free(cli);
     } else {
         printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
