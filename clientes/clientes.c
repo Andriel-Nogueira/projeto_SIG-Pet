@@ -68,7 +68,6 @@ void m_clientes(void)
     } while (op != 0);
 }
 
-// verifica se um cliente já está cadastrado e ativo
 int verif_cli_cadastrado(const char* cpf) {
     FILE* arq_clientes;
     Clientes* cli;
@@ -102,20 +101,20 @@ Clientes* buscar_cliente_por_cpf(const char* cpf) {
 
     arq_clientes = fopen("clientes/clientes.dat", "rb");
     if (arq_clientes == NULL) {
-        return NULL; // Arquivo não existe
+        return NULL;
     }
 
     cli = (Clientes*) malloc(sizeof(Clientes));
     while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
         if ((strcmp(cli->cpf, cpf) == 0) && (cli->status == True)) {
             fclose(arq_clientes);
-            return cli; // Retorna o cliente encontrado
+            return cli;
         }
     }
 
     fclose(arq_clientes);
-    free(cli); // Libera a memória se não encontrou
-    return NULL; // Cliente não encontrado
+    free(cli); 
+    return NULL; 
 }
 
 
@@ -168,6 +167,26 @@ void gravar_cliente(Clientes* cli){
     fwrite(cli, sizeof(Clientes), 1, arq_clientes);
     fclose(arq_clientes);
 }
+void gravar_atualizacao_cliente(const Clientes* cli) {
+    FILE* arq_clientes;
+    arq_clientes = fopen("clientes/clientes.dat", "r+b");
+    if (arq_clientes == NULL) {
+        printf("Erro ao abrir o arquivo para atualização.\n");
+        return;
+    }
+
+    Clientes temp_cli;
+    while(fread(&temp_cli, sizeof(Clientes), 1, arq_clientes)) {
+        if ((strcmp(temp_cli.cpf, cli->cpf) == 0) && (temp_cli.status == True)) {
+            fseek(arq_clientes, -sizeof(Clientes), SEEK_CUR);
+            fwrite(cli, sizeof(Clientes), 1, arq_clientes);
+            printf("\nCliente atualizado com sucesso!\n");
+            break;
+        }
+    }
+    fclose(arq_clientes);
+}
+
 
 void cadastrar_cliente(void)
 {
@@ -175,7 +194,7 @@ void cadastrar_cliente(void)
 
     cli = tela_cadastrar_cliente();
     if (cli == NULL) {
-        return; // Aborta o cadastro se o cliente já existir ou houver erro.
+        return;
     }
     gravar_cliente(cli);
     printf("Cliente cadastrado com sucesso!\n");
@@ -207,54 +226,36 @@ void buscar_cliente(void)
     pressione_enter();
 }
 
-void atualizar_cliente(void)
-{
-    Clientes* cli;
-    FILE *arq_clientes;
-    char cpf_busca[15];
-    int encontrado = 0;
-
+char* tela_atualizar_cliente(void) {
+    char* cpf_busca;
+    cpf_busca = (char*) malloc(15 * sizeof(char));
     exibir_logo();
     exibir_titulo("Atualizar Dados do Cliente");
     printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(cpf_busca, 15, "Digite o CPF do cliente que deseja atualizar: ");
+    return cpf_busca;
+}
 
-    cli = (Clientes*) malloc(sizeof(Clientes));
-    arq_clientes = fopen("clientes/clientes.dat", "r+b");
+void atualizar_cliente(void)
+{
+    char* cpf_busca;
+    Clientes* cli;
 
-    if (arq_clientes == NULL) {
-        printf("\nErro ao abrir o arquivo!\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        free(cli);
-        return;
-    }
-
-    while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
-        if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == True)) {
-            encontrado = 1;
-            printf("\nCliente encontrado:\n");
-            exibir_cliente(cli);
-            printf("\n");
-            printf("Digite os novos dados:\n");
-            input(cli->nome, 50, "Digite o novo nome: ");
-            input(cli->data_nascimento, 12, "Digite a nova data de nascimento (DD/MM/AAAA): ");
-            input(cli->telefone, 20, "Digite o novo telefone: ");
-            
-            fseek(arq_clientes, -sizeof(Clientes), SEEK_CUR);
-            fwrite(cli, sizeof(Clientes), 1, arq_clientes);
-            printf("\nCliente atualizado com sucesso!\n");
+    cpf_busca = tela_atualizar_cliente();
+    
+    if (!verif_cli_cadastrado(cpf_busca)) {
+        printf("\nCliente com CPF %s não encontrado ou inativo.\n", cpf_busca);
+    } else {
+        cli = tela_cadastrar_cliente();
+        if (cli != NULL) {
+            strcpy(cli->cpf, cpf_busca);
+            gravar_atualizacao_cliente(cli);
+            free(cli);
         }
     }
-
-    if (!encontrado) {
-        printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
-    }
-
+    free(cpf_busca);
     pressione_enter();
-    fclose(arq_clientes);
-    free(cli);
 }
 
 void listar_clientes(void)
