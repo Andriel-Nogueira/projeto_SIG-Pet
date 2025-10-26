@@ -292,61 +292,77 @@ void listar_clientes(void)
     pressione_enter();
 }
 
-void inativar_pet(void)
-{
-    Pets* pet;
-    FILE *arq_pets;
-    char cpf_busca[15];
-    char nome_pet_busca[50];
-    int encontrado = 0;
-
+void tela_inativar_pet(char* cpf_busca, char* nome_pet_busca) {
     exibir_logo();
     exibir_titulo("Inativar Pet (Exclusão Lógica)");
     printf("║      Informe os dados do pet que deseja inativar:                                            ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(cpf_busca, 15, "Digite o CPF do dono: ");
     input(nome_pet_busca, 50, "Digite o nome do pet: ");
+}
+
+Pets* buscar_pet(const char* cpf, const char* nome) {
+    FILE* arq_pets;
+    Pets* pet;
+
+    arq_pets = fopen("clientes/pets.dat", "rb");
+    if (arq_pets == NULL) {
+        return NULL;
+    }
 
     pet = (Pets*) malloc(sizeof(Pets));
-    arq_pets = fopen("clientes/pets.dat", "r+b");
+    while(fread(pet, sizeof(Pets), 1, arq_pets)) {
+        if ((strcmp(pet->cpf, cpf) == 0) && (strcmp(pet->nome, nome) == 0) && (pet->status == True)) {
+            fclose(arq_pets);
+            return pet;
+        }
+    }
+    fclose(arq_pets);
+    free(pet);
+    return NULL;
+}
 
+void gravar_atualizacao_pet(const Pets* pet_atualizado) {
+    FILE* arq_pets;
+    Pets pet_lido;
+
+    arq_pets = fopen("clientes/pets.dat", "r+b");
     if (arq_pets == NULL) {
-        printf("\nErro ao abrir o arquivo de pets. Nenhum pet cadastrado?\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        free(pet);
+        printf("\nErro ao abrir o arquivo de pets para atualização.\n");
         return;
     }
 
-    while(fread(pet, sizeof(Pets), 1, arq_pets)) {
-        if ((strcmp(pet->cpf, cpf_busca) == 0) && (strcmp(pet->nome, nome_pet_busca) == 0) && (pet->status == True)) {
-            encontrado = 1;
-            pet->status = False; // Marca como inativo
+    while(fread(&pet_lido, sizeof(Pets), 1, arq_pets)) {
+        if ((strcmp(pet_lido.cpf, pet_atualizado->cpf) == 0) && (strcmp(pet_lido.nome, pet_atualizado->nome) == 0)) {
             fseek(arq_pets, -sizeof(Pets), SEEK_CUR);
-            fwrite(pet, sizeof(Pets), 1, arq_pets);
-            printf("\nPet '%s' inativado com sucesso!\n", nome_pet_busca);
-            break; 
+            fwrite(pet_atualizado, sizeof(Pets), 1, arq_pets);
+            break;
         }
     }
+    fclose(arq_pets);
+}
 
-    if (!encontrado) {
+void inativar_pet(void)
+{
+    Pets* pet;
+    char cpf_busca[15];
+    char nome_pet_busca[50];
+
+    tela_inativar_pet(cpf_busca, nome_pet_busca);
+    pet = buscar_pet(cpf_busca, nome_pet_busca);
+
+    if (pet != NULL) {
+        pet->status = False;
+        gravar_atualizacao_pet(pet);
+        printf("\nPet '%s' inativado com sucesso!\n", nome_pet_busca);
+        free(pet);
+    } else {
         printf("\nPet '%s' do cliente com CPF %s não encontrado ou já está inativo.\n", nome_pet_busca, cpf_busca);
     }
-
-    fclose(arq_pets);
-    free(pet);
     pressione_enter();
 }
 
-void excluir_pet_fisico(void)
-{
-    Pets* pet;
-    FILE *arq_pets;
-    FILE *arq_temp;
-    char cpf_busca[15];
-    char nome_pet_busca[50];
-    int encontrado = 0;
-
+void tela_excluir_pet_fisico(char* cpf_busca, char* nome_pet_busca) {
     exibir_logo();
     exibir_titulo("Excluir Pet Fisicamente");
     printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
@@ -354,40 +370,25 @@ void excluir_pet_fisico(void)
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(cpf_busca, 15, "Digite o CPF do dono: ");
     input(nome_pet_busca, 50, "Digite o nome do pet: ");
+}
 
-    pet = (Pets*) malloc(sizeof(Pets));
-    if (pet == NULL) {
-        printf("Erro de alocação de memória!\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        return;
-    }
+int remover_pet_do_arquivo(const char* cpf, const char* nome) {
+    FILE *arq_pets, *arq_temp;
+    Pets pet;
+    int encontrado = 0;
 
     arq_pets = fopen("clientes/pets.dat", "rb");
+    if (arq_pets == NULL) return -1;
+
     arq_temp = fopen("clientes/pets_temp.dat", "wb");
-
-    if (arq_pets == NULL) {
-        printf("\nNenhum pet cadastrado. A operação não pode ser concluída.\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        free(pet);
-        if (arq_temp) fclose(arq_temp);
-        remove("clientes/pets_temp.dat");
-        return;
-    }
-
     if (arq_temp == NULL) {
-        printf("\nErro ao criar arquivo temporário. A operação não pode ser concluída.\n");
-        printf("Pressione <Enter> para voltar...");
-        getchar();
-        free(pet);
         fclose(arq_pets);
-        return;
+        return -1;
     }
 
-    while(fread(pet, sizeof(Pets), 1, arq_pets)) {
-        if (!((strcmp(pet->cpf, cpf_busca) == 0) && (strcmp(pet->nome, nome_pet_busca) == 0))) {
-            fwrite(pet, sizeof(Pets), 1, arq_temp);
+    while(fread(&pet, sizeof(Pets), 1, arq_pets)) {
+        if (!((strcmp(pet.cpf, cpf) == 0) && (strcmp(pet.nome, nome) == 0))) {
+            fwrite(&pet, sizeof(Pets), 1, arq_temp);
         } else {
             encontrado = 1;
         }
@@ -395,10 +396,23 @@ void excluir_pet_fisico(void)
 
     fclose(arq_pets);
     fclose(arq_temp);
-    free(pet);
 
-    remove("clientes/pets.dat");
-    rename("clientes/pets_temp.dat", "clientes/pets.dat");
+    if (encontrado) {
+        remove("clientes/pets.dat");
+        rename("clientes/pets_temp.dat", "clientes/pets.dat");
+    } else {
+        remove("clientes/pets_temp.dat");
+    }
+    return encontrado;
+}
+
+void excluir_pet_fisico(void) {
+    char cpf_busca[15];
+    char nome_pet_busca[50];
+    int encontrado = 0;
+
+    tela_excluir_pet_fisico(cpf_busca, nome_pet_busca);
+    encontrado = remover_pet_do_arquivo(cpf_busca, nome_pet_busca);
 
     if (encontrado) {
         printf("\nPet '%s' excluído permanentemente com sucesso!\n", nome_pet_busca);
@@ -522,11 +536,9 @@ void excluir_cliente_fisico(void)
     pressione_enter();
 }
 
-void cadastrar_pet(void)
+Pets* tela_cadastrar_pet(void)
 {
     Pets* pet;
-    FILE* arq_pets;
-
     char cpf_busca[15];
     char raca_input[3];
 
@@ -534,45 +546,64 @@ void cadastrar_pet(void)
     exibir_titulo("Cadastrar Pet");
     input(cpf_busca, 15, "Digite o CPF do dono do pet: ");
 
-    if (verificar_cliente_cadastrado(cpf_busca)) {
-        printf("\nCliente encontrado.\n");
-        pet = (Pets*) malloc(sizeof(Pets));
-        if (pet == NULL) {
-            printf("Erro de alocação de memória!\n");
-            printf("Pressione <Enter> para voltar...");
-            getchar();
-            return;
-        }
-
-        strcpy(pet->cpf, cpf_busca);
-        input(pet->nome, 50, "Digite o nome do pet: ");
-        input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
-        
-        if (strcmp(raca_input, "1") == 0) { 
-            strcpy(pet->especie, "G"); 
-        } 
-        else if (strcmp(raca_input, "2") == 0) { 
-            strcpy(pet->especie, "C"); 
-        } 
-        else { 
-            strcpy(pet->especie, "O"); 
-        }
-        pet->status = True;
-
-        arq_pets = fopen("clientes/pets.dat", "ab");
-        if (arq_pets == NULL) {
-            printf("Erro na abertura do arquivo de pets!\n");
-        } else {
-            fwrite(pet, sizeof(Pets), 1, arq_pets);
-            fclose(arq_pets);
-        }
-        printf("Pet cadastrado com sucesso!\n");
-        printf("CPF do cliente: %s.\nNome: %s.\nEspécie: %s.\n", pet->cpf, pet->nome, pet->especie);
-        free(pet);
-    }
-    else {
+    if (!verificar_cliente_cadastrado(cpf_busca)) {
         printf("Cliente com CPF %s não encontrado.\n", cpf_busca);
         printf("É necessário cadastrar o cliente primeiro.\n");
+        return NULL;
+    }
+
+    printf("\nCliente encontrado.\n");
+    pet = (Pets*) malloc(sizeof(Pets));
+    if (pet == NULL) {
+        printf("Erro de alocação de memória!\n");
+        return NULL;
+    }
+
+    strcpy(pet->cpf, cpf_busca);
+    input(pet->nome, 50, "Digite o nome do pet: ");
+    input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
+    
+    if (strcmp(raca_input, "1") == 0) { 
+        strcpy(pet->especie, "G"); 
+    } else if (strcmp(raca_input, "2") == 0) { 
+        strcpy(pet->especie, "C"); 
+    } else { 
+        strcpy(pet->especie, "O"); 
+    }
+    pet->status = True;
+    return pet;
+}
+
+void gravar_pet(Pets* pet) {
+    FILE* arq_pets;
+    arq_pets = fopen("clientes/pets.dat", "ab");
+    if (arq_pets == NULL) {
+        printf("Erro na abertura do arquivo de pets!\n");
+        return;
+    }
+    fwrite(pet, sizeof(Pets), 1, arq_pets);
+    fclose(arq_pets);
+}
+
+void exibir_pet(const Pets* pet) {
+    if (pet == NULL) {
+        return;
+    }
+    printf("CPF do cliente: %s\n", pet->cpf);
+    printf("Nome do pet: %s\n", pet->nome);
+    printf("Espécie: %s\n", pet->especie);
+}
+
+void cadastrar_pet(void)
+{
+    Pets* pet;
+
+    pet = tela_cadastrar_pet();
+    if (pet != NULL) {
+        gravar_pet(pet);
+        printf("\nPet cadastrado com sucesso!\n");
+        exibir_pet(pet);
+        free(pet);
     }
 
     pressione_enter();

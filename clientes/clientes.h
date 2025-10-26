@@ -31,7 +31,15 @@ void excluir_pet_fisico(void);
 Clientes* tela_cadastrar_cliente(void);
 char* tela_excluir_cliente_fisico(void);
 int remover_cliente_do_arquivo(const char* cpf);
+Pets* tela_cadastrar_pet(void);
+void tela_inativar_pet(char* cpf_busca, char* nome_pet_busca);
+void tela_excluir_pet_fisico(char* cpf_busca, char* nome_pet_busca);
+Pets* buscar_pet(const char* cpf, const char* nome);
+void gravar_atualizacao_pet(const Pets* pet);
+int remover_pet_do_arquivo(const char* cpf, const char* nome);
+void exibir_pet(const Pets* pet);
 void gravar_cliente(Clientes*);
+void gravar_pet(Pets* pet);
 
 
 #endif
