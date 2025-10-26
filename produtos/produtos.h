@@ -26,14 +26,14 @@ void excluir_produto_fisico(void);
 
 // Funções de Tela e Lógica (Produto)
 Produtos* tela_cadastrar_produto(void);
-char* tela_buscar_produto(void);
-char* tela_atualizar_produto(void);
-char* tela_inativar_produto(void);
-char* tela_excluir_produto_fisico(void);
+int tela_buscar_produto(void);
+int tela_atualizar_produto(void);
+int tela_inativar_produto(void);
+int tela_excluir_produto_fisico(void);
 void exibir_produto(const Produtos* prod);
 void gravar_produto(const Produtos* prod);
 void gravar_atualizacao_produto(const Produtos* prod);
-Produtos* buscar_produto_por_id(const char* id);
-int remover_produto_do_arquivo(const char* id);
+Produtos* buscar_produto_por_id(int id);
+int remover_produto_do_arquivo(int id);
 
 #endif
