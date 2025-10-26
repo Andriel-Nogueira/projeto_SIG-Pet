@@ -7,6 +7,7 @@ void buscar_agend(void);
 void atualizar_agend(void);
 void listar_agend(void);
 void excluir_agend(void);
+void excluir_agend_fisico(void);
 
 struct agendamentos
 {

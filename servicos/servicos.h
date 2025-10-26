@@ -7,6 +7,7 @@ void buscar_servico(void);
 void atualizar_servico(void);
 void listar_servicos(void);
 void excluir_servico(void);
+void excluir_servico_fisico(void);
 
 struct servicos
 {
