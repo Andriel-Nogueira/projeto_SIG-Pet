@@ -115,3 +115,10 @@ void exibir_logo(void)
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
 }
+
+void pressione_enter(void)
+{
+    printf("\n");
+    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    getchar();
+}

@@ -13,5 +13,6 @@ char* gerar_id(const char* caminho_arquivo);
 
 void exibir_logo(void);
 void exibir_titulo(const char* titulo);
+void pressione_enter(void);
 
 #endif

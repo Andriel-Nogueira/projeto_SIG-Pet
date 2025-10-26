@@ -5,9 +5,6 @@
 #include "../utilitarios/utilitarios.h"
 
 
-typedef struct clientes Clientes;
-typedef struct pets Pets;
-
 void m_clientes(void)
 {
     int op;
@@ -99,10 +96,8 @@ int verif_cli_cadastrado(const char* cpf) {
     return encontrado;
 }
 
-void cadastrar_cliente(void)
-{
+Clientes* tela_cadastrar_cliente(void){
     Clientes* cli;
-    FILE* arq_clientes;
     cli = (Clientes*) malloc(sizeof(Clientes));
 
     exibir_logo();
@@ -116,14 +111,29 @@ void cadastrar_cliente(void)
         printf("Pressione <Enter> para voltar...");
         getchar();
         free(cli);
-        return;
+        return NULL;
     }
 
     input(cli->nome, 50, "Digite o seu nome: ");
     input(cli->data_nascimento, 12, "Digite sua data de nascimento (DD/MM/AAAA): ");
     input(cli->telefone, 20, "Digite seu telefone: ");
     cli->status = True;
+    return cli;
+}
 
+void exibir_cliente(const Clientes* cli)
+{
+    if (cli == NULL) {
+        return;
+    }
+    printf("CPF: %s\n", cli->cpf);
+    printf("Nome: %s\n", cli->nome);
+    printf("Data de nascimento: %s\n", cli->data_nascimento);
+    printf("Telefone: %s\n", cli->telefone);
+}
+
+void gravar_cliente(Clientes* cli){
+    FILE* arq_clientes;
     arq_clientes = fopen("clientes/clientes.dat", "ab");
     if (arq_clientes == NULL) {
         printf("Erro na abertura do arquivo!\n");
@@ -134,13 +144,20 @@ void cadastrar_cliente(void)
     }
     fwrite(cli, sizeof(Clientes), 1, arq_clientes);
     fclose(arq_clientes);
+}
 
+void cadastrar_cliente(void)
+{
+    Clientes* cli;
+
+    cli = tela_cadastrar_cliente();
+    if (cli == NULL) {
+        return; // Aborta o cadastro se o cliente já existir ou houver erro.
+    }
+    gravar_cliente(cli);
     printf("Cliente cadastrado com sucesso!\n");
-    printf("Nome: %s.\nCPF: %s.\nData nascimento: %s.\nTelefone: %s.\n", cli->nome, cli->cpf, cli->data_nascimento, cli->telefone);
-
-    printf("\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+    exibir_cliente(cli);
+    pressione_enter();
     free(cli);
 }
 
@@ -166,10 +183,7 @@ void buscar_cliente(void)
         while(fread(cli, sizeof(Clientes), 1, arq_clientes)) {
             if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == True)) {
                 printf("\nCliente encontrado:\n");
-                printf("CPF: %s\n", cli->cpf);
-                printf("Nome: %s\n", cli->nome);
-                printf("Data de nascimento: %s\n", cli->data_nascimento);
-                printf("Telefone: %s\n", cli->telefone);
+                exibir_cliente(cli);
             }
         }
         fclose(arq_clientes);
@@ -178,8 +192,7 @@ void buscar_cliente(void)
         printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
     }
 
-    printf("\nPressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+    pressione_enter();
 }
 
 void atualizar_cliente(void)
@@ -210,7 +223,8 @@ void atualizar_cliente(void)
         if ((strcmp(cli->cpf, cpf_busca) == 0) && (cli->status == True)) {
             encontrado = 1;
             printf("\nCliente encontrado:\n");
-            printf("CPF: %s\nNome: %s\nData de Nascimento: %s\nTelefone: %s\n\n", cli->cpf, cli->nome, cli->data_nascimento, cli->telefone);
+            exibir_cliente(cli);
+            printf("\n");
             printf("Digite os novos dados:\n");
             input(cli->nome, 50, "Digite o novo nome: ");
             input(cli->data_nascimento, 12, "Digite a nova data de nascimento (DD/MM/AAAA): ");
@@ -226,8 +240,7 @@ void atualizar_cliente(void)
         printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
     }
 
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+    pressione_enter();
     fclose(arq_clientes);
     free(cli);
 }
@@ -263,9 +276,7 @@ void listar_clientes(void)
     fclose(arq_clientes);
     free(cli);
 
-    printf("\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+    pressione_enter();
 }
 
 void excluir_pet_logico(void)
@@ -311,8 +322,7 @@ void excluir_pet_logico(void)
 
     fclose(arq_pets);
     free(pet);
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+    pressione_enter();
 }
 
 void excluir_pet_fisico(void)
@@ -382,8 +392,7 @@ void excluir_pet_fisico(void)
     } else {
         printf("\nPet '%s' do cliente com CPF %s não encontrado.\n", nome_pet_busca, cpf_busca);
     }
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+    pressione_enter();
 }
 
 void excluir_cliente(void)
@@ -426,8 +435,7 @@ void excluir_cliente(void)
 
     fclose(arq_clientes);
     free(cli);
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+    pressione_enter();
 }
 
 void excluir_cliente_fisico(void)
@@ -486,8 +494,7 @@ void excluir_cliente_fisico(void)
     } else {
         printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
     }
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+    pressione_enter();
 }
 
 void cadastrar_pet(void)
@@ -543,7 +550,5 @@ void cadastrar_pet(void)
         printf("É necessário cadastrar o cliente primeiro.\n");
     }
 
-    printf("\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+    pressione_enter();
 }
