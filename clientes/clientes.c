@@ -341,7 +341,13 @@ Pets* tela_cadastrar_pet(void)
 
     exibir_logo();
     exibir_titulo("Cadastrar Pet");
-    input(cpf_busca, 15, "Digite o CPF do dono do pet: ");
+
+    do {
+        input(cpf_busca, 15, "Digite o CPF do dono do pet (apenas números):");
+        if (!validar_numero(cpf_busca)) {
+            printf("\nCPF inválido! Digite apenas números.\n");
+        }
+    } while (!validar_numero(cpf_busca));
 
     if (!verificar_cliente_cadastrado(cpf_busca)) {
         printf("Cliente com CPF %s não encontrado.\n", cpf_busca);
@@ -365,8 +371,14 @@ Pets* tela_cadastrar_pet(void)
         }
     } while (!validar_nome(pet->nome));
 
-    input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
-    
+    do {
+        input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
+        if (strcmp(raca_input, "1") != 0 && strcmp(raca_input, "2") != 0 && strcmp(raca_input, "3") != 0) {
+            printf("\nOpção inválida! Por favor, escolha 1, 2 ou 3.\n");
+        }
+    } while (strcmp(raca_input, "1") != 0 && strcmp(raca_input, "2") != 0 && strcmp(raca_input, "3") != 0);
+
+
     if (strcmp(raca_input, "1") == 0) { 
         strcpy(pet->especie, "G"); 
     } else if (strcmp(raca_input, "2") == 0) { 
