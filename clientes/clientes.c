@@ -28,9 +28,7 @@ void m_clientes(void)
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
         printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-        printf("\n");
-        scanf(" %d", &op);
-        getchar();
+        op = escolha();
         switch (op)
         {
         case 1:
@@ -236,11 +234,11 @@ Clientes* tela_cadastrar_cliente(void){
     exibir_titulo("Cadastrar Cliente");
 
     do {
-        input(cli->cpf, 15, "Insira seu CPF (apenas números):");
-        if (!validar_numero(cli->cpf)) {
-            printf("\nCPF inválido! Digite apenas números.\n");
+        input(cli->cpf, 15, "Insira seu CPF (pode conter '.' e '-'):");
+        if (!validar_cpf(cli->cpf)) {
+            printf("\nCPF inválido! Deve conter 11 dígitos numéricos.\n");
         }
-    } while (!validar_numero(cli->cpf));
+    } while (!validar_cpf(cli->cpf));
 
     if (verificar_cliente_cadastrado(cli->cpf)) {
         printf("\nEste CPF já pertence a um cliente cadastrado.\n");

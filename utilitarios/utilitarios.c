@@ -202,6 +202,25 @@ int validar_nome(const char* nome) {
     return 1;
 }
 
+int validar_cpf(const char* cpf) {
+    int digit_count = 0;
+    for (int i = 0; cpf[i] != '\0'; i++) {
+        // Se for um dígito, incrementa o contador
+        if (eh_digito(cpf[i])) {
+            digit_count++;
+        // Se não for um dígito, verifica se é um caractere permitido (ponto ou traço)
+        } else if (cpf[i] != '.' && cpf[i] != '-') {
+            return 0; // Encontrou um caractere inválido
+        }
+    }
+    // Retorna verdadeiro (1) apenas se o número de dígitos for 11
+    if (digit_count == 11) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 int validar_float(const char* str) {
     int dot_count = 0;
     if (str[0] == '\0') {

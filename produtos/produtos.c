@@ -24,9 +24,7 @@ void m_produtos(void)
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
         printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-        printf("\n");
-        scanf(" %d", &op);
-        getchar();
+        op = escolha();
         switch (op)
         {
         case 1:

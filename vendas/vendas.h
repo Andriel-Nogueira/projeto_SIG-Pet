@@ -25,16 +25,21 @@ typedef struct {
 // Módulo Principal
 void m_vendas(void);
 
+//// Funções de Gerenciamento de Vendas ////
 void realizar_venda(void);
-char* tela_identificar_cliente(void);
-void adicionar_itens_venda(Venda* venda);
 void cancelar_venda(void);
+void listar_vendas(void);
+
+// Funções de Tela
+char* tela_identificar_cliente(void);
+void tela_adicionar_itens(Venda* venda);
 int tela_cancelar_venda(void);
+void exibir_venda(const Venda* venda);
+
+// Funções de Arquivo e Lógica
 Venda* buscar_venda_por_id(int id);
 void restaurar_estoque(const Venda* venda);
 void gravar_venda(const Venda* venda);
 void gravar_atualizacao_venda(const Venda* venda);
-void exibir_venda(const Venda* venda);
-void listar_vendas(void);
 
 #endif

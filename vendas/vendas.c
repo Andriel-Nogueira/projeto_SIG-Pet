@@ -19,9 +19,7 @@ void m_vendas(void) {
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
         printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-        printf("\n");
-        scanf(" %d", &op);
-        getchar();
+        op = escolha();
 
         switch (op) {
             case 1:
@@ -53,7 +51,7 @@ char* tela_identificar_cliente(void) {
     return cpf_busca;
 }
 
-void adicionar_itens_venda(Venda* venda) {
+void tela_adicionar_itens(Venda* venda) {
     char continuar;
     char qtd_str[10];
     float quantidade_desejada;
@@ -61,7 +59,13 @@ void adicionar_itens_venda(Venda* venda) {
     do {
         printf("\nAdicionando produto à venda...\n");
         int id_produto = tela_buscar_produto();
-        Produtos* prod = buscar_produto_por_id(id_produto);
+        
+        // A busca do produto deve ser feita aqui, na tela,
+        // pois é uma interação direta com a entrada do usuário.
+        Produtos* prod = NULL;
+        if (id_produto != -1) {
+            prod = buscar_produto_por_id(id_produto);
+        }
 
         if (prod != NULL) {
             printf("Produto encontrado: %s | Estoque: %.2f\n", prod->nome, prod->quantidade);
@@ -143,7 +147,7 @@ void realizar_venda(void) {
     strcpy(venda->cpf_cliente, cpf_cliente);
     free(cpf_cliente);
 
-    adicionar_itens_venda(venda);
+    tela_adicionar_itens(venda);
 
     if (venda->num_itens > 0) {
         venda->id = GERAR_ID("vendas/vendas.dat", Venda);

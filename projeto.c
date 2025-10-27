@@ -58,9 +58,7 @@ int main(void)
         printf("║ 0 - Sair                            ║\n");
         printf("╚═════════════════════════════════════╝\n");
         printf("\n");
-        printf("Escolha a opção desejada:\n");
-        scanf(" %d", &op);
-        getchar();
+        op = escolha();
         switch (op)
         {
         case 1:
@@ -104,9 +102,7 @@ void m_principal(void)
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
         printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-        printf("\n");
-        scanf(" %d", &op);
-        getchar();
+        op = escolha();
         switch (op)
         {
         case 1:
