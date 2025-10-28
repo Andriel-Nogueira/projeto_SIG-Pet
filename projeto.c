@@ -25,6 +25,7 @@
 #include "servicos/servicos.h"
 #include "agendamentos/agendamentos.h"
 #include "produtos/produtos.h"
+#include "vendas/vendas.h"
 #include "utilitarios/utilitarios.h"
 
 // Funções Principais
@@ -57,9 +58,7 @@ int main(void)
         printf("║ 0 - Sair                            ║\n");
         printf("╚═════════════════════════════════════╝\n");
         printf("\n");
-        printf("Escolha a opção desejada:\n");
-        scanf(" %d", &op);
-        getchar();
+        op = escolha();
         switch (op)
         {
         case 1:
@@ -103,9 +102,7 @@ void m_principal(void)
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
         printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-        printf("\n");
-        scanf(" %d", &op);
-        getchar();
+        op = escolha();
         switch (op)
         {
         case 1:
@@ -119,6 +116,9 @@ void m_principal(void)
             break;
         case 4:
             m_produtos();
+            break;
+        case 5:
+            m_vendas();
             break;
         case 0:
             break;

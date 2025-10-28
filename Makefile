@@ -4,6 +4,7 @@ all:
 	gcc -Wall -c clientes/*.c
 	gcc -Wall -c produtos/*.c
 	gcc -Wall -c servicos/*.c
+	gcc -Wall -c vendas/*.c
 	gcc -Wall -c utilitarios/*.c
 	gcc -Wall -c projeto.c
 	gcc -o sigpet *.o
