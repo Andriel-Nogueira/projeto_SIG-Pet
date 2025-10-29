@@ -5,9 +5,9 @@
 #include "../utilitarios/utilitarios.h"
 
 // Protótipos de funções internas
-void gravar_servico(const Servicos* serv);
-Servicos* buscar_servico_por_id(int id);
-void gravar_atualizacao_servico(const Servicos* serv);
+void gravar_servico(const Servicos *serv);
+Servicos *buscar_servico_por_id(int id);
+void gravar_atualizacao_servico(const Servicos *serv);
 void m_servicos(void)
 {
     int op;
@@ -58,15 +58,16 @@ void m_servicos(void)
     } while (op != 0);
 }
 
-Servicos* tela_cadastrar_servico(void) 
+Servicos *tela_cadastrar_servico(void)
 {
-    Servicos* serv;
+    Servicos *serv;
 
     exibir_logo();
     exibir_titulo("Cadastrar Servico");
 
-    serv = (Servicos*) malloc(sizeof(Servicos));
-    if (serv == NULL) {
+    serv = (Servicos *)malloc(sizeof(Servicos));
+    if (serv == NULL)
+    {
         printf("Erro de alocação de memória!\n");
         pressione_enter();
         return NULL;
@@ -74,19 +75,23 @@ Servicos* tela_cadastrar_servico(void)
 
     serv->id = GERAR_ID("servicos/servicos.dat", Servicos);
     printf("ID do serviço gerado automaticamente: %d\n", serv->id);
-    
-    do {
+
+    do
+    {
         input(serv->nome, 50, "Nome do Serviço: ");
-        if (!validar_nome(serv->nome)) {
+        if (!validar_nome(serv->nome))
+        {
             printf("\nNome inválido! Digite um nome para o serviço.\n");
         }
     } while (!validar_nome(serv->nome));
 
     input(serv->desc, 256, "Descrição: ");
 
-    do {
+    do
+    {
         input(serv->preco_s, 32, "Preço (use . como separador): ");
-        if (!validar_float(serv->preco_s)) {
+        if (!validar_float(serv->preco_s))
+        {
             printf("\nPreço inválido! Digite um valor numérico (ex: 50.00).\n");
         }
     } while (!validar_float(serv->preco_s));
@@ -97,8 +102,9 @@ Servicos* tela_cadastrar_servico(void)
 
 void cadastrar_servico(void)
 {
-    Servicos* serv = tela_cadastrar_servico();
-    if (serv != NULL) {
+    Servicos *serv = tela_cadastrar_servico();
+    if (serv != NULL)
+    {
         gravar_servico(serv);
         printf("\nCadastro de serviço realizado com sucesso!\n");
         exibir_servico(serv);
@@ -107,12 +113,14 @@ void cadastrar_servico(void)
     pressione_enter();
 }
 
-int tela_buscar_servico(void) {
+int tela_buscar_servico(void)
+{
     char id_lido[20];
     exibir_logo();
     exibir_titulo("Buscar Servico pelo ID");
     input(id_lido, 20, "Informe o ID do serviço que deseja buscar:");
-    if (!validar_numero(id_lido)) {
+    if (!validar_numero(id_lido))
+    {
         return -1; // Retorna -1 para indicar ID inválido
     }
     return atoi(id_lido);
@@ -121,32 +129,38 @@ int tela_buscar_servico(void) {
 void buscar_servico(void)
 {
     int id_busca = tela_buscar_servico();
-    if (id_busca == -1) {
+    if (id_busca == -1)
+    {
         printf("\nID inválido. Por favor, digite apenas números.\n");
         pressione_enter();
         return;
     }
 
-    Servicos* serv = buscar_servico_por_id(id_busca);
+    Servicos *serv = buscar_servico_por_id(id_busca);
 
-    if (serv != NULL) {
+    if (serv != NULL)
+    {
         printf("\nServiço encontrado:\n");
         exibir_servico(serv);
         free(serv);
-    } else {
+    }
+    else
+    {
         printf("\nServiço com ID %d não encontrado ou inativo.\n", id_busca);
     }
     pressione_enter();
 }
 
-int tela_atualizar_servico(void) {
+int tela_atualizar_servico(void)
+{
     char id_lido[20];
     exibir_logo();
     exibir_titulo("Atualizar Servico");
     printf("║      Informe o ID do serviço que deseja atualizar:                                           ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(id_lido, 20, "Informe o ID do serviço que deseja atualizar:");
-    if (!validar_numero(id_lido)) {
+    if (!validar_numero(id_lido))
+    {
         return -1;
     }
     return atoi(id_lido);
@@ -155,32 +169,40 @@ int tela_atualizar_servico(void) {
 void atualizar_servico(void)
 {
     int id_busca = tela_atualizar_servico();
-    if (id_busca == -1) {
+    if (id_busca == -1)
+    {
         printf("\nID inválido. Por favor, digite apenas números.\n");
         pressione_enter();
         return;
     }
 
-    Servicos* serv_existente = buscar_servico_por_id(id_busca);
-    if (serv_existente == NULL) {
+    Servicos *serv_existente = buscar_servico_por_id(id_busca);
+    if (serv_existente == NULL)
+    {
         printf("\nServiço com ID %d não encontrado ou inativo.\n", id_busca);
-    } else {
+    }
+    else
+    {
         free(serv_existente); // Libera o que foi retornado pela busca
         printf("\nServiço encontrado. Informe os novos dados:\n");
-        Servicos* serv_novo = (Servicos*) malloc(sizeof(Servicos));
-        
-        do {
+        Servicos *serv_novo = (Servicos *)malloc(sizeof(Servicos));
+
+        do
+        {
             input(serv_novo->nome, 50, "Nome do Serviço: ");
-            if (!validar_nome(serv_novo->nome)) {
+            if (!validar_nome(serv_novo->nome))
+            {
                 printf("\nNome inválido! Digite um nome para o serviço.\n");
             }
         } while (!validar_nome(serv_novo->nome));
 
         input(serv_novo->desc, 256, "Descrição: ");
 
-        do {
+        do
+        {
             input(serv_novo->preco_s, 32, "Preço (use . como separador): ");
-            if (!validar_float(serv_novo->preco_s)) {
+            if (!validar_float(serv_novo->preco_s))
+            {
                 printf("\nPreço inválido! Digite um valor numérico (ex: 50.00).\n");
             }
         } while (!validar_float(serv_novo->preco_s));
@@ -207,7 +229,9 @@ void listar_servicos(void)
     if (arq_servicos == NULL)
     {
         printf("Nenhum serviço cadastrado ou erro ao abrir o arquivo.\n");
-    } else {
+    }
+    else
+    {
         while (fread(&serv, sizeof(Servicos), 1, arq_servicos))
         {
             if (serv.status == True)
@@ -222,12 +246,14 @@ void listar_servicos(void)
     pressione_enter();
 }
 
-int tela_inativar_servico(void) {
+int tela_inativar_servico(void)
+{
     char id_lido[20];
     exibir_logo();
     exibir_titulo("Inativar Servico (Exclusão Lógica)");
     input(id_lido, 20, "Informe o ID do serviço que deseja inativar:");
-    if (!validar_numero(id_lido)) {
+    if (!validar_numero(id_lido))
+    {
         return -1;
     }
     return atoi(id_lido);
@@ -236,26 +262,31 @@ int tela_inativar_servico(void) {
 void inativar_servico(void)
 {
     int id_busca = tela_inativar_servico();
-    if (id_busca == -1) {
+    if (id_busca == -1)
+    {
         printf("\nID inválido. Por favor, digite apenas números.\n");
         pressione_enter();
         return;
     }
 
-    Servicos* serv = buscar_servico_por_id(id_busca);
+    Servicos *serv = buscar_servico_por_id(id_busca);
 
-    if (serv != NULL) {
+    if (serv != NULL)
+    {
         serv->status = False;
         gravar_atualizacao_servico(serv);
         printf("\nServiço com ID %d inativado com sucesso.\n", id_busca);
         free(serv);
-    } else {
+    }
+    else
+    {
         printf("\nServiço com ID %d não encontrado ou já está inativo.\n", id_busca);
     }
     pressione_enter();
 }
 
-int tela_excluir_servico_fisico(void) {
+int tela_excluir_servico_fisico(void)
+{
     char id_lido[20];
     exibir_logo();
     exibir_titulo("Excluir Servico Fisicamente");
@@ -263,7 +294,8 @@ int tela_excluir_servico_fisico(void) {
     printf("║      Informe o ID do serviço que deseja excluir permanentemente:                             ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(id_lido, 20, "Informe o ID do serviço que deseja excluir permanentemente:");
-    if (!validar_numero(id_lido)) {
+    if (!validar_numero(id_lido))
+    {
         return -1;
     }
     return atoi(id_lido);
@@ -272,7 +304,8 @@ int tela_excluir_servico_fisico(void) {
 void excluir_servico_fisico(void)
 {
     int id_busca = tela_excluir_servico_fisico();
-    if (id_busca == -1) {
+    if (id_busca == -1)
+    {
         printf("\nID inválido. Por favor, digite apenas números.\n");
         pressione_enter();
         return;
@@ -280,16 +313,21 @@ void excluir_servico_fisico(void)
 
     int encontrado = remover_servico_do_arquivo(id_busca);
 
-    if (encontrado == 1) {
+    if (encontrado == 1)
+    {
         printf("\nServiço com ID %d excluído permanentemente com sucesso!\n", id_busca);
-    } else if (encontrado == 0) {
+    }
+    else if (encontrado == 0)
+    {
         printf("\nServiço com ID %d não encontrado.\n", id_busca);
     }
     pressione_enter();
 }
 
-void exibir_servico(const Servicos* serv) {
-    if (serv == NULL) {
+void exibir_servico(const Servicos *serv)
+{
+    if (serv == NULL)
+    {
         return;
     }
     printf("ID: %d\n", serv->id);
@@ -298,9 +336,11 @@ void exibir_servico(const Servicos* serv) {
     printf("Preço: R$ %s\n", serv->preco_s);
 }
 
-void gravar_servico(const Servicos* serv) {
-    FILE* arq_servicos = fopen("servicos/servicos.dat", "ab");
-    if (arq_servicos == NULL) {
+void gravar_servico(const Servicos *serv)
+{
+    FILE *arq_servicos = fopen("servicos/servicos.dat", "ab");
+    if (arq_servicos == NULL)
+    {
         printf("Erro na abertura do arquivo!\n");
         pressione_enter();
         return;
@@ -309,18 +349,22 @@ void gravar_servico(const Servicos* serv) {
     fclose(arq_servicos);
 }
 
-Servicos* buscar_servico_por_id(int id) {
-    FILE* arq_servicos;
-    Servicos* serv;
+Servicos *buscar_servico_por_id(int id)
+{
+    FILE *arq_servicos;
+    Servicos *serv;
 
     arq_servicos = fopen("servicos/servicos.dat", "rb");
-    if (arq_servicos == NULL) {
+    if (arq_servicos == NULL)
+    {
         return NULL;
     }
 
-    serv = (Servicos*) malloc(sizeof(Servicos));
-    while(fread(serv, sizeof(Servicos), 1, arq_servicos)) {
-        if ((serv->id == id) && (serv->status == True)) {
+    serv = (Servicos *)malloc(sizeof(Servicos));
+    while (fread(serv, sizeof(Servicos), 1, arq_servicos))
+    {
+        if ((serv->id == id) && (serv->status == True))
+        {
             fclose(arq_servicos);
             return serv;
         }
@@ -330,18 +374,22 @@ Servicos* buscar_servico_por_id(int id) {
     return NULL;
 }
 
-void gravar_atualizacao_servico(const Servicos* serv_atualizado) {
-    FILE* arq_servicos;
+void gravar_atualizacao_servico(const Servicos *serv_atualizado)
+{
+    FILE *arq_servicos;
     Servicos serv_lido;
 
     arq_servicos = fopen("servicos/servicos.dat", "r+b");
-    if (arq_servicos == NULL) {
+    if (arq_servicos == NULL)
+    {
         printf("\nErro ao abrir o arquivo de serviços para atualização.\n");
         return;
     }
 
-    while(fread(&serv_lido, sizeof(Servicos), 1, arq_servicos)) {
-        if (serv_lido.id == serv_atualizado->id) {
+    while (fread(&serv_lido, sizeof(Servicos), 1, arq_servicos))
+    {
+        if (serv_lido.id == serv_atualizado->id)
+        {
             fseek(arq_servicos, -sizeof(Servicos), SEEK_CUR);
             fwrite(serv_atualizado, sizeof(Servicos), 1, arq_servicos);
             break;
@@ -350,28 +398,35 @@ void gravar_atualizacao_servico(const Servicos* serv_atualizado) {
     fclose(arq_servicos);
 }
 
-int remover_servico_do_arquivo(int id) {
+int remover_servico_do_arquivo(int id)
+{
     FILE *arq_servicos, *arq_temp;
     Servicos serv;
     int encontrado = 0;
 
     arq_servicos = fopen("servicos/servicos.dat", "rb");
-    if (arq_servicos == NULL) {
+    if (arq_servicos == NULL)
+    {
         printf("\nNenhum serviço cadastrado. A operação não pode ser concluída.\n");
-        return -1; 
+        return -1;
     }
 
     arq_temp = fopen("servicos/servicos_temp.dat", "wb");
-    if (arq_temp == NULL) {
+    if (arq_temp == NULL)
+    {
         printf("\nErro ao criar arquivo temporário. A operação não pode ser concluída.\n");
         fclose(arq_servicos);
         return -1;
     }
 
-    while(fread(&serv, sizeof(Servicos), 1, arq_servicos)) {
-        if (serv.id != id) {
+    while (fread(&serv, sizeof(Servicos), 1, arq_servicos))
+    {
+        if (serv.id != id)
+        {
             fwrite(&serv, sizeof(Servicos), 1, arq_temp);
-        } else {
+        }
+        else
+        {
             encontrado = 1;
         }
     }
@@ -379,10 +434,13 @@ int remover_servico_do_arquivo(int id) {
     fclose(arq_servicos);
     fclose(arq_temp);
 
-    if (encontrado) {
+    if (encontrado)
+    {
         remove("servicos/servicos.dat");
         rename("servicos/servicos_temp.dat", "servicos/servicos.dat");
-    } else {
+    }
+    else
+    {
         remove("servicos/servicos_temp.dat");
     }
 

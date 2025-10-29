@@ -53,10 +53,12 @@ void m_produtos(void)
     } while (op != 0);
 }
 
-Produtos* tela_cadastrar_produto(void) {
-    Produtos* prod;
-    prod = (Produtos*) malloc(sizeof(Produtos));
-    if (prod == NULL) {
+Produtos *tela_cadastrar_produto(void)
+{
+    Produtos *prod;
+    prod = (Produtos *)malloc(sizeof(Produtos));
+    if (prod == NULL)
+    {
         printf("Erro de alocação de memória!\n");
         return NULL;
     }
@@ -66,20 +68,24 @@ Produtos* tela_cadastrar_produto(void) {
 
     exibir_logo();
     exibir_titulo("Cadastrar Produto");
-    
-    do {
+
+    do
+    {
         input(prod->nome, 50, "Nome do Produto:");
-        if (!validar_nome(prod->nome)) {
+        if (!validar_nome(prod->nome))
+        {
             printf("\nNome inválido! Digite apenas letras e espaços.\n");
         }
     } while (!validar_nome(prod->nome));
 
-    do {
+    do
+    {
         input(preco_str, 10, "Preço do Produto (ex: 25.50):");
     } while (!validar_float(preco_str));
     prod->preco = atof(preco_str);
 
-    do {
+    do
+    {
         input(qtd_str, 10, "Quantidade em Estoque (ex: 10):");
     } while (!validar_float(qtd_str));
     prod->quantidade = atof(qtd_str);
@@ -89,10 +95,12 @@ Produtos* tela_cadastrar_produto(void) {
     return prod;
 }
 
-void gravar_produto(const Produtos* prod) {
-    FILE* arq_produtos;
+void gravar_produto(const Produtos *prod)
+{
+    FILE *arq_produtos;
     arq_produtos = fopen("produtos/produtos.dat", "ab");
-    if (arq_produtos == NULL) {
+    if (arq_produtos == NULL)
+    {
         printf("Erro na abertura do arquivo!\n");
         return;
     }
@@ -100,8 +108,10 @@ void gravar_produto(const Produtos* prod) {
     fclose(arq_produtos);
 }
 
-void exibir_produto(const Produtos* prod) {
-    if (prod == NULL) {
+void exibir_produto(const Produtos *prod)
+{
+    if (prod == NULL)
+    {
         printf("\nProduto não informado.\n");
         return;
     }
@@ -112,11 +122,13 @@ void exibir_produto(const Produtos* prod) {
     printf("Quantidade em estoque: %.2f\n", prod->quantidade);
 }
 
-void cadastrar_produto(void) {
-    Produtos* prod;
+void cadastrar_produto(void)
+{
+    Produtos *prod;
 
     prod = tela_cadastrar_produto();
-    if (prod != NULL) {
+    if (prod != NULL)
+    {
         gravar_produto(prod);
         exibir_produto(prod);
         free(prod);
@@ -124,13 +136,15 @@ void cadastrar_produto(void) {
     pressione_enter();
 }
 
-int tela_buscar_produto(void) {
+int tela_buscar_produto(void)
+{
     char id_str[20];
     int id_busca;
     exibir_logo();
     exibir_titulo("Buscar Produto pelo Código");
-    
-    do {
+
+    do
+    {
         input(id_str, 20, "Digite o código do produto que deseja buscar: ");
     } while (!validar_numero(id_str));
 
@@ -138,18 +152,22 @@ int tela_buscar_produto(void) {
     return id_busca;
 }
 
-Produtos* buscar_produto_por_id(int id) {
-    FILE* arq_produtos;
-    Produtos* prod;
+Produtos *buscar_produto_por_id(int id)
+{
+    FILE *arq_produtos;
+    Produtos *prod;
 
     arq_produtos = fopen("produtos/produtos.dat", "rb");
-    if (arq_produtos == NULL) {
+    if (arq_produtos == NULL)
+    {
         return NULL;
     }
 
-    prod = (Produtos*) malloc(sizeof(Produtos));
-    while (fread(prod, sizeof(Produtos), 1, arq_produtos)) {
-        if ((prod->id == id) && (prod->status == True)) {
+    prod = (Produtos *)malloc(sizeof(Produtos));
+    while (fread(prod, sizeof(Produtos), 1, arq_produtos))
+    {
+        if ((prod->id == id) && (prod->status == True))
+        {
             fclose(arq_produtos);
             return prod;
         }
@@ -159,17 +177,21 @@ Produtos* buscar_produto_por_id(int id) {
     return NULL;
 }
 
-void buscar_produto(void) {
+void buscar_produto(void)
+{
     int id_busca;
-    Produtos* prod;
+    Produtos *prod;
 
     id_busca = tela_buscar_produto();
     prod = buscar_produto_por_id(id_busca);
 
-    if (prod != NULL) {
+    if (prod != NULL)
+    {
         exibir_produto(prod);
         free(prod);
-    } else {
+    }
+    else
+    {
         printf("\nNenhum produto encontrado para o código %d.\n", id_busca);
     }
     pressione_enter();
@@ -178,12 +200,12 @@ void buscar_produto(void) {
 void listar_produtos(void)
 {
     FILE *arq_produtos;
-    Produtos* prod;
+    Produtos *prod;
 
     exibir_logo();
     exibir_titulo("Listar Produtos");
 
-    prod = (Produtos*) malloc(sizeof(Produtos));
+    prod = (Produtos *)malloc(sizeof(Produtos));
     arq_produtos = fopen("produtos/produtos.dat", "rb");
     if (arq_produtos == NULL)
     {
@@ -195,7 +217,8 @@ void listar_produtos(void)
     }
     while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
-        if (prod->status == True) {
+        if (prod->status == True)
+        {
             printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
             printf("║ ID: %-10d ║ Nome: %-20s ║ Preço: R$ %-10.2f ║ Estoque: %-5.2f ║\n", prod->id, prod->nome, prod->preco, prod->quantidade);
         }
@@ -208,7 +231,8 @@ void listar_produtos(void)
     getchar();
 }
 
-int tela_atualizar_produto(void) {
+int tela_atualizar_produto(void)
+{
     char id_str[20];
     int id_busca;
     exibir_logo();
@@ -220,18 +244,22 @@ int tela_atualizar_produto(void) {
     return id_busca;
 }
 
-void gravar_atualizacao_produto(const Produtos* prod) {
-    FILE* arq_produtos;
+void gravar_atualizacao_produto(const Produtos *prod)
+{
+    FILE *arq_produtos;
     Produtos temp_prod;
 
     arq_produtos = fopen("produtos/produtos.dat", "r+b");
-    if (arq_produtos == NULL) {
+    if (arq_produtos == NULL)
+    {
         printf("\nErro ao abrir o arquivo para atualização!\n");
         return;
     }
 
-    while (fread(&temp_prod, sizeof(Produtos), 1, arq_produtos)) {
-        if (temp_prod.id == prod->id) {
+    while (fread(&temp_prod, sizeof(Produtos), 1, arq_produtos))
+    {
+        if (temp_prod.id == prod->id)
+        {
             fseek(arq_produtos, -sizeof(Produtos), SEEK_CUR);
             fwrite(prod, sizeof(Produtos), 1, arq_produtos);
             printf("\nProduto atualizado com sucesso!\n");
@@ -241,39 +269,46 @@ void gravar_atualizacao_produto(const Produtos* prod) {
     fclose(arq_produtos);
 }
 
-void atualizar_produto(void) {
+void atualizar_produto(void)
+{
     int id_busca;
-    Produtos* prod_novo;
-    Produtos* prod_antigo;
+    Produtos *prod_novo;
+    Produtos *prod_antigo;
 
     id_busca = tela_atualizar_produto();
     prod_antigo = buscar_produto_por_id(id_busca);
 
-    if (prod_antigo == NULL) {
+    if (prod_antigo == NULL)
+    {
         printf("\nNenhum produto encontrado para o código %d.\n", id_busca);
-    } else {
+    }
+    else
+    {
         printf("\nProduto encontrado. Insira os novos dados:\n");
         exibir_produto(prod_antigo);
 
         // Reutiliza a tela de cadastro para obter os novos dados
-        prod_novo = (Produtos*) malloc(sizeof(Produtos));
+        prod_novo = (Produtos *)malloc(sizeof(Produtos));
         char preco_str[10];
         char qtd_str[10];
 
-        do {
+        do
+        {
             input(prod_novo->nome, 50, "Novo nome do Produto:");
         } while (!validar_nome(prod_novo->nome));
 
-        do {
+        do
+        {
             input(preco_str, 10, "Novo preço do Produto (ex: 25.50):");
         } while (!validar_float(preco_str));
         prod_novo->preco = atof(preco_str);
 
-        do {
+        do
+        {
             input(qtd_str, 10, "Nova quantidade em Estoque (ex: 10):");
         } while (!validar_float(qtd_str));
         prod_novo->quantidade = atof(qtd_str);
-        
+
         // Mantém o ID e status originais
         prod_novo->id = id_busca;
         prod_novo->status = True;
@@ -286,7 +321,8 @@ void atualizar_produto(void) {
     pressione_enter();
 }
 
-int tela_inativar_produto(void) {
+int tela_inativar_produto(void)
+{
     char id_str[20];
     int id_busca;
     exibir_logo();
@@ -298,25 +334,30 @@ int tela_inativar_produto(void) {
     return id_busca;
 }
 
-void inativar_produto(void) {
+void inativar_produto(void)
+{
     int id_busca;
-    Produtos* prod;
+    Produtos *prod;
 
     id_busca = tela_inativar_produto();
     prod = buscar_produto_por_id(id_busca);
 
-    if (prod != NULL) {
+    if (prod != NULL)
+    {
         prod->status = False;
         gravar_atualizacao_produto(prod);
         printf("\nProduto com código %d inativado com sucesso!\n", id_busca);
         free(prod);
-    } else {
+    }
+    else
+    {
         printf("\nProduto com código %d não encontrado ou já está inativo.\n", id_busca);
     }
     pressione_enter();
 }
 
-int tela_excluir_produto_fisico(void) {
+int tela_excluir_produto_fisico(void)
+{
     char id_str[20];
     int id_busca;
     exibir_logo();
@@ -329,28 +370,35 @@ int tela_excluir_produto_fisico(void) {
     return id_busca;
 }
 
-int remover_produto_do_arquivo(int id) {
+int remover_produto_do_arquivo(int id)
+{
     FILE *arq_produtos, *arq_temp;
     Produtos prod;
     int encontrado = 0;
 
     arq_produtos = fopen("produtos/produtos.dat", "rb");
-    if (arq_produtos == NULL) {
+    if (arq_produtos == NULL)
+    {
         printf("\nErro ao abrir o arquivo de produtos. A operação não pode ser concluída.\n");
         return -1;
     }
 
     arq_temp = fopen("produtos/produtos_temp.dat", "wb");
-    if (arq_temp == NULL) {
+    if (arq_temp == NULL)
+    {
         printf("\nErro ao criar arquivo temporário. A operação não pode ser concluída.\n");
         fclose(arq_produtos);
         return -1;
     }
 
-    while(fread(&prod, sizeof(Produtos), 1, arq_produtos)) {
-        if (prod.id != id) {
+    while (fread(&prod, sizeof(Produtos), 1, arq_produtos))
+    {
+        if (prod.id != id)
+        {
             fwrite(&prod, sizeof(Produtos), 1, arq_temp);
-        } else {
+        }
+        else
+        {
             encontrado = 1;
         }
     }
@@ -358,25 +406,32 @@ int remover_produto_do_arquivo(int id) {
     fclose(arq_produtos);
     fclose(arq_temp);
 
-    if (encontrado) {
+    if (encontrado)
+    {
         remove("produtos/produtos.dat");
         rename("produtos/produtos_temp.dat", "produtos/produtos.dat");
-    } else {
+    }
+    else
+    {
         remove("produtos/produtos_temp.dat");
     }
     return encontrado;
 }
 
-void excluir_produto_fisico(void) {
+void excluir_produto_fisico(void)
+{
     int id_busca;
     int resultado;
 
     id_busca = tela_excluir_produto_fisico();
     resultado = remover_produto_do_arquivo(id_busca);
 
-    if (resultado == 1) {
+    if (resultado == 1)
+    {
         printf("\nProduto com código %d excluído permanentemente com sucesso!\n", id_busca);
-    } else if (resultado == 0) {
+    }
+    else if (resultado == 0)
+    {
         printf("\nProduto com código %d não encontrado.\n", id_busca);
     }
     // Se resultado for -1, a mensagem de erro já foi exibida.
