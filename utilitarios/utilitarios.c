@@ -252,6 +252,19 @@ int validar_cpf(const char *cpf)
             return 0; // Encontrou um caractere inválido
         }
     }
+    int iguais = 1;
+    for (int i = 1; i < 11; i++)
+    {
+        if (cpf[i] != cpf[0])
+        {
+            iguais = 0;
+            break;
+        }
+    }
+    if (iguais)
+    {
+        return 0; // Todos os dígitos são iguais, CPF inválido
+    }
     // Retorna verdadeiro (1) apenas se o número de dígitos for 11
     if (digit_count == 11)
     {
