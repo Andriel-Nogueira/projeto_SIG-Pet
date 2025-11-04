@@ -34,6 +34,7 @@ Clientes* tela_cadastrar_cliente(void);
 char* tela_atualizar_cliente(void);
 char* tela_inativar_cliente(void);
 char* tela_excluir_cliente_fisico(void);
+void exibir_cliente(const Clientes* cli);
 
 // Funções de Arquivo (Cliente)
 void gravar_cliente(Clientes*);
@@ -41,7 +42,6 @@ int remover_cliente_do_arquivo(const char* cpf);
 void gravar_atualizacao_cliente(const Clientes* cli);
 int verificar_cliente_cadastrado(const char* cpf);
 Clientes* buscar_cliente_por_cpf(const char* cpf);
-void exibir_cliente(const Clientes* cli);
 
 //// Funções de Gerenciamento de Pets ////
 void cadastrar_pet(void);
@@ -53,7 +53,7 @@ Pets* tela_cadastrar_pet(void);
 void tela_inativar_pet(char* cpf_busca, char* nome_pet_busca);
 void tela_excluir_pet_fisico(char* cpf_busca, char* nome_pet_busca);
 
-// Funções de Arquivo e Lógica (Pet)
+// Funções de Arquivo (Pet)
 void gravar_pet(Pets* pet);
 void gravar_atualizacao_pet(const Pets* pet);
 int remover_pet_do_arquivo(const char* cpf, const char* nome);

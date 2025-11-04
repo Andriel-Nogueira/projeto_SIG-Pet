@@ -32,4 +32,10 @@ char* tela_inativar_agend(void);
 char* tela_excluir_agend_fisico(void);
 void exibir_agendamento(const Agendamentos* agend);
 
+// Funções de Arquivo
+void gravar_agendamento(const Agendamentos* agend);
+Agendamentos* buscar_agendamento_por_cpf(const char* cpf);
+void gravar_atualizacao_agendamento(const Agendamentos* agend);
+int remover_agendamento_do_arquivo(const char* cpf);
+
 #endif

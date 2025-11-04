@@ -5,11 +5,6 @@
 #include "../utilitarios/utilitarios.h"
 #include "../clientes/clientes.h"
 
-// Funções internas
-void gravar_agendamento(const Agendamentos *agend);
-Agendamentos *buscar_agendamento_por_cpf(const char *cpf);
-void gravar_atualizacao_agendamento(const Agendamentos *agend);
-int remover_agendamento_do_arquivo(const char *cpf);
 void m_agendamento(void)
 {
     int op;

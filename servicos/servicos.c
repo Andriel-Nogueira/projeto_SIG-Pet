@@ -4,10 +4,6 @@
 #include "servicos.h"
 #include "../utilitarios/utilitarios.h"
 
-// Protótipos de funções internas
-void gravar_servico(const Servicos *serv);
-Servicos *buscar_servico_por_id(int id);
-void gravar_atualizacao_servico(const Servicos *serv);
 void m_servicos(void)
 {
     int op;
