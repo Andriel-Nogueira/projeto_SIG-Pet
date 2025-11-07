@@ -120,6 +120,9 @@ void m_principal(void)
         case 5:
             m_vendas();
             break;
+        case 6:
+            m_relatorios();
+            break;
         case 0:
             break;
         default:
