@@ -26,6 +26,7 @@
 #include "agendamentos/agendamentos.h"
 #include "produtos/produtos.h"
 #include "vendas/vendas.h"
+#include "relatorios/relatorios.h"
 #include "utilitarios/utilitarios.h"
 
 // Funções Principais
@@ -38,7 +39,6 @@ void t_final(void);
 // Versão atual
 
 char versao[10] = "0.2.0";
-
 
 // Programa Principal
 int main(void)
