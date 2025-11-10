@@ -138,7 +138,7 @@ void listar_clientes(void)
     Clientes *cli;
 
     exibir_logo();
-    exibir_titulo("Listar de Clientes");
+    exibir_titulo("Listagem de Clientes");
 
     cli = (Clientes *)malloc(sizeof(Clientes));
     arq_clientes = fopen("clientes/clientes.dat", "rb");
@@ -152,15 +152,30 @@ void listar_clientes(void)
         return;
     }
 
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-15s │ %-35s │ %-12s │ %-15s ║\n", "CPF", "NOME", "NASCIMENTO", "TELEFONE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    int encontrou = 0;
     while (fread(cli, sizeof(Clientes), 1, arq_clientes))
     {
         if (cli->status == True)
         {
-            printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
-            printf("CPF: %s\t║ Nome: %s\t║ Data de nascimento: %s\t║ Telefone: %s\n", cli->cpf, cli->nome, cli->data_nascimento, cli->telefone);
-            printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
+            printf("║ %-15s │ %-35s │ %-12s │ %-15s ║\n",
+                   cli->cpf,
+                   cli->nome,
+                   cli->data_nascimento,
+                   cli->telefone);
+            encontrou = 1;
         }
     }
+
+    if (!encontrou)
+    {
+        printf("║ Nenhum cliente ativo encontrado.                                                                                     ║\n");
+    }
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     fclose(arq_clientes);
     free(cli);
