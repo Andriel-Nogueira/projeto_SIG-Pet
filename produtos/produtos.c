@@ -215,20 +215,39 @@ void listar_produtos(void)
         getchar();
         return;
     }
+    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-12s │ %-10s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    int encontrou = 0, contador = 0;
     while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
         if (prod->status == True)
         {
-            printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-            printf("║ ID: %-10d ║ Nome: %-20s ║ Preço: R$ %-10.2f ║ Estoque: %-5.2f ║\n", prod->id, prod->nome, prod->preco, prod->quantidade);
+            printf("║ %-5d │ %-35s │ %-12.2f │ %-10.2f ║\n",
+                   prod->id,
+                   prod->nome,
+                   prod->preco,
+                   prod->quantidade);
+            encontrou = 1;
+            contador++;
         }
     }
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (!encontrou)
+    {
+        printf("║ Nenhum produto ativo encontrado.                                                                               ║\n");
+    }
+
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou)
+        printf("\nTotal de produtos listados: %d\n", contador);
+
     fclose(arq_produtos);
     free(prod);
-    printf("\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
-    getchar();
+
+    pressione_enter();
 }
 
 int tela_atualizar_produto(void)
