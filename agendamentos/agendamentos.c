@@ -194,26 +194,47 @@ void listar_agend(void)
     Agendamentos agend;
 
     exibir_logo();
-    exibir_titulo("Listar Agendamentos");
+    exibir_titulo("Listagem de Agendamentos");
 
     arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
+
     if (arq_agendamentos == NULL)
     {
         printf("Nenhum agendamento cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
     }
-    else
+
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-15s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "NOME DO PET", "DATA", "HORA");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    int encontrou = 0, contador = 0;
+    while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
     {
-        while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
+        if (agend.status == True)
         {
-            if (agend.status == True)
-            {
-                printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
-                exibir_agendamento(&agend);
-                printf("════════════════════════════════════════════════════════════════════════════════════════════════\n");
-            }
+            printf("║ %-15s │ %-25s │ %-12s │ %-8s ║\n",
+                   agend.cpf,
+                   agend.nome_pet,
+                   agend.data,
+                   agend.hora);
+            encontrou = 1;
+            contador++;
         }
-        fclose(arq_agendamentos);
     }
+
+    if (!encontrou)
+    {
+        printf("║ Nenhum agendamento ativo encontrado.                                                        ║\n");
+    }
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou)
+        printf("\nTotal de agendamentos listados: %d\n", contador);
+
+    fclose(arq_agendamentos);
     pressione_enter();
 }
 
