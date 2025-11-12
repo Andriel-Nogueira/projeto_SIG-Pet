@@ -367,10 +367,71 @@ void relatorio_servicos(void)
         case 1:
             listar_servicos();
             break;
+        case 2:
+            listar_servicos_por_preco();
+            break;
         case 0:
             break;
         default:
             printf("Opção inválida. Tente novamente.\n");
         }
     } while (op != 0);
+}
+
+void listar_servicos_por_preco(void)
+{
+    FILE *arq_servicos;
+    Servicos serv;
+    float preco_min, preco_max, preco_atual;
+    int encontrou = 0, contador = 0;
+
+    exibir_logo();
+    exibir_titulo("Listar Serviços por Faixa de Preço");
+
+    printf("Informe o preço mínimo: ");
+    scanf("%f", &preco_min);
+    printf("Informe o preço máximo: ");
+    scanf("%f", &preco_max);
+
+    arq_servicos = fopen("servicos/servicos.dat", "rb");
+    if (arq_servicos == NULL)
+    {
+        printf("Nenhum serviço cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-30s │ %-12s ║\n", "ID", "NOME", "DESCRIÇÃO", "PREÇO (R$)");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&serv, sizeof(Servicos), 1, arq_servicos))
+    {
+        preco_atual = atof(serv.preco_s); // converte o preço armazenado como string para float
+
+        if (serv.status == True && preco_atual >= preco_min && preco_atual <= preco_max)
+        {
+            printf("║ %-5d │ %-35s │ %-30s │ %-12s ║\n",
+                   serv.id,
+                   serv.nome,
+                   serv.desc,
+                   serv.preco_s);
+            encontrou = 1;
+            contador++;
+        }
+    }
+
+    if (!encontrou)
+    {
+        printf("║ Nenhum serviço encontrado nessa faixa de preço.                                                              ║\n");
+    }
+
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou)
+        printf("\nTotal de serviços listados: %d\n", contador);
+
+    fclose(arq_servicos);
+    pressione_enter();
+    getchar();
 }

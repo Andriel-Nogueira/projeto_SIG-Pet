@@ -10,3 +10,4 @@ void listar_pets_por_especie(void);
 void listar_pets_por_cpf(void);
 
 void relatorio_servicos(void);
+void listar_servicos_por_preco(void);
