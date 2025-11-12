@@ -74,6 +74,9 @@ void relatorio_clientes(void)
         case 1:
             listar_clientes();
             break;
+        case 2:
+            listar_clientes_por_idade();
+            break;
         case 0:
             break;
         default:
@@ -97,6 +100,60 @@ int calcular_idade(const char *data_nascimento)
     }
 
     return idade;
+}
+
+void listar_clientes_por_idade(void)
+{
+    FILE *arq_clientes;
+    Clientes cli;
+    int idade_filtro, encontrou = 0, contador = 0;
+
+    exibir_logo();
+    exibir_titulo("Listagem de Clientes por Idade");
+
+    printf("Digite a idade que deseja filtrar: ");
+    scanf("%d", &idade_filtro);
+    getchar(); // limpa buffer
+
+    arq_clientes = fopen("clientes/clientes.dat", "rb");
+    if (arq_clientes == NULL)
+    {
+        printf("\nNenhum cliente cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("\n╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-15s │ %-35s │ %-12s │ %-15s │ %-5s ║\n", "CPF", "NOME", "NASCIMENTO", "TELEFONE", "IDADE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&cli, sizeof(Clientes), 1, arq_clientes))
+    {
+        if (cli.status == True)
+        {
+            int idade = calcular_idade(cli.data_nascimento);
+            if (idade == idade_filtro)
+            {
+                printf("║ %-15s │ %-35s │ %-12s │ %-15s │ %-5d ║\n",
+                       cli.cpf, cli.nome, cli.data_nascimento, cli.telefone, idade);
+                encontrou = 1;
+                contador++;
+            }
+        }
+    }
+
+    if (!encontrou)
+    {
+        printf("║ Nenhum cliente com %d anos encontrado.                                                                           ║\n", idade_filtro);
+    }
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou)
+        printf("\nTotal de clientes com %d anos: %d\n", idade_filtro, contador);
+
+    fclose(arq_clientes);
+    pressione_enter();
 }
 
 void relatorio_pets(void)
