@@ -40,17 +40,37 @@ void m_relatorios(void)
         case 2:
             relatorio_pets();
             break;
-        case 3:
-            relatorio_produtos();
+        case 0:
             break;
-        case 4:
-            relatorio_servicos();
-            break;
-        case 5:
-            relatorio_vendas();
-            break;
-        case 6:
-            relatorio_agendamentos();
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (op != 0);
+}
+
+void relatorio_clientes(void)
+{
+    int op;
+    do
+    {
+        system("clear");
+        exibir_logo();
+        exibir_titulo("Relatórios de Clientes");
+
+        printf("║                                                                                              ║\n");
+        printf("║          1 - Listagem geral de clientes                                                      ║\n");
+        printf("║          3 - Listagem de clientes por idade                                                  ║\n");
+        printf("║          0 - Voltar                                                                          ║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          Escolha uma opção:                                                                  ║\n");
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+        op = escolha();
+
+        switch (op)
+        {
+        case 1:
+            listar_clientes();
             break;
         case 0:
             break;
