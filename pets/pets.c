@@ -63,7 +63,8 @@ void tela_excluir_pet_fisico(char *cpf_busca, char *nome_pet_busca)
     input(nome_pet_busca, 50, "Digite o nome do pet: ");
 }
 
-Pets *tela_cadastrar_pet(void)
+Pets *
+tela_cadastrar_pet(void)
 {
     Pets *pet;
     char cpf_busca[15];
