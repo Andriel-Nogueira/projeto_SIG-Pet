@@ -22,6 +22,7 @@
 #include <stdlib.h>
 
 #include "clientes/clientes.h"
+#include "pets/pets.h"
 #include "servicos/servicos.h"
 #include "agendamentos/agendamentos.h"
 #include "produtos/produtos.h"
@@ -93,11 +94,12 @@ void m_principal(void)
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Módulo Clientes                                                                 ║\n");
-        printf("║          2 - Módulo Serviços                                                                 ║\n");
-        printf("║          3 - Módulo Agendamentos                                                             ║\n");
-        printf("║          4 - Módulo Produtos                                                                 ║\n");
-        printf("║          5 - Módulo Vendas                                                                   ║\n");
-        printf("║          6 - Módulo Relatórios                                                               ║\n");
+        printf("║          2 - Módulo Pets                                                                     ║\n");
+        printf("║          3 - Módulo Serviços                                                                 ║\n");
+        printf("║          4 - Módulo Agendamentos                                                             ║\n");
+        printf("║          5 - Módulo Produtos                                                                 ║\n");
+        printf("║          6 - Módulo Vendas                                                                   ║\n");
+        printf("║          7 - Módulo Relatórios                                                               ║\n");
         printf("║          0 - Sair                                                                            ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -109,18 +111,21 @@ void m_principal(void)
             m_clientes();
             break;
         case 2:
-            m_servicos();
+            m_pets();
             break;
         case 3:
-            m_agendamento();
+            m_servicos();
             break;
         case 4:
-            m_produtos();
+            m_agendamento();
             break;
         case 5:
-            m_vendas();
+            m_produtos();
             break;
         case 6:
+            m_vendas();
+            break;
+        case 7:
             m_relatorios();
             break;
         case 0:
