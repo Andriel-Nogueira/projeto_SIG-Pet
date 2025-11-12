@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "../clientes/clientes.h"
+#include "../pets/pets.h"
 #include "../produtos/produtos.h"
 #include "../servicos/servicos.h"
 #include "../vendas/vendas.h"
@@ -37,6 +38,9 @@ void m_relatorios(void)
         case 1:
             relatorio_clientes();
             break;
+        case 2:
+            relatorio_pets();
+            break;
         case 0:
             break;
         default:
@@ -69,9 +73,6 @@ void relatorio_clientes(void)
         case 1:
             listar_clientes();
             break;
-        case 3:
-            listar_clientes_por_idade();
-            break;
         case 0:
             break;
         default:
@@ -99,5 +100,66 @@ void relatorio_pets(void)
         printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
         op = escolha();
+
+        switch (op)
+        {
+        case 1:
+            listar_pets();
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
     } while (op != 0);
+}
+
+void listar_pets(void)
+{
+    FILE *arq;
+    Pets pet;
+    int encontrou = 0, contador = 0;
+
+    system("clear");
+    exibir_logo();
+    exibir_titulo("Listagem Geral de Pets");
+
+    arq = fopen("pets/pets.dat", "rb");
+    if (arq == NULL)
+    {
+        printf("\nNenhum pet cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("╔══════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-25s │ %-15s │ %-15s ║\n", "Nome do Pet", "Espécie", "CPF do Dono");
+    printf("╠═══════╪═════════════════════════════════╪═════════════════╪═════════════════╣\n");
+
+    while (fread(&pet, sizeof(Pets), 1, arq))
+    {
+        if (pet.status == True)
+        {
+            printf("║ %-25s │ %-15s │ %-15s ║\n",
+                   pet.nome,
+                   pet.especie,
+                   pet.cpf);
+            encontrou = 1;
+            contador++;
+        }
+    }
+
+    fclose(arq);
+
+    if (!encontrou)
+    {
+        printf("║ Nenhum pet ativo encontrado.                                                  ║\n");
+    }
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou)
+        printf("\nTotal de pets listados: %d\n", contador);
+
+    pressione_enter();
 }
