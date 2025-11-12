@@ -185,6 +185,9 @@ void relatorio_pets(void)
         case 2:
             listar_pets_por_especie();
             break;
+        case 3:
+            listar_pets_por_cpf();
+            break;
         case 0:
             break;
         default:
@@ -294,4 +297,46 @@ void listar_pets_por_especie(void)
     printf("\nPressione ENTER para voltar...");
     getchar();
     getchar();
+}
+
+void listar_pets_por_cpf(void)
+{
+    FILE *arq_pets;
+    Pets pet;
+    char cpf_busca[15];
+    int encontrou = 0;
+
+    exibir_logo();
+    exibir_titulo("Listar Pets por CPF do Dono");
+
+    input(cpf_busca, 15, "Digite o CPF do dono: ");
+
+    arq_pets = fopen("pets/pets.dat", "rb");
+    if (arq_pets == NULL)
+    {
+        printf("\nNenhum pet cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("\n╔══════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-30s │ %-10s ║\n", "NOME DO PET", "ESPÉCIE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&pet, sizeof(Pets), 1, arq_pets))
+    {
+        if (pet.status == True && strcmp(pet.cpf, cpf_busca) == 0)
+        {
+            printf("║ %-30s │ %-10s ║\n", pet.nome, pet.especie);
+            encontrou = 1;
+        }
+    }
+
+    if (!encontrou)
+        printf("║ Nenhum pet encontrado para o CPF informado.                                 ║\n");
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════╝\n");
+
+    fclose(arq_pets);
+    pressione_enter();
 }
