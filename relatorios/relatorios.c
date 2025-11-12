@@ -43,6 +43,8 @@ void m_relatorios(void)
         case 2:
             relatorio_pets();
             break;
+        case 4:
+            relatorio_servicos();
         case 0:
             break;
         default:
@@ -339,4 +341,36 @@ void listar_pets_por_cpf(void)
 
     fclose(arq_pets);
     pressione_enter();
+}
+
+void relatorio_servicos(void)
+{
+    int op;
+    do
+    {
+        system("clear");
+        exibir_logo();
+        exibir_titulo("Relatório de Serviços Realizados");
+
+        printf("║                                                                                              ║\n");
+        printf("║          1 - Listagem geral de serviços                                                      ║\n");
+        printf("║          2 - Listagem por faixa de preços                                                    ║\n");
+        printf("║          0 - Voltar                                                                          ║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          Escolha uma opção:                                                                  ║\n");
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+        op = escolha();
+
+        switch (op)
+        {
+        case 1:
+            listar_servicos();
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (op != 0);
 }
