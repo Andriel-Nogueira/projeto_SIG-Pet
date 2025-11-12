@@ -37,9 +37,6 @@ void m_relatorios(void)
         case 1:
             relatorio_clientes();
             break;
-        case 2:
-            relatorio_pets();
-            break;
         case 0:
             break;
         default:
@@ -72,10 +69,35 @@ void relatorio_clientes(void)
         case 1:
             listar_clientes();
             break;
+        case 3:
+            listar_clientes_por_idade();
+            break;
         case 0:
             break;
         default:
             printf("Opção inválida. Tente novamente.\n");
         }
+    } while (op != 0);
+}
+
+void relatorio_pets(void)
+{
+    int op;
+    do
+    {
+        system("clear");
+        exibir_logo();
+        exibir_titulo("Relatórios de Pets");
+
+        printf("║                                                                                              ║\n");
+        printf("║          1 - Listagem geral de pets                                                          ║\n");
+        printf("║          2 - Listagem por espécie                                                            ║\n");
+        printf("║          3 - Listagem por cliente (CPF do dono)                                              ║\n");
+        printf("║          0 - Voltar                                                                          ║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          Escolha uma opção:                                                                  ║\n");
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+        op = escolha();
     } while (op != 0);
 }
