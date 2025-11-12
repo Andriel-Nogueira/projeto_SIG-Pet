@@ -138,7 +138,7 @@ Pets *buscar_pet(const char *cpf, const char *nome)
     FILE *arq_pets;
     Pets *pet;
 
-    arq_pets = fopen("clientes/pets.dat", "rb");
+    arq_pets = fopen("pets/pets.dat", "rb");
     if (arq_pets == NULL)
     {
         return NULL;
@@ -163,7 +163,7 @@ void gravar_atualizacao_pet(const Pets *pet_atualizado)
     FILE *arq_pets;
     Pets pet_lido;
 
-    arq_pets = fopen("clientes/pets.dat", "r+b");
+    arq_pets = fopen("pets/pets.dat", "r+b");
     if (arq_pets == NULL)
     {
         printf("\nErro ao abrir o arquivo de pets para atualização.\n");
@@ -211,11 +211,11 @@ int remover_pet_do_arquivo(const char *cpf, const char *nome)
     Pets pet;
     int encontrado = 0;
 
-    arq_pets = fopen("clientes/pets.dat", "rb");
+    arq_pets = fopen("pets/pets.dat", "rb");
     if (arq_pets == NULL)
         return -1;
 
-    arq_temp = fopen("clientes/pets_temp.dat", "wb");
+    arq_temp = fopen("pets/pets_temp.dat", "wb");
     if (arq_temp == NULL)
     {
         fclose(arq_pets);
@@ -239,12 +239,12 @@ int remover_pet_do_arquivo(const char *cpf, const char *nome)
 
     if (encontrado)
     {
-        remove("clientes/pets.dat");
-        rename("clientes/pets_temp.dat", "clientes/pets.dat");
+        remove("pets/pets.dat");
+        rename("pets/pets_temp.dat", "pets/pets.dat");
     }
     else
     {
-        remove("clientes/pets_temp.dat");
+        remove("pets/pets_temp.dat");
     }
     return encontrado;
 }
@@ -272,7 +272,7 @@ void excluir_pet_fisico(void)
 void gravar_pet(Pets *pet)
 {
     FILE *arq_pets;
-    arq_pets = fopen("clientes/pets.dat", "ab");
+    arq_pets = fopen("pets/pets.dat", "ab");
     if (arq_pets == NULL)
     {
         printf("Erro na abertura do arquivo de pets!\n");

@@ -238,7 +238,7 @@ void listar_servicos(void)
     {
         if (serv.status == True)
         {
-            printf("║ %-5d │ %-35s │ %-30s │ %-12.2f ║\n",
+            printf("║ %-5d │ %-35s │ %-30s │ %-12.2s ║\n",
                    serv.id,
                    serv.nome,
                    serv.desc,
