@@ -2,6 +2,7 @@
 all:
 	gcc -Wall -c agendamentos/*.c
 	gcc -Wall -c clientes/*.c
+	gcc -Wall -c pets/*.c
 	gcc -Wall -c produtos/*.c
 	gcc -Wall -c servicos/*.c
 	gcc -Wall -c vendas/*.c
