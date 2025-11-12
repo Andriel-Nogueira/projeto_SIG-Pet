@@ -245,35 +245,38 @@ void listar_pets(void)
 
 void listar_pets_por_especie(void)
 {
-    FILE *arq_pets;
+    FILE *fp;
     Pets pet;
-    char especie_busca[2];
+    char especie_busca;
     int encontrou = 0;
 
+    system("clear");
     exibir_logo();
     exibir_titulo("Listar Pets por Espécie");
 
-    printf("║ LEGENDA: C - Cachorro | G - Gato | P - Pássaro | O - Outro                              ║\n");
-    printf("╚═════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ LEGENDA: C - Cachorro | G - Gato | P - Pássaro | O - Outro              ║\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════╝\n\n");
 
-    input(especie_busca, 2, "Digite a espécie que deseja listar (C/G/P/O): ");
-    especie_busca[0] = toupper(especie_busca[0]);
+    printf("Digite a espécie que deseja listar (C/G/P/O): ");
+    scanf(" %c", &especie_busca);
+    especie_busca = toupper(especie_busca);
 
-    arq_pets = fopen("pets/pets.dat", "rb");
-    if (arq_pets == NULL)
+    fp = fopen("pets/pets.dat", "rb");
+    if (fp == NULL)
     {
-        printf("\nNenhum pet cadastrado ou erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo de pets!\n");
         pressione_enter();
         return;
     }
 
-    printf("\n╔══════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("\n╔══════════════════════════════════════════════════════════════════════════╗\n");
     printf("║ %-15s │ %-30s │ %-10s ║\n", "CPF DO DONO", "NOME DO PET", "ESPÉCIE");
-    printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════╣\n");
 
-    while (fread(&pet, sizeof(Pets), 1, arq_pets))
+    while (fread(&pet, sizeof(Pets), 1, fp) == 1)
     {
-        if (pet.status == True && toupper(pet.especie[0]) == especie_busca[0])
+        if (pet.status == True && toupper(pet.especie[0]) == especie_busca)
         {
             printf("║ %-15s │ %-30s │ %-10s ║\n", pet.cpf, pet.nome, pet.especie);
             encontrou = 1;
@@ -282,11 +285,13 @@ void listar_pets_por_especie(void)
 
     if (!encontrou)
     {
-        printf("║ Nenhum pet encontrado para a espécie '%c'.                                   ║\n", especie_busca[0]);
+        printf("║ Nenhum pet encontrado para a espécie '%c'.                         ║\n", especie_busca);
     }
 
-    printf("╚══════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════╝\n");
 
-    fclose(arq_pets);
-    pressione_enter();
+    fclose(fp);
+    printf("\nPressione ENTER para voltar...");
+    getchar();
+    getchar();
 }
