@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 #include "../clientes/clientes.h"
 #include "../pets/pets.h"
 #include "../produtos/produtos.h"
@@ -181,6 +182,9 @@ void relatorio_pets(void)
         case 1:
             listar_pets();
             break;
+        case 2:
+            listar_pets_por_especie();
+            break;
         case 0:
             break;
         default:
@@ -236,5 +240,53 @@ void listar_pets(void)
     if (encontrou)
         printf("\nTotal de pets listados: %d\n", contador);
 
+    pressione_enter();
+}
+
+void listar_pets_por_especie(void)
+{
+    FILE *arq_pets;
+    Pets pet;
+    char especie_busca[2];
+    int encontrou = 0;
+
+    exibir_logo();
+    exibir_titulo("Listar Pets por Espécie");
+
+    printf("║ LEGENDA: C - Cachorro | G - Gato | P - Pássaro | O - Outro                              ║\n");
+    printf("╚═════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    input(especie_busca, 2, "Digite a espécie que deseja listar (C/G/P/O): ");
+    especie_busca[0] = toupper(especie_busca[0]);
+
+    arq_pets = fopen("pets/pets.dat", "rb");
+    if (arq_pets == NULL)
+    {
+        printf("\nNenhum pet cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("\n╔══════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-15s │ %-30s │ %-10s ║\n", "CPF DO DONO", "NOME DO PET", "ESPÉCIE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&pet, sizeof(Pets), 1, arq_pets))
+    {
+        if (pet.status == True && toupper(pet.especie[0]) == especie_busca[0])
+        {
+            printf("║ %-15s │ %-30s │ %-10s ║\n", pet.cpf, pet.nome, pet.especie);
+            encontrou = 1;
+        }
+    }
+
+    if (!encontrou)
+    {
+        printf("║ Nenhum pet encontrado para a espécie '%c'.                                   ║\n", especie_busca[0]);
+    }
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════╝\n");
+
+    fclose(arq_pets);
     pressione_enter();
 }
