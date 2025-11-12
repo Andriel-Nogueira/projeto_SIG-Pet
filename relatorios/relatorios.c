@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "../clientes/clientes.h"
 #include "../pets/pets.h"
 #include "../produtos/produtos.h"
@@ -60,7 +61,7 @@ void relatorio_clientes(void)
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de clientes                                                      ║\n");
-        printf("║          3 - Listagem de clientes por idade                                                  ║\n");
+        printf("║          2 - Listagem de clientes por idade                                                  ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -79,6 +80,23 @@ void relatorio_clientes(void)
             printf("Opção inválida. Tente novamente.\n");
         }
     } while (op != 0);
+}
+
+int calcular_idade(const char *data_nascimento)
+{
+    int dia, mes, ano;
+    sscanf(data_nascimento, "%d/%d/%d", &dia, &mes, &ano);
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+
+    int idade = tm.tm_year + 1900 - ano;
+    if ((tm.tm_mon + 1 < mes) || ((tm.tm_mon + 1 == mes) && (tm.tm_mday < dia)))
+    {
+        idade--;
+    }
+
+    return idade;
 }
 
 void relatorio_pets(void)
