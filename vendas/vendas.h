@@ -28,7 +28,6 @@ void m_vendas(void);
 //// Funções de Gerenciamento de Vendas ////
 void realizar_venda(void);
 void cancelar_venda(void);
-void listar_vendas(void);
 
 // Funções de Tela
 char* tela_identificar_cliente(void);

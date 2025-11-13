@@ -46,6 +46,9 @@ void m_relatorios(void)
         case 4:
             relatorio_servicos();
             break;
+        case 5:
+            relatorio_vendas();
+            break;
         case 6:
             relatorio_agendamentos();
         case 0:
@@ -507,5 +510,132 @@ void listar_agendamentos_geral(void)
         printf("\nTotal de agendamentos listados: %d\n", contador);
 
     fclose(arq_agendamentos);
+    pressione_enter();
+}
+
+void relatorio_vendas(void)
+{
+    int op;
+    do
+    {
+        system("clear");
+        exibir_logo();
+        exibir_titulo("Relatórios de Vendas");
+
+        printf("║                                                                                              ║\n");
+        printf("║          1 - Listagem geral de vendas                                                        ║\n");
+        printf("║          2 - Listagem por faixa de preço                                                     ║\n");
+        printf("║          0 - Voltar                                                                          ║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          Escolha uma opção:                                                                  ║\n");
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+        op = escolha();
+
+        switch (op)
+        {
+        case 1:
+            listar_vendas_geral();
+            break;
+        case 2:
+            listar_vendas_por_faixa_de_preco();
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (op != 0);
+}
+
+void listar_vendas_geral(void)
+{
+    FILE *arq_vendas;
+    Venda venda;
+    int encontrou = 0, contador = 0;
+
+    exibir_logo();
+    exibir_titulo("Listagem Geral de Vendas");
+
+    arq_vendas = fopen("vendas/vendas.dat", "rb");
+    if (arq_vendas == NULL)
+    {
+        printf("Nenhuma venda registrada ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-15s │ %-12s │ %-12s ║\n", "ID", "CPF CLIENTE", "DATA", "VALOR TOTAL (R$)");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&venda, sizeof(Venda), 1, arq_vendas))
+    {
+        if (venda.status == True)
+        {
+            printf("║ %-5d │ %-15s │ %-12s │ %-12.2f ║\n", venda.id, venda.cpf_cliente, venda.data, venda.valor_total);
+            encontrou = 1;
+            contador++;
+        }
+    }
+
+    if (!encontrou)
+        printf("║ Nenhuma venda ativa encontrada.                                                                               ║\n");
+
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou)
+        printf("\nTotal de vendas listadas: %d\n", contador);
+
+    fclose(arq_vendas);
+    pressione_enter();
+}
+
+void listar_vendas_por_faixa_de_preco(void)
+{
+    FILE *arq_vendas;
+    Venda venda;
+    float preco_min, preco_max;
+    int encontrou = 0, contador = 0;
+
+    exibir_logo();
+    exibir_titulo("Listar Vendas por Faixa de Preço");
+
+    printf("Informe o preço mínimo: ");
+    scanf("%f", &preco_min);
+    printf("Informe o preço máximo: ");
+    scanf("%f", &preco_max);
+
+    arq_vendas = fopen("vendas/vendas.dat", "rb");
+    if (arq_vendas == NULL)
+    {
+        printf("Nenhuma venda cadastrada ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-15s │ %-12s │ %-12s ║\n", "ID", "CPF CLIENTE", "DATA", "VALOR TOTAL (R$)");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&venda, sizeof(Venda), 1, arq_vendas))
+    {
+        if (venda.status == True && venda.valor_total >= preco_min && venda.valor_total <= preco_max)
+        {
+            printf("║ %-5d │ %-15s │ %-12s │ %-12.2f ║\n", venda.id, venda.cpf_cliente, venda.data, venda.valor_total);
+            encontrou = 1;
+            contador++;
+        }
+    }
+
+    if (!encontrou)
+        printf("║ Nenhuma venda encontrada nessa faixa de preço.                                                                ║\n");
+
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou)
+        printf("\nTotal de vendas na faixa de preço: %d\n", contador);
+
+    fclose(arq_vendas);
     pressione_enter();
 }

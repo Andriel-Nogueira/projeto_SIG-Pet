@@ -14,3 +14,7 @@ void listar_servicos_por_preco(void);
 
 void relatorio_agendamentos(void);
 void listar_agendamentos_geral(void);
+
+void relatorio_vendas(void);
+void listar_vendas_geral(void);
+void listar_vendas_por_faixa_de_preco(void);

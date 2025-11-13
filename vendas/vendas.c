@@ -15,7 +15,7 @@ void m_vendas(void)
         exibir_titulo("Menu Vendas");
         printf("║                                                                                              ║\n");
         printf("║          1 - Realizar Nova Venda                                                             ║\n");
-        printf("║          2 - Listar Vendas                                                                   ║\n");
+        printf("║          2 - Cancelar Venda                                                                  ║\n");
         printf("║          3 - Cancelar Venda                                                                  ║\n");
         printf("║          0 - Voltar ao Menu Principal                                                        ║\n");
         printf("║                                                                                              ║\n");
@@ -29,9 +29,6 @@ void m_vendas(void)
             realizar_venda();
             break;
         case 2:
-            listar_vendas();
-            break;
-        case 3:
             cancelar_venda();
             break;
         }
@@ -302,70 +299,4 @@ void exibir_venda(const Venda *venda)
         printf("  - Produto ID: %d | Qtd: %.2f | Preço Un.: R$ %.2f\n",
                venda->itens[i].id_produto, venda->itens[i].quantidade, venda->itens[i].preco_unitario);
     }
-}
-
-void listar_vendas(void)
-{
-    FILE *arq_vendas;
-    Venda venda;
-
-    exibir_logo();
-    exibir_titulo("Histórico de Vendas");
-
-    arq_vendas = fopen("vendas/vendas.dat", "rb");
-    if (arq_vendas == NULL)
-    {
-        printf("Nenhuma venda registrada ou erro ao abrir o arquivo.\n");
-        pressione_enter();
-        return;
-    }
-
-    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-15s │ %-12s │ %-12s ║\n", "ID", "CPF CLIENTE", "DATA", "VALOR TOTAL (R$)");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-
-    int encontrou = 0, contador = 0;
-
-    while (fread(&venda, sizeof(Venda), 1, arq_vendas))
-    {
-        if (venda.status == True)
-        {
-            printf("║ %-5d │ %-15s │ %-12s │ %-12.2f ║\n",
-                   venda.id,
-                   venda.cpf_cliente,
-                   venda.data,
-                   venda.valor_total);
-
-            // Exibir os itens dessa venda logo abaixo
-            printf("╟────────────────────────────────────────────────────────────────────────────────────────────────────────────────╢\n");
-            printf("║   %-10s │ %-12s │ %-12s ║\n", "ID PRODUTO", "QUANTIDADE", "PREÇO UNIT. (R$)");
-            printf("╟────────────────────────────────────────────────────────────────────────────────────────────────────────────────╢\n");
-
-            for (int i = 0; i < venda.num_itens; i++)
-            {
-                printf("║   %-10d │ %-12.2f │ %-12.2f ║\n",
-                       venda.itens[i].id_produto,
-                       venda.itens[i].quantidade,
-                       venda.itens[i].preco_unitario);
-            }
-
-            printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-
-            encontrou = 1;
-            contador++;
-        }
-    }
-
-    if (!encontrou)
-    {
-        printf("║ Nenhuma venda ativa encontrada.                                                                               ║\n");
-    }
-
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-
-    if (encontrou)
-        printf("\nTotal de vendas listadas: %d\n", contador);
-
-    fclose(arq_vendas);
-    pressione_enter();
 }
