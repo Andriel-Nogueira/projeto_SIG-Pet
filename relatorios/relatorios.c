@@ -45,6 +45,9 @@ void m_relatorios(void)
             break;
         case 4:
             relatorio_servicos();
+            break;
+        case 6:
+            relatorio_agendamentos();
         case 0:
             break;
         default:
@@ -431,4 +434,78 @@ void listar_servicos_por_preco(void)
     fclose(arq_servicos);
     pressione_enter();
     getchar();
+}
+
+void relatorio_agendamentos(void)
+{
+    int op;
+    do
+    {
+        system("clear");
+        exibir_logo();
+        exibir_titulo("Relatórios de Agendamentos");
+
+        printf("║                                                                                              ║\n");
+        printf("║          1 - Listagem geral de agendamentos                                                  ║\n");
+        printf("║          0 - Voltar                                                                          ║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          Escolha uma opção:                                                                  ║\n");
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+        op = escolha();
+
+        switch (op)
+        {
+        case 1:
+            listar_agendamentos_geral();
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (op != 0);
+}
+
+void listar_agendamentos_geral(void)
+{
+    FILE *arq_agendamentos;
+    Agendamentos agend;
+    int encontrou = 0, contador = 0;
+
+    exibir_logo();
+    exibir_titulo("Listagem Geral de Agendamentos");
+
+    arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
+    if (arq_agendamentos == NULL)
+    {
+        printf("\nNenhum agendamento cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-15s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "NOME DO PET", "DATA", "HORA");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
+    {
+        if (agend.status == True)
+        {
+            printf("║ %-15s │ %-25s │ %-12s │ %-8s ║\n", agend.cpf, agend.nome_pet, agend.data, agend.hora);
+            encontrou = 1;
+            contador++;
+        }
+    }
+
+    if (!encontrou)
+        printf("║ Nenhum agendamento ativo encontrado.                                                        ║\n");
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou)
+        printf("\nTotal de agendamentos listados: %d\n", contador);
+
+    fclose(arq_agendamentos);
+    pressione_enter();
 }

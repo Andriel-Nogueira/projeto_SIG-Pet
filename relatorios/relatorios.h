@@ -11,3 +11,6 @@ void listar_pets_por_cpf(char *cpf_busca);
 
 void relatorio_servicos(void);
 void listar_servicos_por_preco(void);
+
+void relatorio_agendamentos(void);
+void listar_agendamentos_geral(void);
