@@ -3,6 +3,7 @@ void m_relatorios(void);
 void relatorio_clientes(void);
 int calcular_idade(const char *data_nascimento);
 void listar_clientes_por_idade(void);
+int tela_obter_idade(void);
 
 void relatorio_pets(void);
 void listar_pets(void);
@@ -15,6 +16,9 @@ void listar_produtos_por_faixa_de_preco(void);
 
 void relatorio_servicos(void);
 void listar_servicos_por_preco(void);
+
+float tela_obter_preco_minimo(void);
+float tela_obter_preco_maximo(void);
 
 void relatorio_agendamentos(void);
 void listar_agendamentos_geral(void);

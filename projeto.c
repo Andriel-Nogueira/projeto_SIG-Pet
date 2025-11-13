@@ -126,7 +126,7 @@ void m_principal(void)
             m_vendas();
             break;
         case 7:
-            m_relatorios();
+            m_relatorios(); // Corrigido para chamar a função de relatórios
             break;
         case 0:
             break;

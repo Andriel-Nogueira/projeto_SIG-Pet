@@ -118,14 +118,12 @@ void listar_clientes_por_idade(void)
 {
     FILE *arq_clientes;
     Clientes cli;
-    int idade_filtro, encontrou = 0, contador = 0;
+    int encontrou = 0, contador = 0;
 
     exibir_logo();
     exibir_titulo("Listagem de Clientes por Idade");
 
-    printf("Digite a idade que deseja filtrar: ");
-    scanf("%d", &idade_filtro);
-    getchar(); // limpa buffer
+    int idade_filtro = tela_obter_idade();
 
     arq_clientes = fopen("clientes/clientes.dat", "rb");
     if (arq_clientes == NULL)
@@ -166,6 +164,16 @@ void listar_clientes_por_idade(void)
 
     fclose(arq_clientes);
     pressione_enter();
+}
+
+int tela_obter_idade(void)
+{
+    char idade_str[10];
+    do
+    {
+        input(idade_str, 10, "Digite a idade que deseja filtrar:");
+    } while (!validar_numero(idade_str));
+    return atoi(idade_str);
 }
 
 void relatorio_pets(void)
@@ -388,16 +396,13 @@ void listar_servicos_por_preco(void)
 {
     FILE *arq_servicos;
     Servicos serv;
-    float preco_min, preco_max, preco_atual;
     int encontrou = 0, contador = 0;
 
     exibir_logo();
     exibir_titulo("Listar Serviços por Faixa de Preço");
 
-    printf("Informe o preço mínimo: ");
-    scanf("%f", &preco_min);
-    printf("Informe o preço máximo: ");
-    scanf("%f", &preco_max);
+    float preco_min = tela_obter_preco_minimo();
+    float preco_max = tela_obter_preco_maximo();
 
     arq_servicos = fopen("servicos/servicos.dat", "rb");
     if (arq_servicos == NULL)
@@ -413,6 +418,7 @@ void listar_servicos_por_preco(void)
 
     while (fread(&serv, sizeof(Servicos), 1, arq_servicos))
     {
+        float preco_atual = atof(serv.preco_s); // converte o preço armazenado como string para float
         preco_atual = atof(serv.preco_s); // converte o preço armazenado como string para float
 
         if (serv.status == True && preco_atual >= preco_min && preco_atual <= preco_max)
@@ -439,7 +445,6 @@ void listar_servicos_por_preco(void)
 
     fclose(arq_servicos);
     pressione_enter();
-    getchar();
 }
 
 void relatorio_produtos(void)
@@ -524,16 +529,13 @@ void listar_produtos_por_faixa_de_preco(void)
 {
     FILE *arq_produtos;
     Produtos prod;
-    float preco_min, preco_max;
     int encontrou = 0, contador = 0;
 
     exibir_logo();
     exibir_titulo("Listar Produtos por Faixa de Preço");
 
-    printf("Informe o preço mínimo: ");
-    scanf("%f", &preco_min);
-    printf("Informe o preço máximo: ");
-    scanf("%f", &preco_max);
+    float preco_min = tela_obter_preco_minimo();
+    float preco_max = tela_obter_preco_maximo();
 
     arq_produtos = fopen("produtos/produtos.dat", "rb");
     if (arq_produtos == NULL)
@@ -561,14 +563,13 @@ void listar_produtos_por_faixa_de_preco(void)
         printf("║ Nenhum produto encontrado nessa faixa de preço.                                                               ║\n");
 
     printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    pressione_enter();
 
     if (encontrou)
         printf("\nTotal de produtos na faixa de preço: %d\n", contador);
 
     fclose(arq_produtos);
     pressione_enter();
-    }
+}
 
 void relatorio_agendamentos(void)
 {
@@ -726,16 +727,13 @@ void listar_vendas_por_faixa_de_preco(void)
 {
     FILE *arq_vendas;
     Venda venda;
-    float preco_min, preco_max;
     int encontrou = 0, contador = 0;
 
     exibir_logo();
     exibir_titulo("Listar Vendas por Faixa de Preço");
 
-    printf("Informe o preço mínimo: ");
-    scanf("%f", &preco_min);
-    printf("Informe o preço máximo: ");
-    scanf("%f", &preco_max);
+    float preco_min = tela_obter_preco_minimo();
+    float preco_max = tela_obter_preco_maximo();
 
     arq_vendas = fopen("vendas/vendas.dat", "rb");
     if (arq_vendas == NULL)
@@ -769,4 +767,24 @@ void listar_vendas_por_faixa_de_preco(void)
 
     fclose(arq_vendas);
     pressione_enter();
+}
+
+float tela_obter_preco_minimo(void)
+{
+    char preco_str[20];
+    do
+    {
+        input(preco_str, 20, "Informe o preço mínimo:");
+    } while (!validar_float(preco_str));
+    return atof(preco_str);
+}
+
+float tela_obter_preco_maximo(void)
+{
+    char preco_str[20];
+    do
+    {
+        input(preco_str, 20, "Informe o preço máximo:");
+    } while (!validar_float(preco_str));
+    return atof(preco_str);
 }
