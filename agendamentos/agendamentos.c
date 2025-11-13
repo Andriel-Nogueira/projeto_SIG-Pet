@@ -4,6 +4,8 @@
 #include "agendamentos.h"
 #include "../utilitarios/utilitarios.h"
 #include "../clientes/clientes.h"
+#include "../pets/pets.h"
+#include "../relatorios/relatorios.h"
 
 void m_agendamento(void)
 {
@@ -57,11 +59,12 @@ void m_agendamento(void)
 Agendamentos *tela_agendar(void)
 {
     Agendamentos *agend;
+    Pets *pet;
 
     exibir_logo();
     exibir_titulo("Agendar Servico");
     agend = (Agendamentos *)malloc(sizeof(Agendamentos));
-
+    int id_busca = -1;
     do
     {
         input(agend->cpf, 15, "Insira o CPF do cliente (pode conter '.' e '-'):");
@@ -78,14 +81,24 @@ Agendamentos *tela_agendar(void)
         return NULL;
     }
 
+    printf("\n--- Pets do Cliente ---\n");
+    listar_pets_por_cpf(agend->cpf);
+
     do
     {
-        input(agend->nome_pet, 30, "Digite o nome do Pet:");
-        if (!validar_nome(agend->nome_pet))
+        id_busca = tela_buscar_pet_id();
+        pet = buscar_pet_id(id_busca);
+
+        if (pet == NULL || strcmp(pet->cpf, agend->cpf) != 0)
         {
-            printf("\nNome inválido! Digite um nome para o pet.\n");
+            printf("\nID inválido ou não pertence ao cliente informado. Tente novamente.\n");
+            if (pet != NULL) free(pet);
         }
-    } while (!validar_nome(agend->nome_pet));
+
+    } while (pet == NULL || strcmp(pet->cpf, agend->cpf) != 0);
+
+    strcpy(agend->nome_pet, pet->nome);
+    free(pet);
 
     int dia, mes, ano;
     printf("Digite a data do agendamento:\n");

@@ -159,6 +159,31 @@ Pets *buscar_pet(const char *cpf, const char *nome)
     free(pet);
     return NULL;
 }
+Pets *buscar_pet_id(int id)
+{
+    FILE *arq_pets;
+    Pets *pet;
+
+    arq_pets = fopen("pets/pets.dat", "rb");
+    if (arq_pets == NULL)
+    {
+        return NULL;
+    }
+
+    pet = (Pets *)malloc(sizeof(Pets));
+    while (fread(pet, sizeof(Pets), 1, arq_pets))
+    {
+        if ((pet->id == id) && (pet->status == True))
+        {
+            fclose(arq_pets);
+            return pet;
+        }
+    }
+    fclose(arq_pets);
+    free(pet);
+    return NULL;
+}
+
 
 void gravar_atualizacao_pet(const Pets *pet_atualizado)
 {
@@ -311,4 +336,18 @@ void cadastrar_pet(void)
     }
 
     pressione_enter();
+}
+
+int tela_buscar_pet_id(void)
+{
+    char id_str[10];
+    int id_busca;
+
+    do
+    {
+        input(id_str, 10, "Digite o ID do pet desejado:");
+    } while (!validar_numero(id_str));
+
+    id_busca = atoi(id_str);
+    return id_busca;
 }

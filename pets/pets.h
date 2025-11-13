@@ -25,11 +25,13 @@ Pets *tela_cadastrar_pet(void);
 void tela_inativar_pet(char *cpf_busca, char *nome_pet_busca);
 void tela_excluir_pet_fisico(char *cpf_busca, char *nome_pet_busca);
 void exibir_pet(const Pets *pet);
+int tela_buscar_pet_id(void);
 
 // Funções de Arquivo (Pet)
 void gravar_pet(Pets *pet);
 void gravar_atualizacao_pet(const Pets *pet);
 int remover_pet_do_arquivo(const char *cpf, const char *nome);
 Pets *buscar_pet(const char *cpf, const char *nome);
+Pets *buscar_pet_id(int id);
 
 #endif

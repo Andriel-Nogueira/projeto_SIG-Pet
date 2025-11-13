@@ -161,6 +161,7 @@ void listar_clientes_por_idade(void)
 
 void relatorio_pets(void)
 {
+    char cpf_busca[15];
     int op;
     do
     {
@@ -188,7 +189,9 @@ void relatorio_pets(void)
             listar_pets_por_especie();
             break;
         case 3:
-            listar_pets_por_cpf();
+            input(cpf_busca, 15, "Digite o CPF do dono: ");
+            listar_pets_por_cpf(cpf_busca);
+            pressione_enter();
             break;
         case 0:
             break;
@@ -337,17 +340,11 @@ void relatorio_servicos(void)
     } while (op != 0);
 }
 
-void listar_pets_por_cpf(void)
+void listar_pets_por_cpf(char *cpf_busca)
 {
     FILE *arq_pets;
     Pets pet;
-    char cpf_busca[15];
     int encontrou = 0;
-
-    exibir_logo();
-    exibir_titulo("Listar Pets por CPF do Dono");
-
-    input(cpf_busca, 15, "Digite o CPF do dono: ");
 
     arq_pets = fopen("pets/pets.dat", "rb");
     if (arq_pets == NULL)
@@ -376,7 +373,6 @@ void listar_pets_por_cpf(void)
     printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     fclose(arq_pets);
-    pressione_enter();
 }
 
 void listar_servicos_por_preco(void)
