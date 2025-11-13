@@ -43,6 +43,9 @@ void m_relatorios(void)
         case 2:
             relatorio_pets();
             break;
+        case 3:
+            relatorio_produtos();
+            break;
         case 4:
             relatorio_servicos();
             break;
@@ -438,6 +441,134 @@ void listar_servicos_por_preco(void)
     pressione_enter();
     getchar();
 }
+
+void relatorio_produtos(void)
+{
+    int op;
+    do
+    {
+        system("clear");
+        exibir_logo();
+        exibir_titulo("Relatórios de Produtos");
+
+        printf("║                                                                                              ║\n");
+        printf("║          1 - Listagem geral de produtos                                                      ║\n");
+        printf("║          2 - Listagem por faixa de preço                                                     ║\n");
+        printf("║          0 - Voltar                                                                          ║\n");
+        printf("║                                                                                              ║\n");
+        printf("║          Escolha uma opção:                                                                  ║\n");
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+        op = escolha();
+
+        switch (op)
+        {
+        case 1:
+            listar_produtos_geral();
+            break;
+        case 2:
+            listar_produtos_por_faixa_de_preco();
+            break;
+        case 0:
+            break;
+        default:
+            printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (op != 0);
+}
+
+void listar_produtos_geral(void)
+{
+    FILE *arq_produtos;
+    Produtos prod;
+    int encontrou = 0, contador = 0;
+
+    exibir_logo();
+    exibir_titulo("Listagem Geral de Produtos");
+
+    arq_produtos = fopen("produtos/produtos.dat", "rb");
+    if (arq_produtos == NULL)
+    {
+        printf("\nNenhum produto cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&prod, sizeof(Produtos), 1, arq_produtos))
+    {
+        if (prod.status == True)
+        {
+            printf("║ %-5d │ %-35s │ %-12.2f │ %-12.2f ║\n", prod.id, prod.nome, prod.preco, prod.quantidade);
+            encontrou = 1;
+            contador++;
+        }
+    }
+
+    if (!encontrou)
+        printf("║ Nenhum produto ativo encontrado.                                                                              ║\n");
+
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou)
+        printf("\nTotal de produtos listados: %d\n", contador);
+
+    fclose(arq_produtos);
+    pressione_enter();
+}
+
+void listar_produtos_por_faixa_de_preco(void)
+{
+    FILE *arq_produtos;
+    Produtos prod;
+    float preco_min, preco_max;
+    int encontrou = 0, contador = 0;
+
+    exibir_logo();
+    exibir_titulo("Listar Produtos por Faixa de Preço");
+
+    printf("Informe o preço mínimo: ");
+    scanf("%f", &preco_min);
+    printf("Informe o preço máximo: ");
+    scanf("%f", &preco_max);
+
+    arq_produtos = fopen("produtos/produtos.dat", "rb");
+    if (arq_produtos == NULL)
+    {
+        printf("\nNenhum produto cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&prod, sizeof(Produtos), 1, arq_produtos))
+    {
+        if (prod.status == True && prod.preco >= preco_min && prod.preco <= preco_max)
+        {
+            printf("║ %-5d │ %-35s │ %-12.2f │ %-12.2f ║\n", prod.id, prod.nome, prod.preco, prod.quantidade);
+            encontrou = 1;
+            contador++;
+        }
+    }
+
+    if (!encontrou)
+        printf("║ Nenhum produto encontrado nessa faixa de preço.                                                               ║\n");
+
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    pressione_enter();
+
+    if (encontrou)
+        printf("\nTotal de produtos na faixa de preço: %d\n", contador);
+
+    fclose(arq_produtos);
+    pressione_enter();
+    }
 
 void relatorio_agendamentos(void)
 {

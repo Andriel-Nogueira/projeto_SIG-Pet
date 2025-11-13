@@ -9,6 +9,10 @@ void listar_pets(void);
 void listar_pets_por_especie(void);
 void listar_pets_por_cpf(char *cpf_busca);
 
+void relatorio_produtos(void);
+void listar_produtos_geral(void);
+void listar_produtos_por_faixa_de_preco(void);
+
 void relatorio_servicos(void);
 void listar_servicos_por_preco(void);
 
