@@ -9,6 +9,7 @@ typedef struct pets
     char nome[50];
     char especie[2];
     int status;
+    int id;
 } Pets;
 
 // Módulo Principal

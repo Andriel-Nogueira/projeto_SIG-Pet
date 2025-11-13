@@ -216,15 +216,16 @@ void listar_pets(void)
         return;
     }
 
-    printf("╔══════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-25s │ %-15s │ %-15s ║\n", "Nome do Pet", "Espécie", "CPF do Dono");
-    printf("╠═══════╪═════════════════════════════════╪═════════════════╪═════════════════╣\n");
+    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-30s │ %-10s │ %-15s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "CPF DO DONO");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     while (fread(&pet, sizeof(Pets), 1, arq))
     {
         if (pet.status == True)
         {
-            printf("║ %-25s │ %-15s │ %-15s ║\n",
+            printf("║ %-5d │ %-30s │ %-10s │ %-15s ║\n",
+                   pet.id,
                    pet.nome,
                    pet.especie,
                    pet.cpf);
@@ -237,10 +238,10 @@ void listar_pets(void)
 
     if (!encontrou)
     {
-        printf("║ Nenhum pet ativo encontrado.                                                  ║\n");
+        printf("║ Nenhum pet ativo encontrado.                                                                                   ║\n");
     }
 
-    printf("╚══════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de pets listados: %d\n", contador);
@@ -301,48 +302,6 @@ void listar_pets_por_especie(void)
     getchar();
 }
 
-void listar_pets_por_cpf(void)
-{
-    FILE *arq_pets;
-    Pets pet;
-    char cpf_busca[15];
-    int encontrou = 0;
-
-    exibir_logo();
-    exibir_titulo("Listar Pets por CPF do Dono");
-
-    input(cpf_busca, 15, "Digite o CPF do dono: ");
-
-    arq_pets = fopen("pets/pets.dat", "rb");
-    if (arq_pets == NULL)
-    {
-        printf("\nNenhum pet cadastrado ou erro ao abrir o arquivo.\n");
-        pressione_enter();
-        return;
-    }
-
-    printf("\n╔══════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-30s │ %-10s ║\n", "NOME DO PET", "ESPÉCIE");
-    printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
-
-    while (fread(&pet, sizeof(Pets), 1, arq_pets))
-    {
-        if (pet.status == True && strcmp(pet.cpf, cpf_busca) == 0)
-        {
-            printf("║ %-30s │ %-10s ║\n", pet.nome, pet.especie);
-            encontrou = 1;
-        }
-    }
-
-    if (!encontrou)
-        printf("║ Nenhum pet encontrado para o CPF informado.                                 ║\n");
-
-    printf("╚══════════════════════════════════════════════════════════════════════════════╝\n");
-
-    fclose(arq_pets);
-    pressione_enter();
-}
-
 void relatorio_servicos(void)
 {
     int op;
@@ -376,6 +335,48 @@ void relatorio_servicos(void)
             printf("Opção inválida. Tente novamente.\n");
         }
     } while (op != 0);
+}
+
+void listar_pets_por_cpf(void)
+{
+    FILE *arq_pets;
+    Pets pet;
+    char cpf_busca[15];
+    int encontrou = 0;
+
+    exibir_logo();
+    exibir_titulo("Listar Pets por CPF do Dono");
+
+    input(cpf_busca, 15, "Digite o CPF do dono: ");
+
+    arq_pets = fopen("pets/pets.dat", "rb");
+    if (arq_pets == NULL)
+    {
+        printf("\nNenhum pet cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-30s │ %-10s │ %-15s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "CPF DO DONO");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&pet, sizeof(Pets), 1, arq_pets))
+    {
+        if (pet.status == True && strcmp(pet.cpf, cpf_busca) == 0)
+        {
+            printf("║ %-5d │ %-30s │ %-10s │ %-15s ║\n", pet.id, pet.nome, pet.especie, pet.cpf);
+            encontrou = 1;
+        }
+    }
+
+    if (!encontrou)
+        printf("║ Nenhum pet encontrado para o CPF informado.                                                                        ║\n");
+
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    fclose(arq_pets);
+    pressione_enter();
 }
 
 void listar_servicos_por_preco(void)

@@ -130,6 +130,8 @@ tela_cadastrar_pet(void)
         strcpy(pet->especie, "O");
     }
     pet->status = True;
+    pet->id = GERAR_ID("pets/pets.dat", Pets);
+    printf("\nID do pet gerado automaticamente: %d\n", pet->id);
     return pet;
 }
 
@@ -291,6 +293,8 @@ void exibir_pet(const Pets *pet)
     printf("CPF do cliente: %s\n", pet->cpf);
     printf("Nome do pet: %s\n", pet->nome);
     printf("Espécie: %s\n", pet->especie);
+    printf("Status: %s\n", pet->status ? "Ativo" : "Inativo");
+    printf("ID: %d\n", pet->id);
 }
 
 void cadastrar_pet(void)
