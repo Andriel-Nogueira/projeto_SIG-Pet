@@ -3,6 +3,7 @@
 #include <string.h>
 #include "clientes.h"
 #include "../utilitarios/utilitarios.h"
+#include "../pets/pets.h"
 
 void m_clientes(void)
 {
