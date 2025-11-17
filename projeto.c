@@ -15,7 +15,7 @@
 ///                        Projeto Sistema de Atendimento de Pet Shop                          ///
 ///              Developed by @Andriel-Nogueira & @Carlos-Henrique-de-Oliveira-Batista         ///
 //////////////////////////////////////////////////////////////////////////////////////////////////
-///                                         Versão 0.2.0                                          ///
+///                                         Versão 0.3.0                                          ///
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
@@ -39,7 +39,7 @@ void t_final(void);
 
 // Versão atual
 
-char versao[10] = "0.2.0";
+char versao[10] = "0.3.0";
 
 // Programa Principal
 int main(void)
@@ -126,7 +126,7 @@ void m_principal(void)
             m_vendas();
             break;
         case 7:
-            m_relatorios(); // Corrigido para chamar a função de relatórios
+            m_relatorios(); 
             break;
         case 0:
             break;
