@@ -97,7 +97,7 @@ Agendamentos *tela_agendar(void)
 
     } while (pet == NULL || strcmp(pet->cpf, agend->cpf) != 0);
 
-    strcpy(agend->id_pet, pet->id);
+    sprintf(agend->id_pet, "%d", pet->id); // Converte o int 'id' para string
     free(pet);
 
     int dia, mes, ano;
@@ -177,13 +177,30 @@ void atualizar_agend(void)
         printf("\nAgendamento encontrado. Insira os novos dados:\n");
         Agendamentos *agend_novo = (Agendamentos *)malloc(sizeof(Agendamentos));
 
-        strcpy(agend_novo->cpf, agend_antigo->cpf); // Mantém o CPF original
+        strcpy(agend_novo->cpf, agend_antigo->cpf);
+
+        printf("\n--- Pets do Cliente ---\n");
+        listar_pets_por_cpf(agend_novo->cpf);
+
+        Pets *pet = NULL;
+        int id_busca;
 
         do
         {
-            input(agend_novo->nome_pet, 30, "Digite o id do Pet:");
-        } while (!validar_nome(agend_novo->nome_pet));
+            id_busca = tela_buscar_pet_id();
+            pet = buscar_pet_id(id_busca);
 
+            if (pet == NULL || strcmp(pet->cpf, agend_novo->cpf) != 0)
+            {
+                printf("\nID inválido ou não pertence ao cliente informado. Tente novamente.\n");
+                if (pet != NULL)
+                    free(pet);
+            }
+
+        } while (pet == NULL || strcmp(pet->cpf, agend_novo->cpf) != 0);
+
+        sprintf(agend_novo->id_pet, "%d", pet->id); // Converte o int 'id' para string
+        free(pet);
         int dia, mes, ano;
         printf("Digite a nova data do agendamento:\n");
         ler_data_agendamento(&dia, &mes, &ano);
@@ -219,7 +236,7 @@ void listar_agend(void)
     }
 
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-15s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "NOME DO PET", "DATA", "HORA");
+    printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "ID PET", "NOME DO PET", "DATA", "HORA");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     int encontrou = 0, contador = 0;
@@ -227,9 +244,17 @@ void listar_agend(void)
     {
         if (agend.status == True)
         {
-            printf("║ %-15s │ %-25s │ %-12s │ %-8s ║\n",
+            Pets *pet = buscar_pet_id(atoi(agend.id_pet));
+            char nome_pet_temp[31] = "Pet não encontrado";
+            if (pet != NULL)
+            {
+                strncpy(nome_pet_temp, pet->nome, 30);
+                free(pet);
+            }
+            printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n",
                    agend.cpf,
-                   agend.nome_pet,
+                   agend.id_pet,
+                   nome_pet_temp,
                    agend.data,
                    agend.hora);
             encontrou = 1;
@@ -317,8 +342,17 @@ void exibir_agendamento(const Agendamentos *agend)
     {
         return;
     }
+    Pets *pet = buscar_pet_id(atoi(agend->id_pet));
+    char nome_pet_temp[51] = "Pet não encontrado";
+    if (pet != NULL)
+    {
+        strcpy(nome_pet_temp, pet->nome);
+        free(pet);
+    }
+
     printf("CPF do Cliente: %s\n", agend->cpf);
-    printf("Nome do Pet: %s\n", agend->nome_pet);
+    printf("ID do Pet: %s\n", agend->id_pet);
+    printf("Nome do Pet: %s\n", nome_pet_temp);
     printf("Data: %s\n", agend->data);
     printf("Hora: %s\n", agend->hora);
 }

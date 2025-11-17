@@ -6,11 +6,10 @@
 typedef struct agendamentos
 {
     char cpf[16];
-    char nome_pet[30];
+    char id_pet[10]; // Alterado de nome_pet para id_pet
     char data[11];
     char hora[6];
     int status;
-    char id_pet[5];
 
 } Agendamentos;
 

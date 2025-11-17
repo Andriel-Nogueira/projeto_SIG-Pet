@@ -624,14 +624,26 @@ void listar_agendamentos_geral(void)
     }
 
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-15s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "NOME DO PET", "DATA", "HORA");
+    printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "ID PET", "NOME DO PET", "DATA", "HORA");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
     {
         if (agend.status == True)
         {
-            printf("║ %-15s │ %-25s │ %-12s │ %-8s ║\n", agend.cpf, agend.nome_pet, agend.data, agend.hora);
+            Pets *pet = buscar_pet_id(atoi(agend.id_pet));
+            char nome_pet_temp[31] = "Pet não encontrado";
+            if (pet != NULL)
+            {
+                strncpy(nome_pet_temp, pet->nome, 30);
+                free(pet);
+            }
+            printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n",
+                   agend.cpf,
+                   agend.id_pet,
+                   nome_pet_temp,
+                   agend.data,
+                   agend.hora);
             encontrou = 1;
             contador++;
         }
@@ -820,9 +832,9 @@ void listar_agendamentos_por_data(void) {
         return;
     }
 
-    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", "CPF", "NOME PET", "DATA", "HORA");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("\n╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "ID PET", "NOME DO PET", "DATA", "HORA");
+    printf("╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos)) {
         if (agend.status == True) {
@@ -833,7 +845,19 @@ void listar_agendamentos_por_data(void) {
             int mes_agend_int = atoi(mes_agendamento);
 
             if (mes_agend_int == mes_busca) {
-                printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", agend.cpf, agend.nome_pet, agend.data, agend.hora);
+                Pets *pet = buscar_pet_id(atoi(agend.id_pet));
+                char nome_pet_temp[31] = "Pet não encontrado";
+                if (pet != NULL)
+                {
+                    strncpy(nome_pet_temp, pet->nome, 30);
+                    free(pet);
+                }
+                printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n",
+                       agend.cpf,
+                       agend.id_pet,
+                       nome_pet_temp,
+                       agend.data,
+                       agend.hora);
                 encontrou = 1;
                 contador++;
             }
@@ -841,11 +865,10 @@ void listar_agendamentos_por_data(void) {
     }
 
     if (!encontrou) {
-        printf("║ Nenhum agendamento encontrado para o mês %d.                                                     ║\n", mes_busca);
-        pressione_enter();
+        printf("║ Nenhum agendamento encontrado para o mês %d.                                                                            ║\n", mes_busca);
     }
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou) {
         printf("\nTotal de agendamentos encontrados: %d\n", contador);
