@@ -65,14 +65,7 @@ Agendamentos *tela_agendar(void)
     exibir_titulo("Agendar Servico");
     agend = (Agendamentos *)malloc(sizeof(Agendamentos));
     int id_busca = -1;
-    do
-    {
-        input(agend->cpf, 16, "Insira o CPF do cliente (pode conter '.' e '-'):");
-        if (!validar_cpf(agend->cpf))
-        {
-            printf("\nCPF inválido! Deve conter 11 dígitos numéricos.\n");
-        }
-    } while (!validar_cpf(agend->cpf));
+    ler_cpf(agend->cpf);
 
     if (!verificar_cliente_cadastrado(agend->cpf))
     {
@@ -129,7 +122,7 @@ char *tela_buscar_agend(void)
     char *cpf_busca = (char *)malloc(16 * sizeof(char));
     exibir_logo();
     exibir_titulo("Buscar Agendamento pelo CPF");
-    input(cpf_busca, 16, "Digite o CPF do cliente que realizou o agendamento:");
+    ler_cpf(cpf_busca);
     return cpf_busca;
 }
 
@@ -159,7 +152,7 @@ char *tela_atualizar_agend(void)
     exibir_titulo("Atualizar Agendamento");
     printf("║         Informe o CPF agendado que deseja atualizar:                                         ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 16, "Digite o CPF do agendamento que deseja atualizar:");
+    ler_cpf(cpf_busca);
     return cpf_busca;
 }
 
@@ -283,7 +276,7 @@ char *tela_inativar_agend(void)
     exibir_titulo("Inativar Agendamento");
     printf("║      Informe o CPF referente ao agendamento que deseja excluir:                              ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 16, "Digite o CPF referente ao agendamento que deseja inativar:");
+    ler_cpf(cpf_busca);
     return cpf_busca;
 }
 
@@ -315,7 +308,7 @@ char *tela_excluir_agend_fisico(void)
     printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
     printf("║      Informe o CPF do agendamento que deseja excluir permanentemente:                        ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 16, "Digite o CPF do agendamento que deseja excluir permanentemente:");
+    ler_cpf(cpf_busca);
     return cpf_busca;
 }
 

@@ -41,7 +41,7 @@ char *tela_identificar_cliente(void)
 
     do
     {
-        input(cpf_busca, 16, "CPF do Cliente (pode conter '.' e '-'):");
+        ler_cpf(cpf_busca);
         cliente = buscar_cliente_por_cpf(cpf_busca);
         if (cliente == NULL)
         {

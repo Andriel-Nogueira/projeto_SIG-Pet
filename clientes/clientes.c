@@ -77,7 +77,7 @@ void buscar_cliente(void)
     exibir_logo();
     exibir_titulo("Buscar Cliente pelo CPF");
 
-    input(cpf_busca, 16, "Digite o CPF do cliente que deseja buscar: ");
+    ler_cpf(cpf_busca);
 
     cli = buscar_cliente_por_cpf(cpf_busca);
 
@@ -254,14 +254,7 @@ Clientes *tela_cadastrar_cliente(void)
     exibir_logo();
     exibir_titulo("Cadastrar Cliente");
 
-    do
-    {
-        input(cli->cpf, 16, "Insira seu CPF (pode conter '.' e '-'):");
-        if (!validar_cpf(cli->cpf))
-        {
-            printf("\nCPF inválido!.\n");
-        }
-    } while (!validar_cpf(cli->cpf));
+    ler_cpf(cli->cpf);
 
     if (verificar_cliente_cadastrado(cli->cpf))
     {
@@ -308,7 +301,7 @@ char *tela_atualizar_cliente(void)
     exibir_titulo("Atualizar Dados do Cliente");
     printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 16, "Digite o CPF do cliente que deseja atualizar: ");
+    ler_cpf(cpf_busca);
     return cpf_busca;
 }
 
@@ -423,7 +416,7 @@ char *tela_inativar_cliente(void)
     exibir_titulo("Inativar Cliente (Exclusão Lógica)");
     printf("║      Informe o CPF do cliente que deseja inativar:                                           ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 16, "Digite o CPF do cliente: ");
+    ler_cpf(cpf_busca);
     return cpf_busca;
 }
 
@@ -443,7 +436,7 @@ char *tela_excluir_cliente_fisico(void)
     printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
     printf("║      Informe o CPF do cliente que deseja excluir permanentemente:                            ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 16, "Digite o CPF do cliente: ");
+    ler_cpf(cpf_busca);
     return cpf_busca;
 }
 

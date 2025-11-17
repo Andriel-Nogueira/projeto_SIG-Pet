@@ -206,7 +206,7 @@ void relatorio_pets(void)
             listar_pets_por_especie();
             break;
         case 3:
-            input(cpf_busca, 15, "Digite o CPF do dono: ");
+            ler_cpf(cpf_busca);
             listar_pets_por_cpf(cpf_busca);
             pressione_enter();
             break;

@@ -29,5 +29,7 @@ int validar_float(const char* str);
 void obter_data_atual(char* data_str);
 int validar_data_agendamento(int dia, int mes, int ano);
 void ler_data_agendamento(int *dia, int *mes, int *ano);
+void ler_cpf(char *cpf_destino);
+
 
 #endif

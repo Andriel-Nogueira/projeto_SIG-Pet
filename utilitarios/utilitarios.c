@@ -352,3 +352,41 @@ void obter_data_atual(char *data_str)
     struct tm tm = *localtime(&t);
     sprintf(data_str, "%02d/%02d/%04d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
 }
+
+void ler_cpf(char *cpf_destino)
+{
+    char cpf_input[20]; // Buffer para a entrada bruta do usuário
+    int valido = 0;
+
+    do
+    {
+        // 1. Lê a entrada do usuário (com pontos e traços)
+        input(cpf_input, 20, "Insira o CPF (pode conter '.' e '-'):");
+
+        // 2. Limpa a string, mantendo apenas os dígitos
+        char cpf_limpo[12];
+        int j = 0;
+        for (int i = 0; cpf_input[i] != '\0'; i++)
+        {
+            if (isdigit(cpf_input[i]))
+            {
+                if (j < 11)
+                {
+                    cpf_limpo[j++] = cpf_input[i];
+                }
+            }
+        }
+        cpf_limpo[j] = '\0'; // Finaliza a string limpa
+
+        // 3. Valida o CPF limpo
+        if (validar_cpf(cpf_limpo))
+        {
+            strcpy(cpf_destino, cpf_limpo); // Copia o CPF limpo e válido para o destino
+            valido = 1;
+        }
+        else
+        {
+            printf("\nCPF inválido! O CPF deve conter 11 dígitos. Tente novamente.\n");
+        }
+    } while (!valido);
+}
