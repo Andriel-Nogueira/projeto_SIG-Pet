@@ -102,7 +102,7 @@ Agendamentos *tela_agendar(void)
 
     int dia, mes, ano;
     printf("Digite a data do agendamento:\n");
-    ler_data(&dia, &mes, &ano);
+    ler_data_agendamento(&dia, &mes, &ano);
     sprintf(agend->data, "%02d/%02d/%04d", dia, mes, ano);
 
     input(agend->hora, 6, "Insira o horário desejado (HH:MM):");
@@ -186,7 +186,7 @@ void atualizar_agend(void)
 
         int dia, mes, ano;
         printf("Digite a nova data do agendamento:\n");
-        ler_data(&dia, &mes, &ano);
+        ler_data_agendamento(&dia, &mes, &ano);
         sprintf(agend_novo->data, "%02d/%02d/%04d", dia, mes, ano);
 
         input(agend_novo->hora, 6, "Insira o novo horário desejado (HH:MM):");

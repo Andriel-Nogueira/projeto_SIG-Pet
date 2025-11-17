@@ -76,11 +76,11 @@ tela_cadastrar_pet(void)
     do
     {
         input(cpf_busca, 16, "Digite o CPF do dono do pet (pode conter '.' e '-'):");
-        if (!validar_numero(cpf_busca))
+        if (!validar_cpf(cpf_busca))
         {
             printf("\nCPF inválido! Digite apenas números.\n");
         }
-    } while (!validar_numero(cpf_busca));
+    } while (!validar_cpf(cpf_busca));
 
     if (!verificar_cliente_cadastrado(cpf_busca))
     {

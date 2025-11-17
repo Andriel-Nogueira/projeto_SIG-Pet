@@ -16,7 +16,6 @@ void m_vendas(void)
         printf("║                                                                                              ║\n");
         printf("║          1 - Realizar Nova Venda                                                             ║\n");
         printf("║          2 - Cancelar Venda                                                                  ║\n");
-        printf("║          3 - Cancelar Venda                                                                  ║\n");
         printf("║          0 - Voltar ao Menu Principal                                                        ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
