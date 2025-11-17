@@ -54,6 +54,7 @@ void m_relatorios(void)
             break;
         case 6:
             relatorio_agendamentos();
+            break;
         case 0:
             break;
         default:
@@ -807,12 +808,17 @@ float tela_obter_preco_maximo(void)
 
 int tela_obter_mes(void)
 {
-    char mes_str[3];
+    char mes_str[4]; // Aumentado para comportar 2 dígitos, \n e \0
+    int mes;
     do
     {
-        input(mes_str, 3, "Informe o mês (numero):");
-    } while (!validar_numero(mes_str));
-    return atof(mes_str);
+        input(mes_str, 4, "Informe o mês (1-12):");
+        if (!validar_numero(mes_str) || (mes = atoi(mes_str)) < 1 || mes > 12) {
+            printf("\nMês inválido! Por favor, digite um número entre 1 e 12.\n");
+            mes = 0; // Força a repetição do loop
+        }
+    } while (mes == 0);
+    return mes;
 }
 
 
@@ -821,6 +827,10 @@ void listar_agendamentos_por_data(void) {
     Agendamentos agend;
     int encontrou = 0, contador = 0;
     int mes_busca = tela_obter_mes();
+
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    int ano_atual = tm.tm_year + 1900;
 
     exibir_logo();
     exibir_titulo("Listar agendamentos por data");
@@ -832,19 +842,41 @@ void listar_agendamentos_por_data(void) {
         return;
     }
 
+    // Verificação prévia para saber se existe algum agendamento no mês/ano
+    int existe_agendamento_no_mes = 0;
+    while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos)) {
+        if (agend.status == True) {
+            int mes_agend, ano_agend;
+            sscanf(agend.data, "%*d/%d/%d", &mes_agend, &ano_agend);
+            if (mes_agend == mes_busca && ano_agend == ano_atual) {
+                existe_agendamento_no_mes = 1;
+                break;
+            }
+        }
+    }
+
+    // Se não encontrou, exibe a mensagem e sai
+    if (!existe_agendamento_no_mes) {
+        printf("\nNenhum agendamento encontrado para o mês %d do ano %d.\n", mes_busca, ano_atual);
+        fclose(arq_agendamentos);
+        pressione_enter();
+        return;
+    }
+
+    // Se encontrou, rebobina o arquivo para listar
+    rewind(arq_agendamentos);
+
     printf("\n╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "ID PET", "NOME DO PET", "DATA", "HORA");
     printf("╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos)) {
         if (agend.status == True) {
-            char mes_agendamento[3];
-            strncpy(mes_agendamento, &agend.data[3], 2);
-            mes_agendamento[2] = '\0';
+            int mes_agend, ano_agend;
+            // Extrai mês e ano da data do agendamento
+            sscanf(agend.data, "%*d/%d/%d", &mes_agend, &ano_agend);
 
-            int mes_agend_int = atoi(mes_agendamento);
-
-            if (mes_agend_int == mes_busca) {
+            if (mes_agend == mes_busca && ano_agend == ano_atual) {
                 Pets *pet = buscar_pet_id(atoi(agend.id_pet));
                 char nome_pet_temp[31] = "Pet não encontrado";
                 if (pet != NULL)
@@ -862,10 +894,6 @@ void listar_agendamentos_por_data(void) {
                 contador++;
             }
         }
-    }
-
-    if (!encontrou) {
-        printf("║ Nenhum agendamento encontrado para o mês %d.                                                                            ║\n", mes_busca);
     }
 
     printf("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");

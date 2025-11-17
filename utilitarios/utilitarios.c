@@ -17,12 +17,14 @@ int escolha(void)
     if (resultado != 1)
     {
         printf("\nOpção inválida! Digite apenas números.\n");
+        // Limpa o buffer de entrada em caso de erro
         while (getchar() != '\n')
             ;
         return -1;
     }
 
-    getchar();
+    // Limpa o buffer de entrada para consumir o '\n' deixado pelo scanf
+    while (getchar() != '\n');
     return opcao;
 }
 
@@ -94,7 +96,8 @@ void exibir_logo(void)
 void pressione_enter(void)
 {
     printf("\n");
-    printf("Pressione <Enter> para voltar ao menu principal...                         \n");
+    printf("Pressione <Enter> para continuar...                                        \n");
+    // Espera que o usuário pressione Enter
     getchar();
 }
 
