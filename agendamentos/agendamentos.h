@@ -10,6 +10,7 @@ typedef struct agendamentos
     char data[11];
     char hora[6];
     int status;
+    char id_pet[5];
 
 } Agendamentos;
 

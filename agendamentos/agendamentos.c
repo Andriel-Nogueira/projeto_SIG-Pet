@@ -97,7 +97,7 @@ Agendamentos *tela_agendar(void)
 
     } while (pet == NULL || strcmp(pet->cpf, agend->cpf) != 0);
 
-    strcpy(agend->nome_pet, pet->nome);
+    strcpy(agend->id_pet, pet->id);
     free(pet);
 
     int dia, mes, ano;
@@ -181,7 +181,7 @@ void atualizar_agend(void)
 
         do
         {
-            input(agend_novo->nome_pet, 30, "Digite o nome do Pet:");
+            input(agend_novo->nome_pet, 30, "Digite o id do Pet:");
         } while (!validar_nome(agend_novo->nome_pet));
 
         int dia, mes, ano;

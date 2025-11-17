@@ -26,3 +26,7 @@ void listar_agendamentos_geral(void);
 void relatorio_vendas(void);
 void listar_vendas_geral(void);
 void listar_vendas_por_faixa_de_preco(void);
+
+
+void listar_agendamentos_por_data(void);
+int tela_obter_mes(void);

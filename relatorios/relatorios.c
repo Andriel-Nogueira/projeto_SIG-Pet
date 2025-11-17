@@ -582,6 +582,7 @@ void relatorio_agendamentos(void)
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de agendamentos                                                  ║\n");
+        printf("║          2 - Listagem de agendamentos por data                                               ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -593,6 +594,9 @@ void relatorio_agendamentos(void)
         {
         case 1:
             listar_agendamentos_geral();
+            break;
+        case 2:
+            listar_agendamentos_por_data();
             break;
         case 0:
             break;
@@ -787,4 +791,66 @@ float tela_obter_preco_maximo(void)
         input(preco_str, 20, "Informe o preço máximo:");
     } while (!validar_float(preco_str));
     return atof(preco_str);
+}
+
+int tela_obter_mes(void)
+{
+    char mes_str[3];
+    do
+    {
+        input(mes_str, 3, "Informe o mês (numero):");
+    } while (!validar_numero(mes_str));
+    return atof(mes_str);
+}
+
+
+void listar_agendamentos_por_data(void) {
+    FILE *arq_agendamentos;
+    Agendamentos agend;
+    int encontrou = 0, contador = 0;
+    int mes_busca = tela_obter_mes();
+
+    exibir_logo();
+    exibir_titulo("Listar agendamentos por data");
+
+    arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
+    if (arq_agendamentos == NULL) {
+        printf("\nNenhum agendamento cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", "CPF", "NOME PET", "DATA", "HORA");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos)) {
+        if (agend.status == True) {
+            char mes_agendamento[3];
+            strncpy(mes_agendamento, &agend.data[3], 2);
+            mes_agendamento[2] = '\0';
+
+            int mes_agend_int = atoi(mes_agendamento);
+
+            if (mes_agend_int == mes_busca) {
+                printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", agend.cpf, agend.nome_pet, agend.data, agend.hora);
+                encontrou = 1;
+                contador++;
+            }
+        }
+    }
+
+    if (!encontrou) {
+        printf("║ Nenhum agendamento encontrado para o mês %d.                                                     ║\n", mes_busca);
+        pressione_enter();
+    }
+
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    if (encontrou) {
+        printf("\nTotal de agendamentos encontrados: %d\n", contador);
+    }
+
+    fclose(arq_agendamentos);
+    pressione_enter();
 }
