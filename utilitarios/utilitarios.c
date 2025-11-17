@@ -238,42 +238,40 @@ int validar_nome(const char *nome)
 
 int validar_cpf(const char *cpf)
 {
-    int digit_count = 0;
-    for (int i = 0; cpf[i] != '\0'; i++)
+    char cpf_apenas_digitos[12];
+    int i, j = 0;
+
+    // 1. Cria uma string temporária contendo apenas os dígitos do CPF
+    for (i = 0; cpf[i] != '\0'; i++)
     {
-        // Se for um dígito, incrementa o contador
         if (eh_digito(cpf[i]))
         {
-            digit_count++;
-            // Se não for um dígito, verifica se é um caractere permitido (ponto ou traço)
+            if (j < 11) { // Evita estouro de buffer se a entrada for muito longa
+                cpf_apenas_digitos[j] = cpf[i]; // Copia o dígito
+                j++;                            // Move para a próxima posição
+            }
         }
         else if (cpf[i] != '.' && cpf[i] != '-')
         {
             return 0; // Encontrou um caractere inválido
         }
     }
-    int iguais = 1;
-    for (int i = 1; i < 11; i++)
-    {
-        if (cpf[i] != cpf[0])
-        {
-            iguais = 0;
-            break;
-        }
-    }
-    if (iguais)
-    {
-        return 0; // Todos os dígitos são iguais, CPF inválido
-    }
-    // Retorna verdadeiro (1) apenas se o número de dígitos for 11
-    if (digit_count == 11)
-    {
-        return 1;
-    }
-    else
+    cpf_apenas_digitos[j] = '\0'; // Finaliza a string de dígitos
+
+    // 2. Verifica se o CPF tem exatamente 11 dígitos
+    if (strlen(cpf_apenas_digitos) != 11)
     {
         return 0;
     }
+
+    // 3. Verifica se todos os 11 dígitos são iguais (ex: 11111111111)
+    for (i = 1; i < 11; i++)
+    {
+        if (cpf_apenas_digitos[i] != cpf_apenas_digitos[0]) break;
+    }
+    if (i == 11) return 0; // Se o loop terminou, todos são iguais
+
+    return 1; // Se passou por todas as verificações, o CPF é considerado válido
 }
 
 int validar_float(const char *str)

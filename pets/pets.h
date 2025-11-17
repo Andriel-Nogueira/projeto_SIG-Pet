@@ -5,7 +5,7 @@
 
 typedef struct pets
 {
-    char cpf[15];
+    char cpf[16];
     char nome[50];
     char especie[2];
     int status;

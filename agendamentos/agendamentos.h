@@ -5,7 +5,7 @@
 
 typedef struct agendamentos
 {
-    char cpf[15];
+    char cpf[16];
     char nome_pet[30];
     char data[11];
     char hora[6];

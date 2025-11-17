@@ -38,11 +38,11 @@ void m_vendas(void)
 char *tela_identificar_cliente(void)
 {
     Clientes *cliente;
-    char *cpf_busca = (char *)malloc(15 * sizeof(char));
+    char *cpf_busca = (char *)malloc(16 * sizeof(char));
 
     do
     {
-        input(cpf_busca, 15, "CPF do Cliente (apenas números):");
+        input(cpf_busca, 16, "CPF do Cliente (pode conter '.' e '-'):");
         cliente = buscar_cliente_por_cpf(cpf_busca);
         if (cliente == NULL)
         {

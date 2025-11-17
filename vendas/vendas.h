@@ -14,7 +14,7 @@ typedef struct {
 
 typedef struct {
     int id;
-    char cpf_cliente[15];
+    char cpf_cliente[16];
     char data[11];
     ItemVenda itens[MAX_ITENS];
     int num_itens;

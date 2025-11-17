@@ -48,7 +48,7 @@ void tela_inativar_pet(char *cpf_busca, char *nome_pet_busca)
     exibir_titulo("Inativar Pet (Exclusão Lógica)");
     printf("║      Informe os dados do pet que deseja inativar:                                            ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do dono: ");
+    input(cpf_busca, 16, "Digite o CPF do dono: ");
     input(nome_pet_busca, 50, "Digite o nome do pet: ");
 }
 
@@ -59,7 +59,7 @@ void tela_excluir_pet_fisico(char *cpf_busca, char *nome_pet_busca)
     printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
     printf("║      Informe os dados do pet que deseja excluir permanentemente:                             ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do dono: ");
+    input(cpf_busca, 16, "Digite o CPF do dono: ");
     input(nome_pet_busca, 50, "Digite o nome do pet: ");
 }
 
@@ -67,7 +67,7 @@ Pets *
 tela_cadastrar_pet(void)
 {
     Pets *pet;
-    char cpf_busca[15];
+    char cpf_busca[16];
     char raca_input[3];
 
     exibir_logo();
@@ -75,7 +75,7 @@ tela_cadastrar_pet(void)
 
     do
     {
-        input(cpf_busca, 15, "Digite o CPF do dono do pet (apenas números):");
+        input(cpf_busca, 16, "Digite o CPF do dono do pet (pode conter '.' e '-'):");
         if (!validar_numero(cpf_busca))
         {
             printf("\nCPF inválido! Digite apenas números.\n");
@@ -212,7 +212,7 @@ void gravar_atualizacao_pet(const Pets *pet_atualizado)
 void inativar_pet(void)
 {
     Pets *pet;
-    char cpf_busca[15];
+    char cpf_busca[16];
     char nome_pet_busca[50];
 
     tela_inativar_pet(cpf_busca, nome_pet_busca);
@@ -278,7 +278,7 @@ int remover_pet_do_arquivo(const char *cpf, const char *nome)
 
 void excluir_pet_fisico(void)
 {
-    char cpf_busca[15];
+    char cpf_busca[16];
     char nome_pet_busca[50];
     int encontrado = 0;
 

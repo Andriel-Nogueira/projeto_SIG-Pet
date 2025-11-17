@@ -71,13 +71,13 @@ void cadastrar_cliente(void)
 
 void buscar_cliente(void)
 {
-    char cpf_busca[15];
+    char cpf_busca[16];
     Clientes *cli = NULL;
 
     exibir_logo();
     exibir_titulo("Buscar Cliente pelo CPF");
 
-    input(cpf_busca, 15, "Digite o CPF do cliente que deseja buscar: ");
+    input(cpf_busca, 16, "Digite o CPF do cliente que deseja buscar: ");
 
     cli = buscar_cliente_por_cpf(cpf_busca);
 
@@ -256,10 +256,10 @@ Clientes *tela_cadastrar_cliente(void)
 
     do
     {
-        input(cli->cpf, 15, "Insira seu CPF (pode conter '.' e '-'):");
+        input(cli->cpf, 16, "Insira seu CPF (pode conter '.' e '-'):");
         if (!validar_cpf(cli->cpf))
         {
-            printf("\nCPF inválido! Deve conter 11 dígitos numéricos.\n");
+            printf("\nCPF inválido!.\n");
         }
     } while (!validar_cpf(cli->cpf));
 
@@ -303,12 +303,12 @@ Clientes *tela_cadastrar_cliente(void)
 char *tela_atualizar_cliente(void)
 {
     char *cpf_busca;
-    cpf_busca = (char *)malloc(15 * sizeof(char));
+    cpf_busca = (char *)malloc(16 * sizeof(char));
     exibir_logo();
     exibir_titulo("Atualizar Dados do Cliente");
     printf("║      Informe o CPF do cliente que deseja atualizar:                                          ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do cliente que deseja atualizar: ");
+    input(cpf_busca, 16, "Digite o CPF do cliente que deseja atualizar: ");
     return cpf_busca;
 }
 
@@ -418,12 +418,12 @@ int remover_cliente_do_arquivo(const char *cpf_busca)
 char *tela_inativar_cliente(void)
 {
     char *cpf_busca;
-    cpf_busca = (char *)malloc(15 * sizeof(char));
+    cpf_busca = (char *)malloc(16 * sizeof(char));
     exibir_logo();
     exibir_titulo("Inativar Cliente (Exclusão Lógica)");
     printf("║      Informe o CPF do cliente que deseja inativar:                                           ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do cliente: ");
+    input(cpf_busca, 16, "Digite o CPF do cliente: ");
     return cpf_busca;
 }
 
@@ -431,7 +431,7 @@ char *tela_excluir_cliente_fisico(void)
 {
 
     char *cpf_busca;
-    cpf_busca = (char *)malloc(15 * sizeof(char));
+    cpf_busca = (char *)malloc(16 * sizeof(char));
     if (cpf_busca == NULL)
     {
         printf("Erro de alocação de memória!\n");
@@ -443,7 +443,7 @@ char *tela_excluir_cliente_fisico(void)
     printf("║      ATENÇÃO: Esta ação é irreversível!                                                      ║\n");
     printf("║      Informe o CPF do cliente que deseja excluir permanentemente:                            ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-    input(cpf_busca, 15, "Digite o CPF do cliente: ");
+    input(cpf_busca, 16, "Digite o CPF do cliente: ");
     return cpf_busca;
 }
 
