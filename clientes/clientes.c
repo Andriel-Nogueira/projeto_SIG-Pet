@@ -471,3 +471,28 @@ int verificar_cliente_cadastrado(const char *cpf)
     free(cli);
     return encontrado;
 }
+
+int cliente_tem_pets(const char *cpf)
+{
+    FILE *arq_pets;
+    Pets pet;
+    int tem_pets = 0;
+
+    arq_pets = fopen("pets/pets.dat", "rb");
+    if (arq_pets == NULL)
+    {
+        return 0; // Se o arquivo não existe, não há pets
+    }
+
+    while (fread(&pet, sizeof(Pets), 1, arq_pets))
+    {
+        if (pet.status == True && strcmp(pet.cpf, cpf) == 0)
+        {
+            tem_pets = 1;
+            break; // Encontrou pelo menos um, já pode parar
+        }
+    }
+
+    fclose(arq_pets);
+    return tem_pets;
+}

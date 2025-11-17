@@ -34,5 +34,6 @@ int remover_cliente_do_arquivo(const char* cpf);
 void gravar_atualizacao_cliente(const Clientes* cli);
 int verificar_cliente_cadastrado(const char* cpf);
 Clientes* buscar_cliente_por_cpf(const char* cpf);
+int cliente_tem_pets(const char *cpf);
 
 #endif

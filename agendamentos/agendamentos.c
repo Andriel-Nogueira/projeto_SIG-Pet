@@ -74,6 +74,13 @@ Agendamentos *tela_agendar(void)
         return NULL;
     }
 
+    if (!cliente_tem_pets(agend->cpf))
+    {
+        printf("\nEste cliente não possui pets cadastrados. É necessário cadastrar um pet primeiro.\n");
+        free(agend);
+        return NULL;
+    }
+
     printf("\n--- Pets do Cliente ---\n");
     listar_pets_por_cpf(agend->cpf);
 
@@ -171,6 +178,13 @@ void atualizar_agend(void)
         Agendamentos *agend_novo = (Agendamentos *)malloc(sizeof(Agendamentos));
 
         strcpy(agend_novo->cpf, agend_antigo->cpf);
+
+        if (!cliente_tem_pets(agend_novo->cpf))
+        {
+            printf("\nEste cliente não possui pets cadastrados. Impossível atualizar agendamento.\n");
+            free(agend_novo);
+            return; // Retorna para a função principal de atualização
+        }
 
         printf("\n--- Pets do Cliente ---\n");
         listar_pets_por_cpf(agend_novo->cpf);
