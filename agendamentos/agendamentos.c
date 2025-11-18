@@ -5,6 +5,7 @@
 #include "../utilitarios/utilitarios.h"
 #include "../clientes/clientes.h"
 #include "../pets/pets.h"
+#include "../servicos/servicos.h"
 #include "../relatorios/relatorios.h"
 
 void m_agendamento(void)
@@ -61,6 +62,9 @@ Agendamentos *tela_agendar(void)
     Agendamentos *agend;
     Pets *pet;
 
+    int id_serv;
+    Servicos *servico = NULL;
+
     exibir_logo();
     exibir_titulo("Agendar Servico");
     agend = (Agendamentos *)malloc(sizeof(Agendamentos));
@@ -92,13 +96,34 @@ Agendamentos *tela_agendar(void)
         if (pet == NULL || strcmp(pet->cpf, agend->cpf) != 0)
         {
             printf("\nID inválido ou não pertence ao cliente informado. Tente novamente.\n");
-            if (pet != NULL) free(pet);
+            if (pet != NULL)
+                free(pet);
         }
 
     } while (pet == NULL || strcmp(pet->cpf, agend->cpf) != 0);
 
     sprintf(agend->id_pet, "%d", pet->id); // Converte o int 'id' para string
     free(pet);
+
+    listar_servicos_simples();
+
+    do
+    {
+        printf("\nDigite o ID do serviço desejado: ");
+        scanf("%d", &id_serv);
+        getchar(); // limpar buffer
+
+        servico = buscar_servico_por_id(id_serv);
+
+        if (servico == NULL)
+        {
+            printf("ID inválido ou serviço inativo. Tente novamente.\n");
+        }
+
+    } while (servico == NULL);
+
+    sprintf(agend->id_servico, "%d", servico->id);
+    free(servico);
 
     int dia, mes, ano;
     printf("Digite a data do agendamento:\n");
@@ -350,16 +375,26 @@ void exibir_agendamento(const Agendamentos *agend)
         return;
     }
     Pets *pet = buscar_pet_id(atoi(agend->id_pet));
+    Servicos *serv = buscar_servico_por_id(atoi(agend->id_servico));
+
     char nome_pet_temp[51] = "Pet não encontrado";
+    char nome_serv[51] = "Serviço não encontrado";
     if (pet != NULL)
     {
         strcpy(nome_pet_temp, pet->nome);
         free(pet);
     }
 
+    if (serv != NULL)
+    {
+        strcpy(nome_serv, serv->nome);
+        free(serv);
+    }
+
+    printf("\n===== Detalhes do Agendamento =====\n");
     printf("CPF do Cliente: %s\n", agend->cpf);
-    printf("ID do Pet: %s\n", agend->id_pet);
-    printf("Nome do Pet: %s\n", nome_pet_temp);
+    printf("Pet: %s (ID %s)\n", nome_pet_temp, agend->id_pet);
+    printf("Serviço: %s (ID %s)\n", nome_serv, agend->id_servico);
     printf("Data: %s\n", agend->data);
     printf("Hora: %s\n", agend->hora);
 }

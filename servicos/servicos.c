@@ -365,31 +365,6 @@ void gravar_servico(const Servicos *serv)
     fclose(arq_servicos);
 }
 
-Servicos *buscar_servico_por_id(int id)
-{
-    FILE *arq_servicos;
-    Servicos *serv;
-
-    arq_servicos = fopen("servicos/servicos.dat", "rb");
-    if (arq_servicos == NULL)
-    {
-        return NULL;
-    }
-
-    serv = (Servicos *)malloc(sizeof(Servicos));
-    while (fread(serv, sizeof(Servicos), 1, arq_servicos))
-    {
-        if ((serv->id == id) && (serv->status == True))
-        {
-            fclose(arq_servicos);
-            return serv;
-        }
-    }
-    fclose(arq_servicos);
-    free(serv);
-    return NULL;
-}
-
 void gravar_atualizacao_servico(const Servicos *serv_atualizado)
 {
     FILE *arq_servicos;
@@ -461,4 +436,58 @@ int remover_servico_do_arquivo(int id)
     }
 
     return encontrado;
+}
+
+Servicos *buscar_servico_por_id(int id)
+{
+    FILE *arq_servicos;
+    Servicos *serv = malloc(sizeof(Servicos));
+
+    arq_servicos = fopen("servicos/servicos.dat", "rb");
+    if (arq_servicos == NULL)
+    {
+        free(serv);
+        return NULL;
+    }
+
+    while (fread(serv, sizeof(Servicos), 1, arq_servicos))
+    {
+        if (serv->id == id && serv->status == True)
+        {
+            fclose(arq_servicos);
+            return serv;
+        }
+    }
+
+    fclose(arq_servicos);
+    free(serv);
+    return NULL;
+}
+
+void listar_servicos_simples(void)
+{
+    FILE *arq_servicos;
+    Servicos serv;
+
+    arq_servicos = fopen("servicos/servicos.dat", "rb");
+
+    if (arq_servicos == NULL)
+    {
+        printf("\nNenhum serviço cadastrado.\n");
+        return;
+    }
+
+    printf("\n--- Serviços Disponíveis ---\n");
+    printf("%-5s │ %-30s │ %-10s\n", "ID", "NOME", "PREÇO");
+
+    while (fread(&serv, sizeof(Servicos), 1, arq_servicos))
+    {
+        if (serv.status == True)
+        {
+            printf("%-5d │ %-30s │ R$ %s\n",
+                   serv.id, serv.nome, serv.preco_s);
+        }
+    }
+
+    fclose(arq_servicos);
 }
