@@ -936,36 +936,32 @@ void listar_agendamentos_por_data(void)
 
 void relatorio_vendas_detalhado(void)
 {
-    FILE *arq_vendas;
-    Venda venda;
-    int encontrou = 0;
-
     exibir_logo();
     exibir_titulo("Relatório Detalhado de Vendas");
 
-    arq_vendas = fopen("vendas/vendas.dat", "rb");
-    if (arq_vendas == NULL)
+    NoVenda *lista = carregar_vendas_lista();
+
+    if (!lista)
     {
-        printf("Nenhuma venda registrada ou erro ao abrir o arquivo.\n");
+        printf("Nenhuma venda registrada.\n");
         pressione_enter();
         return;
     }
 
-    while (fread(&venda, sizeof(Venda), 1, arq_vendas))
+    NoVenda *atual = lista;
+
+    while (atual != NULL)
     {
-        if (venda.status != True)
-            continue;
+        Venda *venda = &atual->venda;
 
-        encontrou = 1;
-
-        Clientes *cli = buscar_cliente_por_cpf(venda.cpf_cliente);
+        Clientes *cli = buscar_cliente_por_cpf(venda->cpf_cliente);
 
         printf("╔══════════════════════════════════════════════════════════════════════════════╗\n");
-        printf("║ VENDA %-5d                                                            ║\n", venda.id);
+        printf("║ VENDA %-5d                                                            ║\n", venda->id);
         printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
 
         printf("║ Cliente: %-60s ║\n", cli ? cli->nome : "Cliente não encontrado");
-        printf("║ Data: %-63s ║\n", venda.data);
+        printf("║ Data: %-63s ║\n", venda->data);
 
         printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
         printf("║ %-5s │ %-30s │ %-10s │ %-12s │ %-12s ║\n",
@@ -974,16 +970,16 @@ void relatorio_vendas_detalhado(void)
 
         float total_geral = 0.0;
 
-        for (int i = 0; i < venda.num_itens; i++)
+        for (int i = 0; i < venda->num_itens; i++)
         {
-            ItemVenda *item = &venda.itens[i];
-
+            ItemVenda *item = &venda->itens[i];
             Produtos *prod = buscar_produto_por_id(item->id_produto);
 
             if (!prod)
             {
                 printf("║ %-5d │ %-30s │ %-10.2f │ %-12s │ %-12s ║\n",
-                       item->id_produto, "Produto não encontrado", item->quantidade, "---", "---");
+                       item->id_produto, "Produto não encontrado",
+                       item->quantidade, "---", "---");
                 continue;
             }
 
@@ -1003,11 +999,18 @@ void relatorio_vendas_detalhado(void)
 
         if (cli)
             free(cli);
+
+        atual = atual->prox; // AGORA SIM → LISTA DINÂMICA
     }
 
-    if (!encontrou)
-        printf("\nNenhuma venda ativa encontrada.\n");
+    // liberar lista
+    atual = lista;
+    while (atual != NULL)
+    {
+        NoVenda *temp = atual;
+        atual = atual->prox;
+        free(temp);
+    }
 
-    fclose(arq_vendas);
     pressione_enter();
 }
