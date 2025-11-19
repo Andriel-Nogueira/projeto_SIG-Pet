@@ -688,6 +688,7 @@ void relatorio_vendas(void)
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de vendas                                                        ║\n");
         printf("║          2 - Listagem por faixa de preço                                                     ║\n");
+        printf("║          3 - Relatório de vendas completo                                                    ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -702,6 +703,9 @@ void relatorio_vendas(void)
             break;
         case 2:
             listar_vendas_por_faixa_de_preco();
+            break;
+        case 3:
+            relatorio_vendas_detalhado();
             break;
         case 0:
             break;
@@ -927,5 +931,83 @@ void listar_agendamentos_por_data(void)
     }
 
     fclose(arq_agendamentos);
+    pressione_enter();
+}
+
+void relatorio_vendas_detalhado(void)
+{
+    FILE *arq_vendas;
+    Venda venda;
+    int encontrou = 0;
+
+    exibir_logo();
+    exibir_titulo("Relatório Detalhado de Vendas");
+
+    arq_vendas = fopen("vendas/vendas.dat", "rb");
+    if (arq_vendas == NULL)
+    {
+        printf("Nenhuma venda registrada ou erro ao abrir o arquivo.\n");
+        pressione_enter();
+        return;
+    }
+
+    while (fread(&venda, sizeof(Venda), 1, arq_vendas))
+    {
+        if (venda.status != True)
+            continue;
+
+        encontrou = 1;
+
+        Clientes *cli = buscar_cliente_por_cpf(venda.cpf_cliente);
+
+        printf("╔══════════════════════════════════════════════════════════════════════════════╗\n");
+        printf("║ VENDA %-5d                                                            ║\n", venda.id);
+        printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
+
+        printf("║ Cliente: %-60s ║\n", cli ? cli->nome : "Cliente não encontrado");
+        printf("║ Data: %-63s ║\n", venda.data);
+
+        printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║ %-5s │ %-30s │ %-10s │ %-12s │ %-12s ║\n",
+               "ID", "PRODUTO", "QTD", "UNITÁRIO", "SUBTOTAL");
+        printf("╠═══════╪════════════════════════════════╪════════════╪════════════════╪════════════════╣\n");
+
+        float total_geral = 0.0;
+
+        for (int i = 0; i < venda.num_itens; i++)
+        {
+            ItemVenda *item = &venda.itens[i];
+
+            Produtos *prod = buscar_produto_por_id(item->id_produto);
+
+            if (!prod)
+            {
+                printf("║ %-5d │ %-30s │ %-10.2f │ %-12s │ %-12s ║\n",
+                       item->id_produto, "Produto não encontrado", item->quantidade, "---", "---");
+                continue;
+            }
+
+            float unit = prod->preco;
+            float subtotal = unit * item->quantidade;
+            total_geral += subtotal;
+
+            printf("║ %-5d │ %-30s │ %-10.2f │ %-12.2f │ %-12.2f ║\n",
+                   prod->id, prod->nome, item->quantidade, unit, subtotal);
+
+            free(prod);
+        }
+
+        printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║ VALOR TOTAL DA VENDA: R$ %-48.2f ║\n", total_geral);
+        printf("╚══════════════════════════════════════════════════════════════════════════════╝\n\n");
+
+        if (cli)
+            free(cli);
+    }
+
+    if (!encontrou)
+        printf("\nNenhuma venda ativa encontrada.\n");
+
+    fclose(arq_vendas);
     pressione_enter();
 }
