@@ -6,13 +6,15 @@
 
 #define MAX_ITENS 10
 
-typedef struct {
+typedef struct
+{
     int id_produto;
     float preco_unitario;
     float quantidade;
 } ItemVenda;
 
-typedef struct {
+typedef struct
+{
     int id;
     char cpf_cliente[16];
     char data[11];
@@ -22,6 +24,12 @@ typedef struct {
     int status;
 } Venda;
 
+typedef struct no_venda
+{
+    Venda venda;
+    struct no_venda *prox;
+} NoVenda;
+
 // Módulo Principal
 void m_vendas(void);
 
@@ -30,15 +38,16 @@ void realizar_venda(void);
 void cancelar_venda(void);
 
 // Funções de Tela
-char* tela_identificar_cliente(void);
-void tela_adicionar_itens(Venda* venda);
+char *tela_identificar_cliente(void);
+void tela_adicionar_itens(Venda *venda);
 int tela_cancelar_venda(void);
-void exibir_venda(const Venda* venda);
+void exibir_venda(const Venda *venda);
 
 // Funções de Arquivo e Lógica
-Venda* buscar_venda_por_id(int id);
-void restaurar_estoque(const Venda* venda);
-void gravar_venda(const Venda* venda);
-void gravar_atualizacao_venda(const Venda* venda);
+Venda *buscar_venda_por_id(int id);
+void restaurar_estoque(const Venda *venda);
+void gravar_venda(const Venda *venda);
+void gravar_atualizacao_venda(const Venda *venda);
 
+NoVenda *carregar_vendas_lista(void);
 #endif

@@ -299,3 +299,39 @@ void exibir_venda(const Venda *venda)
                venda->itens[i].id_produto, venda->itens[i].quantidade, venda->itens[i].preco_unitario);
     }
 }
+
+NoVenda *carregar_vendas_lista(void)
+{
+    FILE *arq = fopen("vendas/vendas.dat", "rb");
+    if (!arq)
+        return NULL;
+
+    NoVenda *inicio = NULL;
+    NoVenda *fim = NULL;
+
+    Venda v;
+
+    while (fread(&v, sizeof(Venda), 1, arq))
+    {
+        if (v.status != True)
+            continue;
+
+        NoVenda *novo = malloc(sizeof(NoVenda));
+        novo->venda = v;
+        novo->prox = NULL;
+
+        if (inicio == NULL)
+        {
+            inicio = novo;
+            fim = novo;
+        }
+        else
+        {
+            fim->prox = novo;
+            fim = novo;
+        }
+    }
+
+    fclose(arq);
+    return inicio;
+}
