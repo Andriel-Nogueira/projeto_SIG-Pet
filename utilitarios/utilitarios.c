@@ -24,7 +24,8 @@ int escolha(void)
     }
 
     // Limpa o buffer de entrada para consumir o '\n' deixado pelo scanf
-    while (getchar() != '\n');
+    while (getchar() != '\n')
+        ;
     return opcao;
 }
 
@@ -299,7 +300,8 @@ int validar_cpf(const char *cpf)
     {
         if (eh_digito(cpf[i]))
         {
-            if (j < 11) { // Evita estouro de buffer se a entrada for muito longa
+            if (j < 11)
+            {                                   // Evita estouro de buffer se a entrada for muito longa
                 cpf_apenas_digitos[j] = cpf[i]; // Copia o dígito
                 j++;                            // Move para a próxima posição
             }
@@ -320,9 +322,11 @@ int validar_cpf(const char *cpf)
     // 3. Verifica se todos os 11 dígitos são iguais (ex: 11111111111)
     for (i = 1; i < 11; i++)
     {
-        if (cpf_apenas_digitos[i] != cpf_apenas_digitos[0]) break;
+        if (cpf_apenas_digitos[i] != cpf_apenas_digitos[0])
+            break;
     }
-    if (i == 11) return 0; // Se o loop terminou, todos são iguais
+    if (i == 11)
+        return 0; // Se o loop terminou, todos são iguais
 
     return 1; // Se passou por todas as verificações, o CPF é considerado válido
 }
@@ -392,4 +396,37 @@ void ler_cpf(char *cpf_destino)
             printf("\nCPF inválido! O CPF deve conter 11 dígitos. Tente novamente.\n");
         }
     } while (!valido);
+}
+
+int validar_hora(const char *hora)
+{
+    int h, m;
+
+    // deve ter exatamente 5 caracteres: "HH:MM"
+    if (strlen(hora) != 5)
+        return 0;
+
+    // posição 2 deve ser ':'
+    if (hora[2] != ':')
+        return 0;
+
+    // extrair
+    if (sscanf(hora, "%2d:%2d", &h, &m) != 2)
+        return 0;
+
+    // limites básicos
+    if (h < 0 || h > 23)
+        return 0;
+    if (m < 0 || m > 59)
+        return 0;
+
+    // horário permitido no PETSHOP: 08:00 até 20:00 (20:00 incluso)
+    if (h < 8)
+        return 0;
+    if (h > 20)
+        return 0;
+    if (h == 20 && m > 0)
+        return 0;
+
+    return 1;
 }
