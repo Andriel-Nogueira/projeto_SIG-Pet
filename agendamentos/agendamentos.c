@@ -190,6 +190,9 @@ char *tela_atualizar_agend(void)
 
 void atualizar_agend(void)
 {
+    int id_serv;
+    Servicos *servico = NULL;
+
     char *cpf_busca = tela_atualizar_agend();
     Agendamentos *agend_antigo = buscar_agendamento_por_cpf(cpf_busca);
 
@@ -233,6 +236,27 @@ void atualizar_agend(void)
 
         sprintf(agend_novo->id_pet, "%d", pet->id); // Converte o int 'id' para string
         free(pet);
+
+        listar_servicos_simples();
+
+        do
+        {
+            printf("\nDigite o ID do serviço desejado: ");
+            scanf("%d", &id_serv);
+            getchar(); // limpar buffer
+
+            servico = buscar_servico_por_id(id_serv);
+
+            if (servico == NULL)
+            {
+                printf("ID inválido ou serviço inativo. Tente novamente.\n");
+            }
+
+        } while (servico == NULL);
+
+        sprintf(agend_antigo->id_servico, "%d", servico->id);
+        free(servico);
+
         int dia, mes, ano;
         printf("Digite a nova data do agendamento:\n");
         ler_data_agendamento(&dia, &mes, &ano);
