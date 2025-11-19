@@ -31,5 +31,6 @@ int validar_data_agendamento(int dia, int mes, int ano);
 void ler_data_agendamento(int *dia, int *mes, int *ano);
 void ler_cpf(char *cpf_destino);
 int validar_hora(const char *hora);
+void ler_hora(char *hora);
 
 #endif

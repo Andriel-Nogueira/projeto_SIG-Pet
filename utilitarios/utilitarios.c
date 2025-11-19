@@ -430,3 +430,25 @@ int validar_hora(const char *hora)
 
     return 1;
 }
+
+void ler_hora(char *hora)
+{
+    char entrada[20];
+
+    do
+    {
+        printf("Insira o horário desejado (HH:MM): ");
+        fgets(entrada, sizeof(entrada), stdin);
+
+        // remove o \n se existir
+        entrada[strcspn(entrada, "\n")] = '\0';
+
+        if (!validar_hora(entrada))
+        {
+            printf("Horário inválido! Digite no formato HH:MM (entre 08:00 e 20:00).\n");
+        }
+
+    } while (!validar_hora(entrada));
+
+    strcpy(hora, entrada);
+}
