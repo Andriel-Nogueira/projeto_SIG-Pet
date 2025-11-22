@@ -12,6 +12,14 @@ typedef struct pets
     int id;
 } Pets;
 
+typedef struct no_pet
+{
+    Pets pet;
+    struct no_pet *prox;
+} NoPet;
+
+
+
 // Módulo Principal
 void m_pets(void);
 

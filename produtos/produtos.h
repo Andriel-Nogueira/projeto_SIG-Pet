@@ -11,6 +11,12 @@ typedef struct produtos
 
 } Produtos;
 
+typedef struct no_produto
+{
+    Produtos produto;
+    struct no_produto *prox;
+} NoProduto;
+
 // Módulo Principal
 void m_produtos(void);
 

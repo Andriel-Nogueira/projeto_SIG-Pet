@@ -14,6 +14,12 @@ typedef struct agendamentos
 
 } Agendamentos;
 
+typedef struct no_agendamento
+{
+    Agendamentos agendamento;
+    struct no_agendamento *prox;
+} NoAgendamento;
+
 // Módulo Principal
 void m_agendamento(void);
 

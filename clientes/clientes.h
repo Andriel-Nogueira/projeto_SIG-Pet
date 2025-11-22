@@ -10,6 +10,12 @@ typedef struct clientes
     int status;
 } Clientes;
 
+typedef struct no_cliente
+{
+    Clientes cliente;
+    struct no_cliente *prox;
+} NoCliente;
+
 // Módulo Principal
 void m_clientes(void);
 

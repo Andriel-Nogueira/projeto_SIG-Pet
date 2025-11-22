@@ -10,6 +10,12 @@ typedef struct servicos
     int status;
 } Servicos;
 
+typedef struct no_servico
+{
+    Servicos servico;
+    struct no_servico *prox;
+} NoServico;
+
 // Módulo Principal
 void m_servicos(void);
 
