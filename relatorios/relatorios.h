@@ -6,6 +6,8 @@ void listar_clientes_por_idade(void);
 int tela_obter_idade(void);
 
 void relatorio_pets(void);
+
+void relatorio_pets_por_clientes(void);
 void listar_pets(void);
 void listar_pets_por_especie(void);
 void listar_pets_por_cpf(char *cpf_busca);

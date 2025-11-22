@@ -42,4 +42,6 @@ int remover_pet_do_arquivo(const char *cpf, const char *nome);
 Pets *buscar_pet(const char *cpf, const char *nome);
 Pets *buscar_pet_id(int id);
 
+NoPet *carregar_pets_lista(void);
+
 #endif

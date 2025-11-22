@@ -351,3 +351,38 @@ int tela_buscar_pet_id(void)
     id_busca = atoi(id_str);
     return id_busca;
 }
+
+NoPet *carregar_pets_lista(void)
+{
+    FILE *arq = fopen("pets/pets.dat", "rb");
+    if (!arq)
+        return NULL;
+
+    NoPet *inicio = NULL;
+    NoPet *fim = NULL;
+
+    Pets p;
+
+    while (fread(&p, sizeof(Pets), 1, arq))
+    {
+        if (p.status != True)
+            continue;
+
+        NoPet *novo = malloc(sizeof(NoPet));
+        novo->pet = p;
+        novo->prox = NULL;
+
+        if (inicio == NULL)
+        {
+            inicio = novo;
+            fim = novo;
+        }
+        else
+        {
+            fim->prox = novo;
+            fim = novo;
+        }
+    }
+    fclose(arq);
+    return inicio;
+}

@@ -191,6 +191,7 @@ void relatorio_pets(void)
         printf("║          1 - Listagem geral de pets                                                          ║\n");
         printf("║          2 - Listagem por espécie                                                            ║\n");
         printf("║          3 - Listagem por cliente (CPF do dono)                                              ║\n");
+        printf("║          4 - Listagem geral de pet por cliente                                               ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -210,6 +211,9 @@ void relatorio_pets(void)
             ler_cpf(cpf_busca);
             listar_pets_por_cpf(cpf_busca);
             pressione_enter();
+            break;
+        case 4:
+            relatorio_pets_por_clientes();
             break;
         case 0:
             break;
@@ -1000,7 +1004,7 @@ void relatorio_vendas_detalhado(void)
         if (cli)
             free(cli);
 
-        atual = atual->prox; // AGORA SIM → LISTA DINÂMICA
+        atual = atual->prox; 
     }
 
     // liberar lista
@@ -1014,3 +1018,50 @@ void relatorio_vendas_detalhado(void)
 
     pressione_enter();
 }
+
+void relatorio_pets_por_clientes(void)
+{
+    exibir_logo();
+    exibir_titulo("Listagem de Pets por Clientes");
+
+    NoPet *lista = carregar_pets_lista();
+
+    if(!lista)
+    {
+        printf("Nenhum pet cadastrado.\n");
+        pressione_enter();
+        return;
+    }
+    NoPet *atual = lista;
+
+    while (atual != NULL)
+    {
+        Pets *pet = &atual->pet;
+
+        Clientes *cli = buscar_cliente_por_cpf(pet->cpf);
+        printf("╔══════════════════════════════════════════════════════════════════════════════╗\n");
+        printf("║ Cliente: %-60s ║ \n", cli ? cli->nome : "Cliente não encontrado");
+        printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║ %-5s │ %-30s │ %-10s ║\n", "ID", "NOME DO PET", "ESPÉCIE");
+        printf("╠═══════╪════════════════════════════════╪════════════╣\n");
+        printf("║ %-5d │ %-30s │ %-10s ║\n",
+               pet->id,
+               pet->nome,
+               pet->especie);
+        printf("╚══════════════════════════════════════════════════════════════════════════════╝\n\n");
+
+        if (cli)
+            free(cli);
+        atual = atual->prox;
+    }
+    // liberar lista
+    atual = lista;
+    while (atual != NULL)
+    {
+        NoPet *temp = atual;
+        atual = atual->prox;
+        free(temp);
+    }
+    pressione_enter();
+}
+    
