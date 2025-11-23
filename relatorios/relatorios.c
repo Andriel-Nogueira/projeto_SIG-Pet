@@ -362,6 +362,30 @@ void relatorio_servicos(void)
     } while (op != 0);
 }
 
+int contar_agendamentos_por_pet(int id_pet)
+{
+    FILE *arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
+    if (arq_agendamentos == NULL)
+    {
+        return 0; // Se o arquivo não existe, não há agendamentos
+    }
+
+    Agendamentos agend;
+    int contador = 0;
+    char id_pet_str[10];
+    sprintf(id_pet_str, "%d", id_pet);
+
+    while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
+    {
+        if (agend.status == True && strcmp(agend.id_pet, id_pet_str) == 0)
+        {
+            contador++;
+        }
+    }
+    fclose(arq_agendamentos);
+    return contador;
+}
+
 void listar_pets_por_cpf(char *cpf_busca)
 {
     FILE *arq_pets;
@@ -376,20 +400,21 @@ void listar_pets_por_cpf(char *cpf_busca)
         return;
     }
 
-    printf("║ %-5s │ %-30s │ %-10s │ %-15s                                                              ║\n", "ID", "NOME DO PET", "ESPÉCIE", "CPF DO DONO");
-    printf("╠═══════╪════════════════════════════════╪════════════╪════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║ %-5s │ %-42s  │ %-15s  │ %-20s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "QTD AGENDAMENTOS");
+    printf("╠═══════╪═════════════════════════════════════════════╪═════════════════╪══════════════════════╣\n");
 
     while (fread(&pet, sizeof(Pets), 1, arq_pets))
     {
         if (pet.status == True && strcmp(pet.cpf, cpf_busca) == 0)
         {
-            printf("║ %-5d │ %-30s │ %-10s │ %-15s                                                              ║\n", pet.id, pet.nome, pet.especie, pet.cpf);
+            int qtd_agend = contar_agendamentos_por_pet(pet.id);
+            printf("║ %-5d │ %-40s    │ %-15s │ %-20d ║\n", pet.id, pet.nome, pet.especie, qtd_agend);
             encontrou = 1;
         }
     }
 
     if (!encontrou)
-        printf("║ Nenhum pet encontrado para o CPF informado.                                                                                ║\n");
+        printf("║ Nenhum pet encontrado para este cliente.                                                     ║\n");
 
     fclose(arq_pets);
 }
@@ -1037,11 +1062,11 @@ void relatorio_pets_por_clientes(void)
 
         if (cli->status == True)
         {
-            printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-            printf("║ Cliente: %-60s (CPF: %s)                                               ║\n", cli->nome, cli->cpf);
-            printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+            printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+            printf("║ Cliente: %-84s║\n", cli->nome);
+            printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
             listar_pets_por_cpf(cli->cpf);
-            printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
+            printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
         }
         cliente_atual = cliente_atual->prox;
     }
