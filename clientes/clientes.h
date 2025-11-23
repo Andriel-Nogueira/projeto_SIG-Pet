@@ -28,18 +28,19 @@ void inativar_cliente(void);
 void excluir_cliente_fisico(void);
 
 // Funções de Tela (Cliente)
-Clientes* tela_cadastrar_cliente(void);
-char* tela_atualizar_cliente(void);
-char* tela_inativar_cliente(void);
-char* tela_excluir_cliente_fisico(void);
-void exibir_cliente(const Clientes* cli);
+Clientes *tela_cadastrar_cliente(void);
+char *tela_atualizar_cliente(void);
+char *tela_inativar_cliente(void);
+char *tela_excluir_cliente_fisico(void);
+void exibir_cliente(const Clientes *cli);
 
 // Funções de Arquivo (Cliente)
-void gravar_cliente(Clientes*);
-int remover_cliente_do_arquivo(const char* cpf);
-void gravar_atualizacao_cliente(const Clientes* cli);
-int verificar_cliente_cadastrado(const char* cpf);
-Clientes* buscar_cliente_por_cpf(const char* cpf);
+void gravar_cliente(Clientes *);
+int remover_cliente_do_arquivo(const char *cpf);
+void gravar_atualizacao_cliente(const Clientes *cli);
+int verificar_cliente_cadastrado(const char *cpf);
+Clientes *buscar_cliente_por_cpf(const char *cpf);
 int cliente_tem_pets(const char *cpf);
-NoCliente* carregar_clientes_lista(void);
+NoCliente *carregar_clientes_lista(void);
+NoCliente *carregar_clientes_ordenados_nome(void);
 #endif

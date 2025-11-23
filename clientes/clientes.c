@@ -544,3 +544,55 @@ NoCliente *carregar_clientes_lista(void)
     fclose(arq_clientes);
     return lista;
 }
+
+NoCliente *carregar_clientes_ordenados_nome(void)
+{
+    FILE *fp = fopen("clientes/clientes.dat", "rb");
+    if (fp == NULL)
+        return NULL;
+
+    Clientes cli;
+    NoCliente *lista = NULL;
+    NoCliente *novo, *anter, *atual;
+
+    while (fread(&cli, sizeof(Clientes), 1, fp))
+    {
+        if (cli.status != True)
+            continue;
+
+        novo = (NoCliente *)malloc(sizeof(NoCliente));
+        novo->cliente = cli;
+        novo->prox = NULL;
+
+        // Caso 1: lista vazia
+        if (lista == NULL)
+        {
+            lista = novo;
+        }
+        // Caso 2: entra no início
+        else if (strcmp(novo->cliente.nome, lista->cliente.nome) < 0)
+        {
+            novo->prox = lista;
+            lista = novo;
+        }
+        else
+        {
+            // Caso 3: insere no meio/fim mantendo ordem
+            anter = lista;
+            atual = lista->prox;
+
+            while (atual != NULL &&
+                   strcmp(atual->cliente.nome, novo->cliente.nome) < 0)
+            {
+                anter = atual;
+                atual = atual->prox;
+            }
+
+            anter->prox = novo;
+            novo->prox = atual;
+        }
+    }
+
+    fclose(fp);
+    return lista;
+}
