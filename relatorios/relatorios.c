@@ -376,23 +376,20 @@ void listar_pets_por_cpf(char *cpf_busca)
         return;
     }
 
-    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-30s │ %-10s │ %-15s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "CPF DO DONO");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║ %-5s │ %-30s │ %-10s │ %-15s                                                              ║\n", "ID", "NOME DO PET", "ESPÉCIE", "CPF DO DONO");
+    printf("╠═══════╪════════════════════════════════╪════════════╪════════════════════════════════════════════════════════════════════════════╣\n");
 
     while (fread(&pet, sizeof(Pets), 1, arq_pets))
     {
         if (pet.status == True && strcmp(pet.cpf, cpf_busca) == 0)
         {
-            printf("║ %-5d │ %-30s │ %-10s │ %-15s ║\n", pet.id, pet.nome, pet.especie, pet.cpf);
+            printf("║ %-5d │ %-30s │ %-10s │ %-15s                                                              ║\n", pet.id, pet.nome, pet.especie, pet.cpf);
             encontrou = 1;
         }
     }
 
     if (!encontrou)
-        printf("║ Nenhum pet encontrado para o CPF informado.                                                                        ║\n");
-
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+        printf("║ Nenhum pet encontrado para o CPF informado.                                                                                ║\n");
 
     fclose(arq_pets);
 }
@@ -1024,42 +1021,36 @@ void relatorio_pets_por_clientes(void)
     exibir_logo();
     exibir_titulo("Listagem de Pets por Clientes");
 
-    NoPet *lista = carregar_pets_lista();
+    NoCliente *lista_clientes = carregar_clientes_lista();
 
-    if(!lista)
+    if (!lista_clientes)
     {
-        printf("Nenhum pet cadastrado.\n");
+        printf("Nenhum cliente cadastrado.\n");
         pressione_enter();
         return;
     }
-    NoPet *atual = lista;
 
-    while (atual != NULL)
+    NoCliente *cliente_atual = lista_clientes;
+    while (cliente_atual != NULL)
     {
-        Pets *pet = &atual->pet;
+        Clientes *cli = &cliente_atual->cliente;
 
-        Clientes *cli = buscar_cliente_por_cpf(pet->cpf);
-        printf("╔══════════════════════════════════════════════════════════════════════════════╗\n");
-        printf("║ Cliente: %-60s ║ \n", cli ? cli->nome : "Cliente não encontrado");
-        printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
-        printf("║ %-5s │ %-30s │ %-10s ║\n", "ID", "NOME DO PET", "ESPÉCIE");
-        printf("╠═══════╪════════════════════════════════╪════════════╣\n");
-        printf("║ %-5d │ %-30s │ %-10s ║\n",
-               pet->id,
-               pet->nome,
-               pet->especie);
-        printf("╚══════════════════════════════════════════════════════════════════════════════╝\n\n");
-
-        if (cli)
-            free(cli);
-        atual = atual->prox;
+        if (cli->status == True)
+        {
+            printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+            printf("║ Cliente: %-60s (CPF: %s)                                               ║\n", cli->nome, cli->cpf);
+            printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+            listar_pets_por_cpf(cli->cpf);
+            printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
+        }
+        cliente_atual = cliente_atual->prox;
     }
-    // liberar lista
-    atual = lista;
-    while (atual != NULL)
+
+    // Liberar a memória da lista de clientes
+    while (lista_clientes != NULL)
     {
-        NoPet *temp = atual;
-        atual = atual->prox;
+        NoCliente *temp = lista_clientes;
+        lista_clientes = lista_clientes->prox;
         free(temp);
     }
     pressione_enter();

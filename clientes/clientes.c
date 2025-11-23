@@ -497,3 +497,50 @@ int cliente_tem_pets(const char *cpf)
     fclose(arq_pets);
     return tem_pets;
 }
+
+NoCliente *carregar_clientes_lista(void)
+{
+    FILE *arq_clientes;
+    Clientes cli;
+    NoCliente *lista = NULL;
+    NoCliente *ultimo = NULL;
+
+    arq_clientes = fopen("clientes/clientes.dat", "rb");
+    if (arq_clientes == NULL)
+    {
+        return NULL; // Nenhum cliente cadastrado
+    }
+
+    while (fread(&cli, sizeof(Clientes), 1, arq_clientes))
+    {
+        NoCliente *novo_no = (NoCliente *)malloc(sizeof(NoCliente));
+        if (novo_no == NULL)
+        {
+            fclose(arq_clientes);
+            // Liberar a lista já criada em caso de falha
+            NoCliente *atual = lista;
+            while (atual != NULL)
+            {
+                NoCliente *temp = atual;
+                atual = atual->prox;
+                free(temp);
+            }
+            return NULL; // Falha na alocação de memória
+        }
+        novo_no->cliente = cli;
+        novo_no->prox = NULL;
+
+        if (lista == NULL)
+        {
+            lista = novo_no;
+        }
+        else
+        {
+            ultimo->prox = novo_no;
+        }
+        ultimo = novo_no;
+    }
+
+    fclose(arq_clientes);
+    return lista;
+}

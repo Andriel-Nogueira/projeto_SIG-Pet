@@ -41,5 +41,5 @@ void gravar_atualizacao_cliente(const Clientes* cli);
 int verificar_cliente_cadastrado(const char* cpf);
 Clientes* buscar_cliente_por_cpf(const char* cpf);
 int cliente_tem_pets(const char *cpf);
-
+NoCliente* carregar_clientes_lista(void);
 #endif
