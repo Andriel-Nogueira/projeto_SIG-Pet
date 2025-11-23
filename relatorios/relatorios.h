@@ -33,3 +33,4 @@ void listar_agendamentos_por_data(void);
 int tela_obter_mes(void);
 
 void relatorio_vendas_detalhado(void);
+void relatorio_clientes_ordenados(void);

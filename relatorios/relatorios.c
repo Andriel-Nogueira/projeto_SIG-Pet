@@ -75,6 +75,7 @@ void relatorio_clientes(void)
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de clientes                                                      ║\n");
         printf("║          2 - Listagem de clientes por idade                                                  ║\n");
+        printf("║          3 - Listagem Ordenada por nome                                                      ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -89,6 +90,9 @@ void relatorio_clientes(void)
             break;
         case 2:
             listar_clientes_por_idade();
+            break;
+        case 3:
+            relatorio_clientes_ordenados();
             break;
         case 0:
             break;
@@ -1026,7 +1030,7 @@ void relatorio_vendas_detalhado(void)
         if (cli)
             free(cli);
 
-        atual = atual->prox; 
+        atual = atual->prox;
     }
 
     // liberar lista
@@ -1080,4 +1084,46 @@ void relatorio_pets_por_clientes(void)
     }
     pressione_enter();
 }
-    
+
+void relatorio_clientes_ordenados(void)
+{
+    exibir_logo();
+    exibir_titulo("Relatório de Clientes Ordenados por Nome");
+
+    NoCliente *lista = carregar_clientes_ordenados_nome();
+
+    if (lista == NULL)
+    {
+        printf("Nenhum cliente cadastrado.\n");
+        pressione_enter();
+        return;
+    }
+
+    NoCliente *p = lista;
+
+    while (p != NULL)
+    {
+        Clientes *c = &p->cliente;
+
+        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+        printf("║ Nome: %-85s║\n", c->nome);
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║ CPF: %-86s║\n", c->cpf);
+        printf("║ Data de Nascimento: %-70s║\n", c->data_nascimento);
+        printf("║ Telefone: %-79s║\n", c->telefone);
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
+
+        p = p->prox;
+    }
+
+    // liberar memória
+    p = lista;
+    while (p != NULL)
+    {
+        NoCliente *tmp = p;
+        p = p->prox;
+        free(tmp);
+    }
+
+    pressione_enter();
+}
