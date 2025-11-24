@@ -196,6 +196,7 @@ void relatorio_pets(void)
         printf("║          2 - Listagem por espécie                                                            ║\n");
         printf("║          3 - Listagem por cliente (CPF do dono)                                              ║\n");
         printf("║          4 - Listagem geral de pet por cliente                                               ║\n");
+        printf("║          5 - Listagem ordenada por nome do pet                                               ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -218,6 +219,9 @@ void relatorio_pets(void)
             break;
         case 4:
             relatorio_pets_por_clientes();
+            break;
+        case 5:
+            relatorio_pets_ordenados();
             break;
         case 0:
             break;
