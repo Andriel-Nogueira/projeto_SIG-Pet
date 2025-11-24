@@ -110,12 +110,12 @@ tela_cadastrar_pet(void)
 
     do
     {
-        input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Outro\n\n");
-        if (strcmp(raca_input, "1") != 0 && strcmp(raca_input, "2") != 0 && strcmp(raca_input, "3") != 0)
+        input(raca_input, 3, "Informe a espécie do seu PET: \n1 - Gato\n2 - Cachorro\n3 - Pássaro\n4 - Outro\n");
+        if (strcmp(raca_input, "1") != 0 && strcmp(raca_input, "2") != 0 && strcmp(raca_input, "3") != 0 && strcmp(raca_input, "4") != 0)
         {
-            printf("\nOpção inválida! Por favor, escolha 1, 2 ou 3.\n");
+            printf("\nOpção inválida! Por favor, escolha 1, 2, 3 ou 4.\n");
         }
-    } while (strcmp(raca_input, "1") != 0 && strcmp(raca_input, "2") != 0 && strcmp(raca_input, "3") != 0);
+    } while (strcmp(raca_input, "1") != 0 && strcmp(raca_input, "2") != 0 && strcmp(raca_input, "3") != 0 && strcmp(raca_input, "4") != 0);
 
     if (strcmp(raca_input, "1") == 0)
     {
@@ -124,6 +124,10 @@ tela_cadastrar_pet(void)
     else if (strcmp(raca_input, "2") == 0)
     {
         strcpy(pet->especie, "C");
+    }
+    else if (strcmp(raca_input, "3") == 0)
+    {
+        strcpy(pet->especie, "P");
     }
     else
     {
