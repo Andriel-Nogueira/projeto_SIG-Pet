@@ -4,6 +4,7 @@
 #include "pets.h"
 #include "../utilitarios/utilitarios.h"
 #include "../clientes/clientes.h"
+#include "../relatorios/relatorios.h"
 
 void m_pets(void)
 {
@@ -29,7 +30,7 @@ void m_pets(void)
             cadastrar_pet();
             break;
         case 2:
-            inativar_pet();
+            tela_inativar_pet();
             break;
         case 3:
             excluir_pet_fisico();
@@ -42,14 +43,16 @@ void m_pets(void)
     } while (op != 0);
 }
 
-void tela_inativar_pet(char *cpf_busca, char *nome_pet_busca)
+void tela_inativar_pet(void)
 {
+    char cpf_busca[16];
     exibir_logo();
     exibir_titulo("Inativar Pet (Exclusão Lógica)");
     printf("║      Informe os dados do pet que deseja inativar:                                            ║\n");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     input(cpf_busca, 16, "Digite o CPF do dono: ");
-    input(nome_pet_busca, 50, "Digite o nome do pet: ");
+    listar_pets_por_cpf(cpf_busca);
+    inativar_pet();
 }
 
 void tela_excluir_pet_fisico(char *cpf_busca, char *nome_pet_busca)
@@ -215,22 +218,21 @@ void gravar_atualizacao_pet(const Pets *pet_atualizado)
 void inativar_pet(void)
 {
     Pets *pet;
-    char cpf_busca[16];
-    char nome_pet_busca[50];
+    int id_busca = 0;
 
-    tela_inativar_pet(cpf_busca, nome_pet_busca);
-    pet = buscar_pet(cpf_busca, nome_pet_busca);
+    id_busca = tela_buscar_pet_id();
+    pet = buscar_pet_id(id_busca);
 
     if (pet != NULL)
     {
         pet->status = False;
         gravar_atualizacao_pet(pet);
-        printf("\nPet '%s' inativado com sucesso!\n", nome_pet_busca);
+        printf("\nPet '%s' inativado com sucesso!\n", pet->nome);
         free(pet);
     }
     else
     {
-        printf("\nPet '%s' do cliente com CPF %s não encontrado ou já está inativo.\n", nome_pet_busca, cpf_busca);
+        printf("\nPet '%s' do cliente com CPF %s não encontrado ou já está inativo.\n", pet->nome, pet->cpf);
     }
     pressione_enter();
 }

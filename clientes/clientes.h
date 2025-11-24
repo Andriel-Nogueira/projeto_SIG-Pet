@@ -26,6 +26,7 @@ void atualizar_cliente(void);
 void listar_clientes(void);
 void inativar_cliente(void);
 void excluir_cliente_fisico(void);
+Clientes *tela_atualizar_info_cliente(void);
 
 // Funções de Tela (Cliente)
 Clientes *tela_cadastrar_cliente(void);

@@ -28,7 +28,7 @@ void excluir_pet_fisico(void);
 
 // Funções de Tela (Pet)
 Pets *tela_cadastrar_pet(void);
-void tela_inativar_pet(char *cpf_busca, char *nome_pet_busca);
+void tela_inativar_pet(void);
 void tela_excluir_pet_fisico(char *cpf_busca, char *nome_pet_busca);
 void exibir_pet(const Pets *pet);
 int tela_buscar_pet_id(void);

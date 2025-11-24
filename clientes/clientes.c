@@ -109,7 +109,7 @@ void atualizar_cliente(void)
     }
     else
     {
-        cli = tela_cadastrar_cliente();
+        cli = tela_atualizar_info_cliente();
         if (cli != NULL)
         {
             strcpy(cli->cpf, cpf_busca);
@@ -141,16 +141,16 @@ void listar_clientes(void)
         return;
     }
 
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-15s │ %-35s │ %-12s │ %-15s ║\n", "CPF", "NOME", "NASCIMENTO", "TELEFONE");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║ %-15s │ %-35s │ %-12s │ %-15s       ║\n", "CPF", "NOME", "NASCIMENTO", "TELEFONE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     int encontrou = 0;
     while (fread(cli, sizeof(Clientes), 1, arq_clientes))
     {
         if (cli->status == True)
         {
-            printf("║ %-15s │ %-35s │ %-12s │ %-15s ║\n",
+            printf("║ %-15s │ %-35s │ %-12s │ %-15s       ║\n",
                    cli->cpf,
                    cli->nome,
                    cli->data_nascimento,
@@ -164,7 +164,7 @@ void listar_clientes(void)
         printf("║ Nenhum cliente ativo encontrado.                                                                                     ║\n");
     }
 
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     fclose(arq_clientes);
     free(cli);
@@ -265,6 +265,43 @@ Clientes *tela_cadastrar_cliente(void)
         free(cli);
         return NULL;
     }
+
+    do
+    {
+        input(cli->nome, 50, "Digite o seu nome:");
+        if (!validar_nome(cli->nome))
+        {
+            printf("\nNome inválido! Digite apenas letras e espaços.\n");
+        }
+    } while (!validar_nome(cli->nome));
+
+    // Validação da data de nascimento
+    int dia, mes, ano;
+    printf("Digite sua data de nascimento:\n");
+    ler_data(&dia, &mes, &ano);
+    sprintf(cli->data_nascimento, "%02d/%02d/%04d", dia, mes, ano);
+
+    do
+    {
+        input(cli->telefone, 20, "Digite seu telefone (10 ou 11 dígitos, com DDD):");
+        if (!validar_telefone(cli->telefone))
+        {
+            printf("\nTelefone inválido! Deve conter 10 ou 11 dígitos numéricos.\n");
+        }
+    } while (!validar_telefone(cli->telefone));
+
+    cli->status = True;
+    return cli;
+}
+
+
+Clientes *tela_atualizar_info_cliente(void)
+{
+    Clientes *cli;
+    cli = (Clientes *)malloc(sizeof(Clientes));
+
+    exibir_logo();
+    exibir_titulo("Atualizar Cliente");
 
     do
     {
