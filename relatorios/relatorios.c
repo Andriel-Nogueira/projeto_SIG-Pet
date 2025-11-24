@@ -1127,3 +1127,46 @@ void relatorio_clientes_ordenados(void)
 
     pressione_enter();
 }
+
+void relatorio_pets_ordenados(void)
+{
+    exibir_logo();
+    exibir_titulo("Relatório de Pets Ordenados por Espécie");
+
+    NoPet *lista = carregar_pets_ordenados_especie();
+
+    if (lista == NULL)
+    {
+        printf("Nenhum pet cadastrado.\n");
+        pressione_enter();
+        return;
+    }
+
+    NoPet *p = lista;
+
+    while (p != NULL)
+    {
+        Pets *pet = &p->pet;
+
+        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+        printf("║ Nome do Pet: %-79s║\n", pet->nome);
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║ Espécie: %-84s║\n", pet->especie);
+        printf("║ ID: %-87s║\n", pet->id);
+        printf("║ CPF do Dono: %-82s║\n", pet->cpf);
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
+
+        p = p->prox;
+    }
+
+    // liberar memória
+    p = lista;
+    while (p != NULL)
+    {
+        NoPet *tmp = p;
+        p = p->prox;
+        free(tmp);
+    }
+
+    pressione_enter();
+}
