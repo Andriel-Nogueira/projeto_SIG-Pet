@@ -1133,7 +1133,7 @@ void relatorio_pets_ordenados(void)
     exibir_logo();
     exibir_titulo("Relatório de Pets Ordenados por Espécie");
 
-    NoPet *lista = carregar_pets_ordenados_especie();
+    NoPet *lista = carregar_pets_ordenados_nome();
 
     if (lista == NULL)
     {
@@ -1152,7 +1152,7 @@ void relatorio_pets_ordenados(void)
         printf("║ Nome do Pet: %-79s║\n", pet->nome);
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
         printf("║ Espécie: %-84s║\n", pet->especie);
-        printf("║ ID: %-87s║\n", pet->id);
+        printf("║ ID: %-87d║\n", pet->id);
         printf("║ CPF do Dono: %-82s║\n", pet->cpf);
         printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
 
