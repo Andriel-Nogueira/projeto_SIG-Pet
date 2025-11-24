@@ -184,7 +184,6 @@ Pets *buscar_pet_id(int id)
     return NULL;
 }
 
-
 void gravar_atualizacao_pet(const Pets *pet_atualizado)
 {
     FILE *arq_pets;
@@ -385,4 +384,56 @@ NoPet *carregar_pets_lista(void)
     }
     fclose(arq);
     return inicio;
+}
+
+NoPet *carregar_pets_ordenados_nome(void)
+{
+    FILE *fp = fopen("pets/pets.dat", "rb");
+    if (fp == NULL)
+        return NULL;
+
+    Pets pet;
+    NoPet *lista = NULL;
+    NoPet *novo, *anter, *atual;
+
+    while (fread(&pet, sizeof(Pets), 1, fp))
+    {
+        if (pet.status != True)
+            continue;
+
+        novo = (NoPet *)malloc(sizeof(NoPet));
+        novo->pet = pet;
+        novo->prox = NULL;
+
+        // Caso 1: lista vazia
+        if (lista == NULL)
+        {
+            lista = novo;
+        }
+        // Caso 2: entra no início
+        else if (strcmp(novo->pet.nome, lista->pet.nome) < 0)
+        {
+            novo->prox = lista;
+            lista = novo;
+        }
+        else
+        {
+            // Caso 3: insere no meio/fim mantendo ordem
+            anter = lista;
+            atual = lista->prox;
+
+            while (atual != NULL &&
+                   strcmp(atual->pet.nome, novo->pet.nome) < 0)
+            {
+                anter = atual;
+                atual = atual->prox;
+            }
+
+            anter->prox = novo;
+            novo->prox = atual;
+        }
+    }
+
+    fclose(fp);
+    return lista;
 }

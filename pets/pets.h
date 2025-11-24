@@ -18,8 +18,6 @@ typedef struct no_pet
     struct no_pet *prox;
 } NoPet;
 
-
-
 // Módulo Principal
 void m_pets(void);
 
@@ -43,5 +41,5 @@ Pets *buscar_pet(const char *cpf, const char *nome);
 Pets *buscar_pet_id(int id);
 
 NoPet *carregar_pets_lista(void);
-
+NoPet *carregar_pets_ordenados_nome(void);
 #endif
