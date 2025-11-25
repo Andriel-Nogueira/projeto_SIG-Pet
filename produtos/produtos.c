@@ -457,3 +457,51 @@ void excluir_produto_fisico(void)
 
     pressione_enter();
 }
+
+NoProduto *carregar_produtos_ordenados(void)
+{
+    FILE *arq = fopen("produtos/produtos.dat", "rb");
+    if (!arq)
+    {
+        printf("Nenhum produto cadastrado ou erro ao abrir o arquivo.\n");
+        return NULL;
+    }
+
+    Produtos prod;
+    NoProduto *inicio = NULL;
+
+    while (fread(&prod, sizeof(Produtos), 1, arq))
+    {
+        if (prod.status != True)
+            continue;
+
+                NoProduto *novo = malloc(sizeof(NoProduto));
+        if (!novo)
+        {
+            printf("Erro de alocação!\n");
+            fclose(arq);
+            return inicio;
+        }
+        novo->produto = prod;
+        novo->prox = NULL;
+
+        if (inicio == NULL || prod.preco < inicio->produto.preco)
+        {
+            novo->prox = inicio;
+            inicio = novo;
+        }
+        else
+        {
+            NoProduto *aux = inicio;
+            while (aux->prox != NULL && aux->prox->produto.preco <= prod.preco)
+            {
+                aux = aux->prox;
+            }
+            novo->prox = aux->prox;
+            aux->prox = novo;
+        }
+    }
+
+    fclose(arq);
+    return inicio;
+}

@@ -29,17 +29,18 @@ void inativar_produto(void);
 void excluir_produto_fisico(void);
 
 // Funções de Tela
-Produtos* tela_cadastrar_produto(void);
+Produtos *tela_cadastrar_produto(void);
 int tela_buscar_produto(void);
 int tela_atualizar_produto(void);
 int tela_inativar_produto(void);
 int tela_excluir_produto_fisico(void);
-void exibir_produto(const Produtos* prod);
+void exibir_produto(const Produtos *prod);
 
 // Funções de Arquivo
-void gravar_produto(const Produtos* prod);
-Produtos* buscar_produto_por_id(int id);
-void gravar_atualizacao_produto(const Produtos* prod);
+void gravar_produto(const Produtos *prod);
+Produtos *buscar_produto_por_id(int id);
+void gravar_atualizacao_produto(const Produtos *prod);
 int remover_produto_do_arquivo(int id);
 
+NoProduto *carregar_produtos_ordenados(void);
 #endif
