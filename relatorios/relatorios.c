@@ -494,6 +494,7 @@ void relatorio_produtos(void)
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de produtos                                                      ║\n");
         printf("║          2 - Listagem por faixa de preço                                                     ║\n");
+        printf("║          3 - Listagem ordenada por preços                                                    ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -508,6 +509,9 @@ void relatorio_produtos(void)
             break;
         case 2:
             listar_produtos_por_faixa_de_preco();
+            break;
+        case 3:
+            relatorio_produtos_ordenados();
             break;
         case 0:
             break;
@@ -1170,6 +1174,52 @@ void relatorio_pets_ordenados(void)
         NoPet *tmp = p;
         p = p->prox;
         free(tmp);
+    }
+
+    pressione_enter();
+}
+
+void relatorio_produtos_ordenados(void)
+{
+    exibir_logo();
+    exibir_titulo("Produtos do Menor Preço para o Maior");
+
+    NoProduto *lista = carregar_produtos_ordenados();
+    if (!lista)
+    {
+        printf("\nNenhum produto ativo encontrado.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-12s │ %-10s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    NoProduto *aux = lista;
+    int contador = 0;
+
+    while (aux != NULL)
+    {
+        printf("║ %-5d │ %-35s │ %-12.2f │ %-10.2f ║\n",
+               aux->produto.id,
+               aux->produto.nome,
+               aux->produto.preco,
+               aux->produto.quantidade);
+
+        aux = aux->prox;
+        contador++;
+    }
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\nTotal de produtos listados: %d\n", contador);
+
+    aux = lista;
+    while (aux != NULL)
+    {
+        NoProduto *temp = aux;
+        aux = aux->prox;
+        free(temp);
     }
 
     pressione_enter();

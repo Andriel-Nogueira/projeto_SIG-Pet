@@ -35,3 +35,4 @@ int tela_obter_mes(void);
 void relatorio_vendas_detalhado(void);
 void relatorio_clientes_ordenados(void);
 void relatorio_pets_ordenados(void);
+void relatorio_produtos_ordenados(void);
