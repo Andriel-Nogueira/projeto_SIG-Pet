@@ -30,6 +30,7 @@ void atualizar_agend(void);
 void listar_agend(void);
 void inativar_agend(void);
 void excluir_agend_fisico(void);
+NoAgendamento *carregar_agendamentos_ordenados(void);
 
 // Funções de Tela
 Agendamentos *tela_agendar(void);

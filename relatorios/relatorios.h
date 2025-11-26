@@ -24,6 +24,8 @@ float tela_obter_preco_maximo(void);
 
 void relatorio_agendamentos(void);
 void listar_agendamentos_geral(void);
+void relatorio_agendamentos_ordenados(void);
+
 
 void relatorio_vendas(void);
 void listar_vendas_geral(void);

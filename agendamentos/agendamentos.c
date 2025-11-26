@@ -530,3 +530,54 @@ int remover_agendamento_do_arquivo(const char *cpf)
 
     return encontrado;
 }
+
+// Adicione esta função no final do arquivo
+
+NoAgendamento *carregar_agendamentos_ordenados(void)
+{
+    FILE *fp = fopen("agendamentos/agendamentos.dat", "rb");
+    if (fp == NULL)
+        return NULL;
+
+    Agendamentos agend;
+    NoAgendamento *lista = NULL;
+    NoAgendamento *novo, *anter, *atual;
+
+    while (fread(&agend, sizeof(Agendamentos), 1, fp))
+    {
+        if (agend.status != True)
+            continue;
+
+        novo = (NoAgendamento *)malloc(sizeof(NoAgendamento));
+        novo->agendamento = agend;
+        novo->prox = NULL;
+
+        if (lista == NULL)
+        {
+            lista = novo;
+        }
+        else if (comparar_datas(novo->agendamento.data, lista->agendamento.data) < 0)
+        {
+            novo->prox = lista;
+            lista = novo;
+        }
+        else
+        {
+            anter = lista;
+            atual = lista->prox;
+
+            while (atual != NULL &&
+                   comparar_datas(atual->agendamento.data, novo->agendamento.data) <= 0)
+            {
+                anter = atual;
+                atual = atual->prox;
+            }
+
+            anter->prox = novo;
+            novo->prox = atual;
+        }
+    }
+
+    fclose(fp);
+    return lista;
+}

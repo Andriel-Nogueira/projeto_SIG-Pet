@@ -621,7 +621,8 @@ void relatorio_agendamentos(void)
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de agendamentos                                                  ║\n");
-        printf("║          2 - Listagem de agendamentos por data                                               ║\n");
+        printf("║          2 - Listagem de agendamentos por data (filtro)                                      ║\n");
+        printf("║          3 - Listagem de agendamentos ordenada por data                                      ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -637,6 +638,8 @@ void relatorio_agendamentos(void)
         case 2:
             listar_agendamentos_por_data();
             break;
+        case 3:
+            relatorio_agendamentos_ordenados();
         case 0:
             break;
         default:
@@ -1218,6 +1221,71 @@ void relatorio_produtos_ordenados(void)
     while (aux != NULL)
     {
         NoProduto *temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+
+    pressione_enter();
+}
+
+
+void relatorio_agendamentos_ordenados(void)
+{
+    exibir_logo();
+    exibir_titulo("Agendamentos Ordenados por Data");
+
+    NoAgendamento *lista = carregar_agendamentos_ordenados();
+    if (!lista)
+    {
+        printf("\nNenhum agendamento cadastrado.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-25s │ %-10s │ %-25s │ %-12s │ %-8s ║\n",
+           "CLIENTE", "ID PET", "NOME DO PET", "DATA", "HORA");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    NoAgendamento *aux = lista;
+    int contador = 0;
+
+    while (aux != NULL)
+    {
+        Pets *pet = buscar_pet_id(atoi(aux->agendamento.id_pet));
+        char nome_pet[31] = "Pet não encontrado";
+        if (pet != NULL)
+        {
+            strncpy(nome_pet, pet->nome, 30);
+            free(pet);
+        }
+
+        Clientes *cli = buscar_cliente_por_cpf(aux->agendamento.cpf);
+        char nome_cli[51] = "Cliente não encontrado";
+        if (cli != NULL)
+        {
+            strncpy(nome_cli, cli->nome, 50);
+            free(cli);
+        }
+
+        printf("║ %-25s │ %-10s │ %-25s │ %-12s │ %-8s ║\n",
+               nome_cli,
+               aux->agendamento.id_pet,
+               nome_pet,
+               aux->agendamento.data,
+               aux->agendamento.hora);
+
+        aux = aux->prox;
+        contador++;
+    }
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\nTotal de agendamentos listados: %d\n", contador);
+
+    aux = lista;
+    while (aux != NULL)
+    {
+        NoAgendamento *temp = aux;
         aux = aux->prox;
         free(temp);
     }
