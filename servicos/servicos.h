@@ -41,5 +41,6 @@ void gravar_servico(const Servicos *serv);
 Servicos *buscar_servico_por_id(int id);
 void gravar_atualizacao_servico(const Servicos *serv);
 int remover_servico_do_arquivo(int id);
+NoServico *carregar_servicos_ordenados(void);
 
 #endif

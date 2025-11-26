@@ -347,6 +347,7 @@ void relatorio_servicos(void)
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de serviços                                                      ║\n");
         printf("║          2 - Listagem por faixa de preços                                                    ║\n");
+        printf("║          3 - Listagem ordenada por preço                                                     ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -362,69 +363,15 @@ void relatorio_servicos(void)
         case 2:
             listar_servicos_por_preco();
             break;
+        case 3:
+            relatorio_servicos_ordenados();
+            break;
         case 0:
             break;
         default:
             printf("Opção inválida. Tente novamente.\n");
         }
     } while (op != 0);
-}
-
-int contar_agendamentos_por_pet(int id_pet)
-{
-    FILE *arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
-    if (arq_agendamentos == NULL)
-    {
-        return 0; // Se o arquivo não existe, não há agendamentos
-    }
-
-    Agendamentos agend;
-    int contador = 0;
-    char id_pet_str[10];
-    sprintf(id_pet_str, "%d", id_pet);
-
-    while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
-    {
-        if (agend.status == True && strcmp(agend.id_pet, id_pet_str) == 0)
-        {
-            contador++;
-        }
-    }
-    fclose(arq_agendamentos);
-    return contador;
-}
-
-void listar_pets_por_cpf(char *cpf_busca)
-{
-    FILE *arq_pets;
-    Pets pet;
-    int encontrou = 0;
-
-    arq_pets = fopen("pets/pets.dat", "rb");
-    if (arq_pets == NULL)
-    {
-        printf("\nNenhum pet cadastrado ou erro ao abrir o arquivo.\n");
-        pressione_enter();
-        return;
-    }
-
-    printf("║ %-5s │ %-42s  │ %-15s  │ %-20s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "QTD AGENDAMENTOS");
-    printf("╠═══════╪═════════════════════════════════════════════╪═════════════════╪══════════════════════╣\n");
-
-    while (fread(&pet, sizeof(Pets), 1, arq_pets))
-    {
-        if (pet.status == True && strcmp(pet.cpf, cpf_busca) == 0)
-        {
-            int qtd_agend = contar_agendamentos_por_pet(pet.id);
-            printf("║ %-5d │ %-40s    │ %-15s │ %-20d ║\n", pet.id, pet.nome, pet.especie, qtd_agend);
-            encontrou = 1;
-        }
-    }
-
-    if (!encontrou)
-        printf("║ Nenhum pet encontrado para este cliente.                                                     ║\n");
-
-    fclose(arq_pets);
 }
 
 void listar_servicos_por_preco(void)
@@ -1347,6 +1294,53 @@ void relatorio_vendas_ordenadas(void)
     while (aux != NULL)
     {
         NoVenda *temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+
+    pressione_enter();
+}
+
+void relatorio_servicos_ordenados(void)
+{
+    exibir_logo();
+    exibir_titulo("Serviços do Menor para o Maior Preço");
+
+    NoServico *lista = carregar_servicos_ordenados();
+    if (!lista)
+    {
+        printf("\nNenhum serviço cadastrado.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-30s │ %-12s ║\n", 
+           "ID", "NOME", "DESCRIÇÃO", "PREÇO (R$)");
+    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    NoServico *aux = lista;
+    int contador = 0;
+
+    while (aux != NULL)
+    {
+        printf("║ %-5d │ %-35s │ %-30s │ %-12s ║\n",
+               aux->servico.id,
+               aux->servico.nome,
+               aux->servico.desc,
+               aux->servico.preco_s);
+
+        aux = aux->prox;
+        contador++;
+    }
+
+    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\nTotal de serviços listados: %d\n", contador);
+
+    aux = lista;
+    while (aux != NULL)
+    {
+        NoServico *temp = aux;
         aux = aux->prox;
         free(temp);
     }

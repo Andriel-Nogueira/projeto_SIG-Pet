@@ -5,6 +5,7 @@
 #include "../utilitarios/utilitarios.h"
 #include "../clientes/clientes.h"
 #include "../relatorios/relatorios.h"
+#include "../relatorios/relatorios.h"
 
 void m_pets(void)
 {
@@ -442,4 +443,41 @@ NoPet *carregar_pets_ordenados_nome(void)
 
     fclose(fp);
     return lista;
+}
+
+void listar_pets_por_cpf(const char *cpf_busca)
+{
+    FILE *arq_pets;
+    Pets pet;
+    int encontrou = 0;
+
+    arq_pets = fopen("pets/pets.dat", "rb");
+    if (arq_pets == NULL)
+    {
+        printf("\nNenhum pet cadastrado ou erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    printf("╔══════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-30s │ %-10s │ %-15s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "CPF DO DONO");
+    printf("╠══════════════════════════════════════════════════════════════════════════╣\n");
+
+    while (fread(&pet, sizeof(Pets), 1, arq_pets))
+    {
+        if (pet.status == True && strcmp(pet.cpf, cpf_busca) == 0)
+        {
+            printf("║ %-5d │ %-30s │ %-10s │ %-15s ║\n",
+                   pet.id, pet.nome, pet.especie, pet.cpf);
+            encontrou = 1;
+        }
+    }
+
+    if (!encontrou)
+    {
+        printf("║ Nenhum pet encontrado para o CPF %-34s ║\n", cpf_busca);
+    }
+
+    printf("╚══════════════════════════════════════════════════════════════════════════╝\n");
+
+    fclose(arq_pets);
 }

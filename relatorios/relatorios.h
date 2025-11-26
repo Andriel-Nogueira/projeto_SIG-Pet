@@ -10,7 +10,6 @@ void relatorio_pets(void);
 void relatorio_pets_por_clientes(void);
 void listar_pets(void);
 void listar_pets_por_especie(void);
-void listar_pets_por_cpf(char *cpf_busca);
 
 void relatorio_produtos(void);
 void listar_produtos_geral(void);
@@ -39,3 +38,5 @@ void relatorio_clientes_ordenados(void);
 void relatorio_pets_ordenados(void);
 void relatorio_produtos_ordenados(void);
 void relatorio_vendas_ordenadas(void);
+
+void relatorio_servicos_ordenados(void);

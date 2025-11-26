@@ -34,6 +34,7 @@ void exibir_pet(const Pets *pet);
 int tela_buscar_pet_id(void);
 
 // Funções de Arquivo (Pet)
+void listar_pets_por_cpf(const char *cpf_busca);
 void gravar_pet(Pets *pet);
 void gravar_atualizacao_pet(const Pets *pet);
 int remover_pet_do_arquivo(const char *cpf, const char *nome);

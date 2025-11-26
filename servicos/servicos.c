@@ -491,3 +491,53 @@ void listar_servicos_simples(void)
 
     fclose(arq_servicos);
 }
+
+NoServico *carregar_servicos_ordenados(void)
+{
+    FILE *fp = fopen("servicos/servicos.dat", "rb");
+    if (fp == NULL)
+        return NULL;
+
+    Servicos serv;
+    NoServico *lista = NULL;
+    NoServico *novo, *anter, *atual;
+
+    while (fread(&serv, sizeof(Servicos), 1, fp))
+    {
+        if (serv.status != True)
+            continue;
+
+        novo = (NoServico *)malloc(sizeof(NoServico));
+        novo->servico = serv;
+        novo->prox = NULL;
+
+        float preco_novo = atof(novo->servico.preco_s);
+
+        if (lista == NULL)
+        {
+            lista = novo;
+        }
+        else if (preco_novo < atof(lista->servico.preco_s))
+        {
+            novo->prox = lista;
+            lista = novo;
+        }
+        else
+        {
+            anter = lista;
+            atual = lista->prox;
+
+            while (atual != NULL && atof(atual->servico.preco_s) <= preco_novo)
+            {
+                anter = atual;
+                atual = atual->prox;
+            }
+
+            anter->prox = novo;
+            novo->prox = atual;
+        }
+    }
+
+    fclose(fp);
+    return lista;
+}
