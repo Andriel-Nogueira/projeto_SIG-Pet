@@ -581,3 +581,27 @@ NoAgendamento *carregar_agendamentos_ordenados(void)
     fclose(fp);
     return lista;
 }
+
+int contar_agendamentos_por_pet(int id_pet)
+{
+    FILE *arq_agendamentos = fopen("agendamentos/agendamentos.dat", "rb");
+    if (arq_agendamentos == NULL)
+    {
+        return 0; // Se o arquivo não existe, não há agendamentos
+    }
+
+    Agendamentos agend;
+    int contador = 0;
+    char id_pet_str[10];
+    sprintf(id_pet_str, "%d", id_pet);
+
+    while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
+    {
+        if (agend.status == True && strcmp(agend.id_pet, id_pet_str) == 0)
+        {
+            contador++;
+        }
+    }
+    fclose(arq_agendamentos);
+    return contador;
+}

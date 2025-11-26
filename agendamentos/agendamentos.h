@@ -30,7 +30,6 @@ void atualizar_agend(void);
 void listar_agend(void);
 void inativar_agend(void);
 void excluir_agend_fisico(void);
-NoAgendamento *carregar_agendamentos_ordenados(void);
 
 // Funções de Tela
 Agendamentos *tela_agendar(void);
@@ -45,5 +44,7 @@ void gravar_agendamento(const Agendamentos *agend);
 Agendamentos *buscar_agendamento_por_cpf(const char *cpf);
 void gravar_atualizacao_agendamento(const Agendamentos *agend);
 int remover_agendamento_do_arquivo(const char *cpf);
+NoAgendamento *carregar_agendamentos_ordenados_servico(void);
+int contar_agendamentos_por_pet(int id_pet);
 
 #endif

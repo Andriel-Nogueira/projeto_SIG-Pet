@@ -212,9 +212,7 @@ void relatorio_pets(void)
             listar_pets_por_especie();
             break;
         case 3:
-            ler_cpf(cpf_busca);
-            listar_pets_por_cpf(cpf_busca);
-            pressione_enter();
+            listar_pets_por_cpf_tela();
             break;
         case 4:
             relatorio_pets_por_clientes();
@@ -247,16 +245,15 @@ void listar_pets(void)
         pressione_enter();
         return;
     }
-
-    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-30s │ %-10s │ %-15s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "CPF DO DONO");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-30s │ %-10s  │ %-38s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "CPF DO DONO");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     while (fread(&pet, sizeof(Pets), 1, arq))
     {
         if (pet.status == True)
         {
-            printf("║ %-5d │ %-30s │ %-10s │ %-15s ║\n",
+            printf("║ %-5d │ %-30s │ %-10s │ %-38s ║\n",
                    pet.id,
                    pet.nome,
                    pet.especie,
@@ -273,7 +270,7 @@ void listar_pets(void)
         printf("║ Nenhum pet ativo encontrado.                                                                                   ║\n");
     }
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de pets listados: %d\n", contador);
@@ -290,11 +287,11 @@ void listar_pets_por_especie(void)
 
     system("clear");
     exibir_logo();
-    exibir_titulo("Listar Pets por Espécie");
+    exibir_titulo("Listar Pets por Especie");
 
-    printf("╔══════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ LEGENDA: C - Cachorro | G - Gato | P - Pássaro | O - Outro              ║\n");
-    printf("╚══════════════════════════════════════════════════════════════════════════╝\n\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║               LEGENDA: C - Cachorro | G - Gato | P - Pássaro | O - Outro                     ║\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n\n");
 
     printf("Digite a espécie que deseja listar (C/G/P/O): ");
     scanf(" %c", &especie_busca);
@@ -308,15 +305,15 @@ void listar_pets_por_especie(void)
         return;
     }
 
-    printf("\n╔══════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-15s │ %-30s │ %-10s ║\n", "CPF DO DONO", "NOME DO PET", "ESPÉCIE");
-    printf("╠══════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║ %-15s │ %-30s │ %-42s ║\n", "CPF DO DONO", "NOME DO PET", "ESPÉCIE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     while (fread(&pet, sizeof(Pets), 1, fp) == 1)
     {
         if (pet.status == True && toupper(pet.especie[0]) == especie_busca)
         {
-            printf("║ %-15s │ %-30s │ %-10s ║\n", pet.cpf, pet.nome, pet.especie);
+            printf("║ %-15s │ %-30s │ %-41s ║\n", pet.cpf, pet.nome, pet.especie);
             encontrou = 1;
         }
     }
@@ -326,12 +323,31 @@ void listar_pets_por_especie(void)
         printf("║ Nenhum pet encontrado para a espécie '%c'.                         ║\n", especie_busca);
     }
 
-    printf("╚══════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     fclose(fp);
     printf("\nPressione ENTER para voltar...");
     getchar();
     getchar();
+}
+
+void listar_pets_por_cpf_tela(void)
+{
+    char cpf_busca[16];
+    exibir_logo();
+    exibir_titulo("Listagem de Pets por CPF do Dono");
+
+    ler_cpf(cpf_busca);
+
+    if (!verificar_cliente_cadastrado(cpf_busca))
+    {
+        printf("\nCliente com CPF %s não encontrado.\n", cpf_busca);
+        pressione_enter();
+        return;
+    }
+
+    listar_pets_por_cpf(cpf_busca);
+    pressione_enter();
 }
 
 void relatorio_servicos(void)
@@ -393,9 +409,9 @@ void listar_servicos_por_preco(void)
         return;
     }
 
-    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║ %-5s │ %-35s │ %-30s │ %-12s ║\n", "ID", "NOME", "DESCRIÇÃO", "PREÇO (R$)");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&serv, sizeof(Servicos), 1, arq_servicos))
     {
@@ -419,7 +435,7 @@ void listar_servicos_por_preco(void)
         printf("║ Nenhum serviço encontrado nessa faixa de preço.                                                              ║\n");
     }
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de serviços listados: %d\n", contador);
@@ -484,9 +500,9 @@ void listar_produtos_geral(void)
         return;
     }
 
-    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&prod, sizeof(Produtos), 1, arq_produtos))
     {
@@ -501,7 +517,7 @@ void listar_produtos_geral(void)
     if (!encontrou)
         printf("║ Nenhum produto ativo encontrado.                                                                              ║\n");
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de produtos listados: %d\n", contador);
@@ -530,9 +546,9 @@ void listar_produtos_por_faixa_de_preco(void)
         return;
     }
 
-    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&prod, sizeof(Produtos), 1, arq_produtos))
     {
@@ -545,9 +561,9 @@ void listar_produtos_por_faixa_de_preco(void)
     }
 
     if (!encontrou)
-        printf("║ Nenhum produto encontrado nessa faixa de preço.                                                               ║\n");
+        printf("║ Nenhum produto encontrado nessa faixa de preço.                                          ║\n");
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de produtos na faixa de preço: %d\n", contador);
@@ -611,10 +627,10 @@ void listar_agendamentos_geral(void)
         return;
     }
 
-    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║ %-15s │ %-25s │ %-20s │ %-20s │ %-12s │ %-8s ║\n",
            "CPF", "PET (ID)", "NOME DO PET", "SERVIÇO", "DATA", "HORA");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
     {
@@ -654,7 +670,7 @@ void listar_agendamentos_geral(void)
     if (!encontrou)
         printf("║ Nenhum agendamento ativo encontrado.                                                                            ║\n");
 
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de agendamentos listados: %d\n", contador);
@@ -723,9 +739,9 @@ void listar_vendas_geral(void)
         return;
     }
 
-    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║ %-5s │ %-15s │ %-12s │ %-12s ║\n", "ID", "CPF CLIENTE", "DATA", "VALOR TOTAL (R$)");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&venda, sizeof(Venda), 1, arq_vendas))
     {
@@ -740,7 +756,7 @@ void listar_vendas_geral(void)
     if (!encontrou)
         printf("║ Nenhuma venda ativa encontrada.                                                                               ║\n");
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de vendas listadas: %d\n", contador);
@@ -769,9 +785,9 @@ void listar_vendas_por_faixa_de_preco(void)
         return;
     }
 
-    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║ %-5s │ %-15s │ %-12s │ %-12s ║\n", "ID", "CPF CLIENTE", "DATA", "VALOR TOTAL (R$)");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&venda, sizeof(Venda), 1, arq_vendas))
     {
@@ -786,7 +802,7 @@ void listar_vendas_por_faixa_de_preco(void)
     if (!encontrou)
         printf("║ Nenhuma venda encontrada nessa faixa de preço.                                                                ║\n");
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de vendas na faixa de preço: %d\n", contador);
@@ -881,9 +897,9 @@ void listar_agendamentos_por_data(void)
     // Se encontrou, rebobina o arquivo para listar
     rewind(arq_agendamentos);
 
-    printf("\n╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════╗\n");
     printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "ID PET", "NOME DO PET", "DATA", "HORA");
-    printf("╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
     {
@@ -914,7 +930,7 @@ void listar_agendamentos_por_data(void)
         }
     }
 
-    printf("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
     {
@@ -1092,7 +1108,7 @@ void relatorio_clientes_ordenados(void)
 void relatorio_pets_ordenados(void)
 {
     exibir_logo();
-    exibir_titulo("Relatório de Pets Ordenados por Espécie");
+    exibir_titulo("Relatório de Pets Ordenados por Especie");
 
     NoPet *lista = carregar_pets_ordenados_nome();
 
@@ -1110,11 +1126,11 @@ void relatorio_pets_ordenados(void)
         Pets *pet = &p->pet;
 
         printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-        printf("║ Nome do Pet: %-79s║\n", pet->nome);
+        printf("║ Nome do Pet: %-80s║\n", pet->nome);
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
         printf("║ Espécie: %-84s║\n", pet->especie);
-        printf("║ ID: %-87d║\n", pet->id);
-        printf("║ CPF do Dono: %-82s║\n", pet->cpf);
+        printf("║ ID: %-89d║\n", pet->id);
+        printf("║ CPF do Dono: %-80s║\n", pet->cpf);
         printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
 
         p = p->prox;
@@ -1333,7 +1349,7 @@ void relatorio_servicos_ordenados(void)
         contador++;
     }
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\nTotal de serviços listados: %d\n", contador);
 
     aux = lista;

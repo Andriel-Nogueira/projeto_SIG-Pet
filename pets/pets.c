@@ -3,7 +3,7 @@
 #include <string.h>
 #include "pets.h"
 #include "../utilitarios/utilitarios.h"
-#include "../clientes/clientes.h"
+#include "../agendamentos/agendamentos.h"
 #include "../relatorios/relatorios.h"
 #include "../relatorios/relatorios.h"
 
@@ -449,35 +449,32 @@ void listar_pets_por_cpf(const char *cpf_busca)
 {
     FILE *arq_pets;
     Pets pet;
-    int encontrou = 0;
+    int encontrou = 0, qtd_agend;
 
     arq_pets = fopen("pets/pets.dat", "rb");
     if (arq_pets == NULL)
     {
         printf("\nNenhum pet cadastrado ou erro ao abrir o arquivo.\n");
+        pressione_enter();
         return;
     }
 
-    printf("╔══════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-30s │ %-10s │ %-15s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "CPF DO DONO");
-    printf("╠══════════════════════════════════════════════════════════════════════════╣\n");
+    printf("║ %-5s │ %-42s  │ %-15s  │ %-20s ║\n", "ID", "NOME DO PET", "ESPÉCIE", "QTD AGENDAMENTOS");
+    printf("╠═══════╪═════════════════════════════════════════════╪═════════════════╪══════════════════════╣\n");
 
     while (fread(&pet, sizeof(Pets), 1, arq_pets))
     {
         if (pet.status == True && strcmp(pet.cpf, cpf_busca) == 0)
         {
-            printf("║ %-5d │ %-30s │ %-10s │ %-15s ║\n",
-                   pet.id, pet.nome, pet.especie, pet.cpf);
+            qtd_agend = contar_agendamentos_por_pet(pet.id);
+            printf("║ %-5d │ %-40s    │ %-15s │ %-20d ║\n", pet.id, pet.nome, pet.especie, qtd_agend);
             encontrou = 1;
         }
     }
 
     if (!encontrou)
     {
-        printf("║ Nenhum pet encontrado para o CPF %-34s ║\n", cpf_busca);
+        printf("║ Nenhum pet encontrado para este cliente.                                                     ║\n");
     }
-
-    printf("╚══════════════════════════════════════════════════════════════════════════╝\n");
-
     fclose(arq_pets);
 }

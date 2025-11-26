@@ -10,6 +10,7 @@ void relatorio_pets(void);
 void relatorio_pets_por_clientes(void);
 void listar_pets(void);
 void listar_pets_por_especie(void);
+void listar_pets_por_cpf_tela(void);
 
 void relatorio_produtos(void);
 void listar_produtos_geral(void);
