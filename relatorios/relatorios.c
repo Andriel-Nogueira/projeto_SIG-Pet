@@ -182,7 +182,6 @@ int tela_obter_idade(void)
 
 void relatorio_pets(void)
 {
-    char cpf_busca[15];
     int op;
     do
     {
@@ -501,22 +500,23 @@ void listar_produtos_geral(void)
     }
 
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
-
+    printf("║ %-5s │ %-35s │ %-12s │ %-32s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    
     while (fread(&prod, sizeof(Produtos), 1, arq_produtos))
     {
         if (prod.status == True)
         {
-            printf("║ %-5d │ %-35s │ %-12.2f │ %-12.2f ║\n", prod.id, prod.nome, prod.preco, prod.quantidade);
+            printf("║ %-5d │ %-35s │ %-12.2f │ %-31.2f ║\n", prod.id, prod.nome, prod.preco, prod.quantidade);
             encontrou = 1;
             contador++;
         }
     }
 
     if (!encontrou)
-        printf("║ Nenhum produto ativo encontrado.                                                                              ║\n");
-
+    {
+        printf("║ Nenhum produto ativo encontrado.                                                               ║\n");
+    }
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
@@ -533,7 +533,7 @@ void listar_produtos_por_faixa_de_preco(void)
     int encontrou = 0, contador = 0;
 
     exibir_logo();
-    exibir_titulo("Listar Produtos por Faixa de Preço");
+    exibir_titulo("Listar Produtos por Faixa de Preco");
 
     float preco_min = tela_obter_preco_minimo();
     float preco_max = tela_obter_preco_maximo();
@@ -546,15 +546,15 @@ void listar_produtos_por_faixa_de_preco(void)
         return;
     }
 
-    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-35s │ %-12s │ %-12s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-12s │ %-32s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     while (fread(&prod, sizeof(Produtos), 1, arq_produtos))
     {
         if (prod.status == True && prod.preco >= preco_min && prod.preco <= preco_max)
         {
-            printf("║ %-5d │ %-35s │ %-12.2f │ %-12.2f ║\n", prod.id, prod.nome, prod.preco, prod.quantidade);
+            printf("║ %-5d │ %-35s │ %-12.2f │ %-31.2f ║\n", prod.id, prod.nome, prod.preco, prod.quantidade);
             encontrou = 1;
             contador++;
         }
@@ -1151,7 +1151,7 @@ void relatorio_pets_ordenados(void)
 void relatorio_produtos_ordenados(void)
 {
     exibir_logo();
-    exibir_titulo("Produtos do Menor Preço para o Maior");
+    exibir_titulo("Produtos do Menor Preco para o Maior");
 
     NoProduto *lista = carregar_produtos_ordenados();
     if (!lista)
@@ -1162,7 +1162,7 @@ void relatorio_produtos_ordenados(void)
     }
 
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-35s │ %-12s │ %-10s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
+    printf("║ %-5s │ %-35s │ %-12s │ %-32s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
     printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     NoProduto *aux = lista;
@@ -1170,7 +1170,7 @@ void relatorio_produtos_ordenados(void)
 
     while (aux != NULL)
     {
-        printf("║ %-5d │ %-35s │ %-12.2f │ %-10.2f ║\n",
+        printf("║ %-5d │ %-35s │ %-12.2f │ %-31.2f ║\n",
                aux->produto.id,
                aux->produto.nome,
                aux->produto.preco,
