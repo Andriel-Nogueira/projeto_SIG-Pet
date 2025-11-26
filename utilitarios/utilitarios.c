@@ -471,3 +471,19 @@ int comparar_nomes(const char *a, const char *b)
 
     return tolower(*a) - tolower(*b);
 }
+
+
+int comparar_datas(const char *data1, const char *data2)
+{
+    int d1, m1, a1;
+    int d2, m2, a2;
+
+    sscanf(data1, "%d/%d/%d", &d1, &m1, &a1);
+    sscanf(data2, "%d/%d/%d", &d2, &m2, &a2);
+
+    if (a1 != a2)
+        return a1 - a2;
+    if (m1 != m2)
+        return m1 - m2;
+    return d1 - d2;
+}

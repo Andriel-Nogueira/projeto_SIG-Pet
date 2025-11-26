@@ -33,4 +33,5 @@ void ler_cpf(char *cpf_destino);
 int validar_hora(const char *hora);
 void ler_hora(char *hora);
 int comparar_nomes(const char *a, const char *b);
+int comparar_datas(const char *data1, const char *data2);
 #endif
