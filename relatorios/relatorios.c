@@ -19,15 +19,15 @@ void m_relatorios(void)
     do
     {
         exibir_logo();
-        exibir_titulo("Menu Relatórios");
+        exibir_titulo("Menu Relatorios");
 
         printf("║                                                                                              ║\n");
-        printf("║          1 - Relatórios de Clientes                                                          ║\n");
-        printf("║          2 - Relatórios de Pets                                                              ║\n");
-        printf("║          3 - Relatórios de Produtos                                                          ║\n");
-        printf("║          4 - Relatórios de Serviços                                                          ║\n");
-        printf("║          5 - Relatórios de Vendas                                                            ║\n");
-        printf("║          6 - Relatórios de Agendamentos                                                      ║\n");
+        printf("║          1 - Relatorios de Clientes                                                          ║\n");
+        printf("║          2 - Relatorios de Pets                                                              ║\n");
+        printf("║          3 - Relatorios de Produtos                                                          ║\n");
+        printf("║          4 - Relatorios de Serviços                                                          ║\n");
+        printf("║          5 - Relatorios de Vendas                                                            ║\n");
+        printf("║          6 - Relatorios de Agendamentos                                                      ║\n");
         printf("║          0 - Voltar ao menu principal                                                        ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -70,7 +70,7 @@ void relatorio_clientes(void)
     {
         system("clear");
         exibir_logo();
-        exibir_titulo("Relatórios de Clientes");
+        exibir_titulo("Relatorios de Clientes");
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de clientes                                                      ║\n");
@@ -137,10 +137,9 @@ void listar_clientes_por_idade(void)
         pressione_enter();
         return;
     }
-
-    printf("\n╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-15s │ %-35s │ %-12s │ %-15s │ %-5s ║\n", "CPF", "NOME", "NASCIMENTO", "TELEFONE", "IDADE");
-    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-15s │ %-35s │ %-12s │ %-13s │ %-5s ║\n", "CPF", "NOME", "NASCIMENTO", "TELEFONE", "IDADE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     while (fread(&cli, sizeof(Clientes), 1, arq_clientes))
     {
@@ -149,7 +148,7 @@ void listar_clientes_por_idade(void)
             int idade = calcular_idade(cli.data_nascimento);
             if (idade == idade_filtro)
             {
-                printf("║ %-15s │ %-35s │ %-12s │ %-15s │ %-5d ║\n",
+                printf("║ %-15s │ %-35s │ %-12s │ %-13s │ %-5d ║\n",
                        cli.cpf, cli.nome, cli.data_nascimento, cli.telefone, idade);
                 encontrou = 1;
                 contador++;
@@ -162,7 +161,7 @@ void listar_clientes_por_idade(void)
         printf("║ Nenhum cliente com %d anos encontrado.                                                                           ║\n", idade_filtro);
     }
 
-    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de clientes com %d anos: %d\n", idade_filtro, contador);
@@ -189,7 +188,7 @@ void relatorio_pets(void)
     {
         system("clear");
         exibir_logo();
-        exibir_titulo("Relatórios de Pets");
+        exibir_titulo("Relatorios de Pets");
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de pets                                                          ║\n");
@@ -436,7 +435,7 @@ void relatorio_produtos(void)
     {
         system("clear");
         exibir_logo();
-        exibir_titulo("Relatórios de Produtos");
+        exibir_titulo("Relatorios de Produtos");
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de produtos                                                      ║\n");
@@ -564,7 +563,7 @@ void relatorio_agendamentos(void)
     {
         system("clear");
         exibir_logo();
-        exibir_titulo("Relatórios de Agendamentos");
+        exibir_titulo("Relatorios de Agendamentos");
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de agendamentos                                                  ║\n");
@@ -671,7 +670,7 @@ void relatorio_vendas(void)
     {
         system("clear");
         exibir_logo();
-        exibir_titulo("Relatórios de Vendas");
+        exibir_titulo("Relatorios de Vendas");
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de vendas                                                        ║\n");
@@ -1050,7 +1049,7 @@ void relatorio_pets_por_clientes(void)
 void relatorio_clientes_ordenados(void)
 {
     exibir_logo();
-    exibir_titulo("Relatório de Clientes Ordenados por Nome");
+    exibir_titulo("Relatorio de Clientes Ordenados por Nome");
 
     NoCliente *lista = carregar_clientes_ordenados_nome();
 
@@ -1068,11 +1067,11 @@ void relatorio_clientes_ordenados(void)
         Clientes *c = &p->cliente;
 
         printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-        printf("║ Nome: %-85s║\n", c->nome);
+        printf("║ Nome: %-87s║\n", c->nome);
         printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
-        printf("║ CPF: %-86s║\n", c->cpf);
-        printf("║ Data de Nascimento: %-70s║\n", c->data_nascimento);
-        printf("║ Telefone: %-79s║\n", c->telefone);
+        printf("║ CPF: %-88s║\n", c->cpf);
+        printf("║ Data de Nascimento: %-73s║\n", c->data_nascimento);
+        printf("║ Telefone: %-83s║\n", c->telefone);
         printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
 
         p = p->prox;
