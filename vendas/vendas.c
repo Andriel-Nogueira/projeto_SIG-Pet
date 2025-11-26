@@ -335,3 +335,52 @@ NoVenda *carregar_vendas_lista(void)
     fclose(arq);
     return inicio;
 }
+
+NoVenda *carregar_vendas_ordenadas(void)
+{
+    FILE *fp = fopen("vendas/vendas.dat", "rb");
+    if (fp == NULL)
+        return NULL;
+
+    Venda venda;
+    NoVenda *lista = NULL;
+    NoVenda *novo, *anter, *atual;
+
+    while (fread(&venda, sizeof(Venda), 1, fp))
+    {
+        if (venda.status != True)
+            continue;
+
+        novo = (NoVenda *)malloc(sizeof(NoVenda));
+        novo->venda = venda;
+        novo->prox = NULL;
+
+        if (lista == NULL)
+        {
+            lista = novo;
+        }
+        else if (comparar_datas(novo->venda.data, lista->venda.data) < 0)
+        {
+            novo->prox = lista;
+            lista = novo;
+        }
+        else
+        {
+            anter = lista;
+            atual = lista->prox;
+
+            while (atual != NULL &&
+                   comparar_datas(atual->venda.data, novo->venda.data) <= 0)
+            {
+                anter = atual;
+                atual = atual->prox;
+            }
+
+            anter->prox = novo;
+            novo->prox = atual;
+        }
+    }
+
+    fclose(fp);
+    return lista;
+}
