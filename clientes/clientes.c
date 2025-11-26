@@ -294,7 +294,6 @@ Clientes *tela_cadastrar_cliente(void)
     return cli;
 }
 
-
 Clientes *tela_atualizar_info_cliente(void)
 {
     Clientes *cli;
@@ -607,7 +606,7 @@ NoCliente *carregar_clientes_ordenados_nome(void)
             lista = novo;
         }
         // Caso 2: entra no início
-        else if (strcmp(novo->cliente.nome, lista->cliente.nome) < 0)
+        else if (comparar_nomes(novo->cliente.nome, lista->cliente.nome) < 0)
         {
             novo->prox = lista;
             lista = novo;
@@ -619,7 +618,7 @@ NoCliente *carregar_clientes_ordenados_nome(void)
             atual = lista->prox;
 
             while (atual != NULL &&
-                   strcmp(atual->cliente.nome, novo->cliente.nome) < 0)
+                   comparar_nomes(atual->cliente.nome, novo->cliente.nome) < 0)
             {
                 anter = atual;
                 atual = atual->prox;

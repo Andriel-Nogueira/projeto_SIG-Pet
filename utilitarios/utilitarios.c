@@ -452,3 +452,22 @@ void ler_hora(char *hora)
 
     strcpy(hora, entrada);
 }
+
+int comparar_nomes(const char *a, const char *b)
+{
+    while (*a && *b)
+    {
+        char ca = tolower(*a);
+        char cb = tolower(*b);
+
+        if (ca < cb)
+            return -1;
+        if (ca > cb)
+            return 1;
+
+        a++;
+        b++;
+    }
+
+    return tolower(*a) - tolower(*b);
+}
