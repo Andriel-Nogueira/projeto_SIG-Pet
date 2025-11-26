@@ -417,7 +417,7 @@ NoPet *carregar_pets_ordenados_nome(void)
             lista = novo;
         }
         // Caso 2: entra no início
-        else if (strcmp(novo->pet.nome, lista->pet.nome) < 0)
+        else if (comparar_nomes(novo->pet.nome, lista->pet.nome) < 0)
         {
             novo->prox = lista;
             lista = novo;
@@ -429,7 +429,7 @@ NoPet *carregar_pets_ordenados_nome(void)
             atual = lista->prox;
 
             while (atual != NULL &&
-                   strcmp(atual->pet.nome, novo->pet.nome) < 0)
+                   comparar_nomes(atual->pet.nome, novo->pet.nome) < 0)
             {
                 anter = atual;
                 atual = atual->prox;
