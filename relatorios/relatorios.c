@@ -740,14 +740,15 @@ void listar_vendas_geral(void)
     }
 
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-15s │ %-12s │ %-12s ║\n", "ID", "CPF CLIENTE", "DATA", "VALOR TOTAL (R$)");
+    printf("║ %-5s │ %-15s │ %-30s | %-12s │ %-18s ║\n", "ID", "CPF CLIENTE", "NOME CLIENTE", "DATA", "VALOR TOTAL (R$)");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&venda, sizeof(Venda), 1, arq_vendas))
     {
         if (venda.status == True)
         {
-            printf("║ %-5d │ %-15s │ %-12s │ %-12.2f ║\n", venda.id, venda.cpf_cliente, venda.data, venda.valor_total);
+            Clientes *cli = buscar_cliente_por_cpf(venda.cpf_cliente);
+            printf("║ %-5d │ %-15s │ %-30s | %-12s │ %-18.2f ║\n", venda.id, venda.cpf_cliente, cli->nome, venda.data, venda.valor_total);
             encontrou = 1;
             contador++;
         }
@@ -772,7 +773,7 @@ void listar_vendas_por_faixa_de_preco(void)
     int encontrou = 0, contador = 0;
 
     exibir_logo();
-    exibir_titulo("Listar Vendas por Faixa de Preço");
+    exibir_titulo("Listar Vendas por Faixa de Preco");
 
     float preco_min = tela_obter_preco_minimo();
     float preco_max = tela_obter_preco_maximo();
@@ -785,22 +786,23 @@ void listar_vendas_por_faixa_de_preco(void)
         return;
     }
 
-    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-15s │ %-12s │ %-12s ║\n", "ID", "CPF CLIENTE", "DATA", "VALOR TOTAL (R$)");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-15s │ %-30s | %-12s │ %-18s ║\n", "ID", "CPF CLIENTE", "NOME CLIENTE", "DATA", "VALOR TOTAL (R$)");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&venda, sizeof(Venda), 1, arq_vendas))
     {
         if (venda.status == True && venda.valor_total >= preco_min && venda.valor_total <= preco_max)
         {
-            printf("║ %-5d │ %-15s │ %-12s │ %-12.2f ║\n", venda.id, venda.cpf_cliente, venda.data, venda.valor_total);
+            Clientes *cli = buscar_cliente_por_cpf(venda.cpf_cliente);
+            printf("║ %-5d │ %-15s │ %-30s | %-12s │ %-18.2f ║\n", venda.id, venda.cpf_cliente, cli->nome, venda.data, venda.valor_total);
             encontrou = 1;
             contador++;
         }
     }
 
     if (!encontrou)
-        printf("║ Nenhuma venda encontrada nessa faixa de preço.                                                                ║\n");
+        printf("║ Nenhuma venda encontrada nessa faixa de preço.                                               ║\n");
 
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
@@ -944,7 +946,7 @@ void listar_agendamentos_por_data(void)
 void relatorio_vendas_detalhado(void)
 {
     exibir_logo();
-    exibir_titulo("Relatório Detalhado de Vendas");
+    exibir_titulo("Relatorio Detalhado de Vendas");
 
     NoVenda *lista = carregar_vendas_lista();
 
@@ -963,17 +965,17 @@ void relatorio_vendas_detalhado(void)
 
         Clientes *cli = buscar_cliente_por_cpf(venda->cpf_cliente);
 
-        printf("╔══════════════════════════════════════════════════════════════════════════════╗\n");
-        printf("║ VENDA %-5d                                                            ║\n", venda->id);
-        printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+        printf("║ VENDA %-5d                                                                                  ║\n", venda->id);
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
-        printf("║ Cliente: %-60s ║\n", cli ? cli->nome : "Cliente não encontrado");
-        printf("║ Data: %-63s ║\n", venda->data);
+        printf("║ Cliente: %-83s ║\n", cli ? cli->nome : "Cliente não encontrado");
+        printf("║ Data: %-86s ║\n", venda->data);
 
-        printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
-        printf("║ %-5s │ %-30s │ %-10s │ %-12s │ %-12s ║\n",
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║ %-5s │ %-45s │ %-10s │ %-10s  │ %-10s ║\n",
                "ID", "PRODUTO", "QTD", "UNITÁRIO", "SUBTOTAL");
-        printf("╠═══════╪════════════════════════════════╪════════════╪════════════════╪════════════════╣\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
         float total_geral = 0.0;
 
@@ -984,7 +986,7 @@ void relatorio_vendas_detalhado(void)
 
             if (!prod)
             {
-                printf("║ %-5d │ %-30s │ %-10.2f │ %-12s │ %-12s ║\n",
+                printf("║ %-5d │ %-45s │ %-10.2f │ %-12s │ %-12s ║\n",
                        item->id_produto, "Produto não encontrado",
                        item->quantidade, "---", "---");
                 continue;
@@ -994,15 +996,15 @@ void relatorio_vendas_detalhado(void)
             float subtotal = unit * item->quantidade;
             total_geral += subtotal;
 
-            printf("║ %-5d │ %-30s │ %-10.2f │ %-12.2f │ %-12.2f ║\n",
+            printf("║ %-5d │ %-45s │ %-10.2f │ %-10.2f │ %-10.2f ║\n",
                    prod->id, prod->nome, item->quantidade, unit, subtotal);
 
             free(prod);
         }
 
-        printf("╠══════════════════════════════════════════════════════════════════════════════╣\n");
-        printf("║ VALOR TOTAL DA VENDA: R$ %-48.2f ║\n", total_geral);
-        printf("╚══════════════════════════════════════════════════════════════════════════════╝\n\n");
+        printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+        printf("║ VALOR TOTAL DA VENDA: R$ %-67.2f ║\n", total_geral);
+        printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n\n");
 
         if (cli)
             free(cli);
@@ -1273,10 +1275,10 @@ void relatorio_vendas_ordenadas(void)
         return;
     }
 
-    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-15s │ %-35s │ %-12s │ %-12s ║\n", 
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-15s │ %-35s │ %-12s │ %-12s  ║\n", 
            "ID", "CPF CLIENTE", "NOME CLIENTE", "DATA", "VALOR (R$)");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     NoVenda *aux = lista;
     int contador = 0;
@@ -1291,7 +1293,7 @@ void relatorio_vendas_ordenadas(void)
             free(cli);
         }
 
-        printf("║ %-5d │ %-15s │ %-35s │ %-12s │ %-12.2f ║\n",
+        printf("║ %-5d │ %-15s │ %-35s │ %-12s │ %-12.2f  ║\n",
                aux->venda.id,
                aux->venda.cpf_cliente,
                nome_cliente,
@@ -1302,7 +1304,7 @@ void relatorio_vendas_ordenadas(void)
         contador++;
     }
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("\nTotal de vendas listadas: %d\n", contador);
 
     aux = lista;
