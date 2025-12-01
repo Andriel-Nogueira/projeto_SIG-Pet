@@ -47,5 +47,6 @@ int remover_agendamento_do_arquivo(const char *cpf);
 NoAgendamento *carregar_agendamentos_ordenados_servico(void);
 int contar_agendamentos_por_pet(int id_pet);
 NoAgendamento *carregar_agendamentos_ordenados(void);
+void relatorio_vendas_decrescente(void);
 
 #endif

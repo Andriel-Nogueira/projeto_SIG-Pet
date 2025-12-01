@@ -336,6 +336,37 @@ NoVenda *carregar_vendas_lista(void)
     return inicio;
 }
 
+
+
+
+NoVenda* carregar_vendas_decrescente(void) {
+    FILE *arq_vendas = fopen("vendas/vendas.dat", "rb");
+    if (!arq_vendas) {
+        printf("Erro ao abrir arquivo de vendas!\n");
+        return NULL;
+    }
+
+    NoVenda* lista = NULL;
+    Venda temp;
+
+
+    while (fread(&temp, sizeof(Venda), 1, arq_vendas) == 1) {
+        if (temp.status == True) {
+            NoVenda* novo = malloc(sizeof(NoVenda));
+            if(!novo) {
+                printf("Erro de memória!\n");
+                break;
+            }
+            novo->venda = temp;
+            novo->prox = lista;
+            lista = novo;
+        }
+    }
+    fclose(arq_vendas);
+    return lista;
+}
+
+
 NoVenda *carregar_vendas_ordenadas(void)
 {
     FILE *fp = fopen("vendas/vendas.dat", "rb");

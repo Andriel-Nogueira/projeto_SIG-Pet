@@ -692,7 +692,8 @@ void relatorio_vendas(void)
         printf("║          1 - Listagem geral de vendas                                                        ║\n");
         printf("║          2 - Listagem por faixa de preço                                                     ║\n");
         printf("║          3 - Relatório de vendas completo                                                    ║\n");
-        printf("║          4 - Listagem ordenada por data                                                      ║\n");
+        printf("║          4 - Listagem ordenada por data (crescente)                                            ║\n");
+        printf("║          5 - Listagem de venda decrescente (lista invertida)                                  ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -713,6 +714,9 @@ void relatorio_vendas(void)
             break;
         case 4:
             relatorio_vendas_ordenadas();
+            break;
+        case 5:
+            relatorio_vendas_decrescente();
             break;
         case 0:
             break;
@@ -1261,6 +1265,60 @@ void relatorio_agendamentos_ordenados(void)
     pressione_enter();
 }
 
+void relatorio_vendas_decrescente(void){
+    exibir_logo();
+    exibir_titulo("Vendas decrescente");
+
+    NoVenda *lista = carregar_vendas_decrescente();
+    if (!lista){
+        printf("\nNenhuma venda cadastrada.\n");
+        pressione_enter();
+        return;
+    }
+
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-15s │ %-35s │ %-12s │ %-12s  ║\n", 
+           "ID", "CPF CLIENTE", "NOME CLIENTE", "DATA", "VALOR (R$)");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+
+    NoVenda *aux = lista;
+    int contador = 0;
+
+    while (aux != NULL)
+    {
+        Clientes *cli = buscar_cliente_por_cpf(aux->venda.cpf_cliente);
+        char nome_cliente[36] = "Cliente não encontrado";
+        if (cli != NULL)
+        {
+            strncpy(nome_cliente, cli->nome, 35);
+            free(cli);
+        }
+
+        printf("║ %-5d │ %-15s │ %-35s │ %-12s │ %-12.2f  ║\n",
+               aux->venda.id,
+               aux->venda.cpf_cliente,
+               nome_cliente,
+               aux->venda.data,
+               aux->venda.valor_total);
+
+        aux = aux->prox;
+        contador++;
+    }
+
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("\nTotal de vendas listadas: %d\n", contador);
+
+    aux = lista;
+    while (aux != NULL)
+    {
+        NoVenda *temp = aux;
+        aux = aux->prox;
+        free(temp);
+    }
+
+    pressione_enter();
+
+}
 
 void relatorio_vendas_ordenadas(void)
 {

@@ -51,4 +51,5 @@ void gravar_atualizacao_venda(const Venda *venda);
 
 NoVenda *carregar_vendas_lista(void);
 NoVenda *carregar_vendas_ordenadas(void);
+NoVenda *carregar_vendas_decrescente(void);
 #endif
