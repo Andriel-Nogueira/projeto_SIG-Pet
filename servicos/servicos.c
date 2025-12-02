@@ -218,7 +218,7 @@ void listar_servicos(void)
     Servicos serv;
 
     exibir_logo();
-    exibir_titulo("Listagem de Serviços");
+    exibir_titulo("Listagem de Servicos");
 
     arq_servicos = fopen("servicos/servicos.dat", "rb");
 
@@ -229,16 +229,16 @@ void listar_servicos(void)
         return;
     }
 
-    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-35s │ %-30s │ %-12s ║\n", "ID", "NOME", "DESCRIÇÃO", "PREÇO (R$)");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-30s │ %-12s     ║\n", "ID", "NOME", "DESCRIÇÃO", "PREÇO (R$)");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     int encontrou = 0, contador = 0;
     while (fread(&serv, sizeof(Servicos), 1, arq_servicos))
     {
         if (serv.status == True)
         {
-            printf("║ %-5d │ %-35s │ %-30s │ %-12.2s ║\n",
+            printf("║ %-5d │ %-35s │ %-30s │ %-12.2s  ║\n",
                    serv.id,
                    serv.nome,
                    serv.desc,
@@ -253,7 +253,7 @@ void listar_servicos(void)
         printf("║ Nenhum serviço ativo encontrado.                                                                              ║\n");
     }
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de serviços listados: %d\n", contador);

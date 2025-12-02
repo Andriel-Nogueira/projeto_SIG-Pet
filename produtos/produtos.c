@@ -215,16 +215,16 @@ void listar_produtos(void)
         getchar();
         return;
     }
-    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-35s │ %-12s │ %-10s ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-55s │ %-12s │ %-10s   ║\n", "ID", "NOME", "PREÇO (R$)", "ESTOQUE");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     int encontrou = 0, contador = 0;
     while (fread(prod, sizeof(Produtos), 1, arq_produtos))
     {
         if (prod->status == True)
         {
-            printf("║ %-5d │ %-35s │ %-12.2f │ %-10.2f ║\n",
+            printf("║ %-5d │ %-55s │ %-12.2f │ %-10.2f  ║\n",
                    prod->id,
                    prod->nome,
                    prod->preco,
@@ -236,10 +236,10 @@ void listar_produtos(void)
 
     if (!encontrou)
     {
-        printf("║ Nenhum produto ativo encontrado.                                                                               ║\n");
+        printf("║ Nenhum produto ativo encontrado.                                                                      ║\n");
     }
 
-    printf("╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     if (encontrou)
         printf("\nTotal de produtos listados: %d\n", contador);

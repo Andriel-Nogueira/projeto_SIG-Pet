@@ -356,7 +356,7 @@ void relatorio_servicos(void)
     {
         system("clear");
         exibir_logo();
-        exibir_titulo("Relatório de Serviços Realizados");
+        exibir_titulo("Relatorio de Servicos Realizados");
 
         printf("║                                                                                              ║\n");
         printf("║          1 - Listagem geral de serviços                                                      ║\n");
@@ -395,7 +395,7 @@ void listar_servicos_por_preco(void)
     int encontrou = 0, contador = 0;
 
     exibir_logo();
-    exibir_titulo("Listar Serviços por Faixa de Preço");
+    exibir_titulo("Listar Servicos por Faixa de Preco");
 
     float preco_min = tela_obter_preco_minimo();
     float preco_max = tela_obter_preco_maximo();
@@ -409,7 +409,7 @@ void listar_servicos_por_preco(void)
     }
 
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-35s │ %-30s │ %-12s ║\n", "ID", "NOME", "DESCRIÇÃO", "PREÇO (R$)");
+    printf("║ %-5s │ %-35s │ %-30s │ %-12s     ║\n", "ID", "NOME", "DESCRIÇÃO", "PREÇO (R$)");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&serv, sizeof(Servicos), 1, arq_servicos))
@@ -419,7 +419,7 @@ void listar_servicos_por_preco(void)
 
         if (serv.status == True && preco_atual >= preco_min && preco_atual <= preco_max)
         {
-            printf("║ %-5d │ %-35s │ %-30s │ %-12s ║\n",
+            printf("║ %-5d │ %-35s │ %-30s │ %-12s  ║\n",
                    serv.id,
                    serv.nome,
                    serv.desc,
@@ -628,8 +628,8 @@ void listar_agendamentos_geral(void)
     }
 
     printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-15s │ %-25s │ %-20s │ %-20s │ %-12s │ %-8s ║\n",
-           "CPF", "PET (ID)", "NOME DO PET", "SERVIÇO", "DATA", "HORA");
+    printf("║ %-13s │ %-5s │ %-20s │ %-20s │ %-12s │ %-4s     ║\n",
+           "CPF", "ID", "NOME DO PET", "SERVIÇO", "DATA", "HORA");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
@@ -654,7 +654,7 @@ void listar_agendamentos_geral(void)
                 free(serv);
             }
 
-            printf("║ %-15s │ %-25s │ %-20s │ %-20s │ %-12s │ %-8s ║\n",
+            printf("║ %-13s │ %-5s │ %-20s │ %-20s │ %-12s │ %-7s ║\n",
                    agend.cpf,
                    agend.id_pet,
                    nome_pet_temp,
@@ -692,8 +692,8 @@ void relatorio_vendas(void)
         printf("║          1 - Listagem geral de vendas                                                        ║\n");
         printf("║          2 - Listagem por faixa de preço                                                     ║\n");
         printf("║          3 - Relatório de vendas completo                                                    ║\n");
-        printf("║          4 - Listagem ordenada por data (crescente)                                            ║\n");
-        printf("║          5 - Listagem de venda decrescente (lista invertida)                                  ║\n");
+        printf("║          4 - Listagem ordenada por data (crescente)                                          ║\n");
+        printf("║          5 - Listagem de venda decrescente (lista invertida)                                 ║\n");
         printf("║          0 - Voltar                                                                          ║\n");
         printf("║                                                                                              ║\n");
         printf("║          Escolha uma opção:                                                                  ║\n");
@@ -903,8 +903,8 @@ void listar_agendamentos_por_data(void)
     // Se encontrou, rebobina o arquivo para listar
     rewind(arq_agendamentos);
 
-    printf("\n╔════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n", "CPF", "ID PET", "NOME DO PET", "DATA", "HORA");
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-15s │ %-10s │ %-35s │ %-12s │ %-8s ║\n", "CPF", "ID PET", "NOME DO PET", "DATA", "HORA");
     printf("╚══════════════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     while (fread(&agend, sizeof(Agendamentos), 1, arq_agendamentos))
@@ -924,7 +924,7 @@ void listar_agendamentos_por_data(void)
                     strncpy(nome_pet_temp, pet->nome, 30);
                     free(pet);
                 }
-                printf("║ %-15s │ %-10s │ %-25s │ %-12s │ %-8s ║\n",
+                printf("║ %-15s │ %-10s │ %-35s │ %-12s │ %-8s ║\n",
                        agend.cpf,
                        agend.id_pet,
                        nome_pet_temp,
@@ -1114,7 +1114,7 @@ void relatorio_clientes_ordenados(void)
 void relatorio_pets_ordenados(void)
 {
     exibir_logo();
-    exibir_titulo("Relatório de Pets Ordenados por Especie");
+    exibir_titulo("Relatorio de Pets Ordenados por Especie");
 
     NoPet *lista = carregar_pets_ordenados_nome();
 
@@ -1379,7 +1379,7 @@ void relatorio_vendas_ordenadas(void)
 void relatorio_servicos_ordenados(void)
 {
     exibir_logo();
-    exibir_titulo("Serviços do Menor para o Maior Preço");
+    exibir_titulo("Servicos do Menor para o Maior Preco");
 
     NoServico *lista = carregar_servicos_ordenados();
     if (!lista)
@@ -1389,17 +1389,17 @@ void relatorio_servicos_ordenados(void)
         return;
     }
 
-    printf("╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║ %-5s │ %-35s │ %-30s │ %-12s ║\n", 
+    printf("╔══════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║ %-5s │ %-35s │ %-30s │ %-12s     ║\n", 
            "ID", "NOME", "DESCRIÇÃO", "PREÇO (R$)");
-    printf("╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n");
+    printf("╠══════════════════════════════════════════════════════════════════════════════════════════════╣\n");
 
     NoServico *aux = lista;
     int contador = 0;
 
     while (aux != NULL)
     {
-        printf("║ %-5d │ %-35s │ %-30s │ %-12s ║\n",
+        printf("║ %-5d │ %-35s │ %-30s │ %-12s  ║\n",
                aux->servico.id,
                aux->servico.nome,
                aux->servico.desc,
